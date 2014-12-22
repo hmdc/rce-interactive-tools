@@ -1,0 +1,43 @@
+xstata-mp:
+  default:
+    path: /nfs/tools/apps/stata/13.1/xstata-mp
+  13.1:
+    path: /nfs/tools/apps/stata/13.1/xstata-mp
+R:
+  default:
+    path: /usr/bin/R
+SAS:
+  default:
+    path: /nfs/tools/apps/sas/9.3/SASFoundation/9.3/sas
+    args:
+      - -memsize 0
+  9.3:
+    path: /nfs/tools/apps/sas/9.3/SASFoundation/9.3/sas
+    args:
+      - -memsize 0
+gauss:
+  default:
+    path: /usr/local/bin/gauss14
+  8:
+    path: /usr/local/bin/gauss-8.0
+  14:
+    path: /usr/local/bin/gauss14
+mathematica:
+  default:
+    path: /nfs/tools/apps/mathematica/10.0.1/Executables/Mathematica
+  10.0.1:
+    path: /nfs/tools/apps/mathematica/10.0.1/Executables/Mathematica
+StatTransfer:
+  default:
+    path: /nfs/tools/apps/StatTransfer12/stattransfer
+  12:
+    path: /nfs/tools/apps/StatTransfer12/stattransfer
+matlab:
+  R2010b:
+  R2012a:
+  R2013a:
+  R2014a:
+  R2014b:
+shell:
+  default:
+    path: /usr/local/HMDC/bin/rce-shell
