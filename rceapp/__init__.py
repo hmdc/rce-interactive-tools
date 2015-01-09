@@ -42,8 +42,8 @@ class RCEAppDefaultMemoryError(Exception):
 class RCEAppIntError(Exception):
   """
   This is a self-defined exception such that I can output a useful error
-  message which says that a default stanza in the provided YML is
-  missing a default memory assignment.
+  message which notifies you if you accidentially used non-integer
+  characters in the memory field.
 
   Variables:
   cfg: path to the RCEApp YML configuration
