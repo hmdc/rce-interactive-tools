@@ -1,14 +1,23 @@
 xstata-mp:
   default:
     path: /nfs/tools/apps/stata/13.1/xstata-mp
+    memory: 4096
   13.1:
     path: /nfs/tools/apps/stata/13.1/xstata-mp
+xstata-se:
+  default:
+    path: /nfs/tools/apps/stata/13.1/xstata-se
+    memory: 2048
+  13.1:
+    path: /nfs/tools/apps/stata/13.1/xstata-se
 R:
   default:
+    memory: 2048
     path: /usr/bin/R
 SAS:
   default:
     path: /nfs/tools/apps/sas/9.3/SASFoundation/9.3/sas
+    memory: 2048
     args:
       - -memsize 0
   9.3:
@@ -18,6 +27,7 @@ SAS:
 gauss:
   default:
     path: /usr/local/bin/gauss14
+    memory: 2048
   8:
     path: /usr/local/bin/gauss-8.0
   14:
@@ -25,19 +35,50 @@ gauss:
 mathematica:
   default:
     path: /nfs/tools/apps/mathematica/10.0.1/Executables/Mathematica
+    memory: 6144
   10.0.1:
     path: /nfs/tools/apps/mathematica/10.0.1/Executables/Mathematica
 StatTransfer:
   default:
     path: /nfs/tools/apps/StatTransfer12/stattransfer
+    memory: 2048
   12:
     path: /nfs/tools/apps/StatTransfer12/stattransfer
 matlab:
+  default:
+    path: /nfs/tools/apps/matlab/R2014b/bin/matlab
+    memory: 6144
+    args:
+      - -singleCompThread
   R2010b:
+    path: /nfs/tools/apps/matlab/R2010b/bin/matlab
+    args: 
+      - -singleCompThread 
   R2012a:
+    path: /nfs/tools/apps/matlab/R2012a/bin/matlab
+    args:
+      - -singleCompThread
   R2013a:
+    path: /nfs/tools/apps/matlab/R2013a/bin/matlab
+    args:
+      - -singleCompThread
   R2014a:
+    path: /nfs/tools/apps/matlab/R2014a/bin/matlab
+    args:
+      - -singleCompThread
   R2014b:
+    path: /nfs/tools/apps/matlab/R2014b/bin/matlab
+    args:
+      - -singleCompThread
+rstudio:
+  default:
+    path: /usr/bin/rstudio
+    memory: 6144
+octave:
+  default:
+    path: /usr/bin/octave
+    memory: 2048
 shell:
   default:
-    path: /usr/local/HMDC/bin/rce-shell
+    path: /usr/bin/gnome-terminal
+    memory: 2048
