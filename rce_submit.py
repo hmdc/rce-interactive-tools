@@ -39,9 +39,32 @@ if __name__ == '__main__':
       /usr/local/HMDC/etc/rceapp.yml',
       required=True
       )
-
   parser.add_argument('-l', '--list', action='store_true',
       help='List supported RCE applications and versions.'
+      )
+
+  parser.add_argument('-r', '--run', action='store_true',
+      help='Run a job'
+      )
+
+  parser.add_argument('-a', '--app', action='store_true',
+      help='App to run on the RCE Cluster.'
+      )
+
+  parser.add_argument('-v', '--version', action='store_true',
+      help='Version of app to run on the RCE cluster'
+      )
+
+  parser.add_argument('-nogui', '--nogui', action='store_true',
+      help='Set this if you want to run the app without a GUI'
+      )
+
+  parser.add_argument('-attach', '--attach', action='store_true',
+      help='Takes a JobID as an argument. Accesses a running job.'
+      )
+
+  parser.add_argument('-list-jobs', '--list-jobs', action='store_true',
+      help='Lists running jobs'
       )
 
   args = parser.parse_args()
@@ -55,3 +78,4 @@ if __name__ == '__main__':
 
   if _list:
     list_apps(rceapps)
+    exit(0)

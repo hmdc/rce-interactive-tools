@@ -3,19 +3,19 @@ xstata-mp:
     memory: 4096
   13.1:
     default: true
-    path: /nfs/tools/apps/stata/13.1/xstata-mp
+    command: /nfs/tools/apps/stata/13.1/xstata-mp
 xstata-se:
   global:
     memory: 2048
   13.1:
     default: true
-    path: /nfs/tools/apps/stata/13.1/xstata-se
+    command: /nfs/tools/apps/stata/13.1/xstata-se
 R:
   global:
     memory: 2048
   3.1:
     default: true
-    path: /usr/bin/R
+    command: /usr/bin/R
 SAS:
   global:
     memory: 2048
@@ -23,27 +23,27 @@ SAS:
       - -memsize 0
   9.3:
     default: true
-    path: /nfs/tools/apps/sas/9.3/SASFoundation/9.3/sas
+    command: /nfs/tools/apps/sas/9.3/SASFoundation/9.3/sas
 gauss:
   global: 
     memory: 2048
   8:
-    path: /usr/local/bin/gauss-8.0
+    command: /usr/local/bin/gauss-8.0
   14:
     default: true
-    path: /usr/local/bin/gauss14
+    command: /usr/local/bin/gauss14
 mathematica:
   global:
     memory: 6144
   10.0.1:
     default: true
-    path: /nfs/tools/apps/mathematica/10.0.1/Executables/Mathematica
+    command: /nfs/tools/apps/mathematica/10.0.1/Executables/Mathematica
 StatTransfer:
   global:
     memory: 2048
   12:
     default: true
-    path: /nfs/tools/apps/StatTransfer12/stattransfer
+    command: /nfs/tools/apps/StatTransfer12/stattransfer
 matlab:
   global:
     memory: 6144
@@ -51,31 +51,32 @@ matlab:
       - -singleCompThread
   R2010b:
     default: true
-    path: /nfs/tools/apps/matlab/R2010b/bin/matlab
+    command: /nfs/tools/apps/matlab/R2010b/bin/matlab
   R2012a:
-    path: /nfs/tools/apps/matlab/R2012a/bin/matlab
+    command: /nfs/tools/apps/matlab/R2012a/bin/matlab
   R2013a:
-    path: /nfs/tools/apps/matlab/R2013a/bin/matlab
+    command: /nfs/tools/apps/matlab/R2013a/bin/matlab
   R2014a:
-    path: /nfs/tools/apps/matlab/R2014a/bin/matlab
+    command: /nfs/tools/apps/matlab/R2014a/bin/matlab
   R2014b:
-    path: /nfs/tools/apps/matlab/R2014b/bin/matlab
+    command: /nfs/tools/apps/matlab/R2014b/bin/matlab
 rstudio:
   global:
     memory: 6144
   0.98:
     default: true
-    path: /usr/bin/rstudio
+    command: /usr/bin/rstudio
 octave:
   global:
     memory: 2048
   3.4.3:
     default: true
-    path: /usr/bin/octave
+    command: /usr/bin/octave
 shell:
   global:
     memory: 2048
   2.31.3:
     default: true 
-    path: /usr/bin/gnome-terminal
+    command: /usr/bin/gnome-terminal
+    command_nogui: /bin/bash
   

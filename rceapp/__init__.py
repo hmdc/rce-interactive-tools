@@ -162,12 +162,12 @@ class rceapp:
         self.data[app].keys()
         )
 
-  def path(self,app,version):
+  def command(self,app,version):
     """
-    path() returns the full path of an application given its version and
+    command() returns the full path of an application given its version and
     application name as arguments.
     """
-    return self.data[app][version]['path']
+    return self.data[app][version]['command']
 
   def args(self,app,version):
     """
