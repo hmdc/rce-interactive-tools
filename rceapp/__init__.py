@@ -3,7 +3,7 @@
 
 from yaml import load, dump
 
-class RCEAppDefaultError(Exception):
+class RCEAppGlobalError(Exception):
   """
   This is a self-defined exception such that I can output a useful error
   message which says that a stanza in the YAML is missing the default
@@ -18,10 +18,10 @@ class RCEAppDefaultError(Exception):
     self.value = value
     self.cfg = cfg
   def __str__(self):
-    return repr('A stanza in %s is missing the default value heading.'
+    return repr('A stanza in %s is missing the global value heading.'
         %(self.cfg))
 
-class RCEAppDefaultMemoryError(Exception):
+class RCEAppGlobalMemoryError(Exception):
   """
   This is a self-defined exception such that I can output a useful error
   message which says that a default stanza in the provided YML is
@@ -36,7 +36,7 @@ class RCEAppDefaultMemoryError(Exception):
     self.value = value
     self.cfg = cfg
   def __str__(self):
-    return repr('A stanza in %s is missing a default memory value.'
+    return repr('A stanza in %s is missing a global memory value.'
         %(self.cfg))
 
 class RCEAppIntError(Exception):
@@ -94,20 +94,20 @@ class rceapp:
 
     """
     try:
-      map(lambda app: self.data[app]['default'], self.apps())
+      map(lambda app: self.data[app]['global'], self.apps())
     except KeyError as e:
       raise RCEAppDefaultError(self.cfg, e)
 
     # Checks whether default stanzas contain default memory
     try:
-      map(lambda app: self.data[app]['default']['memory'],
+      map(lambda app: self.data[app]['global']['memory'],
         self.apps())
     except KeyError as e:
       raise RCEAppDefaultMemoryError(self.cfg, e)
 
     # Checks whether default memory is an integer, which it should be.
     try:
-      map(lambda app: self.data[app]['default']['memory'] + 1,
+      map(lambda app: self.data[app]['global']['memory'] + 1,
           self.apps())
     except TypeError as e:
       raise RCEAppIntError(self.cfg, e)
@@ -123,7 +123,10 @@ class rceapp:
     """
 
     _versions = []
-    return self.data[app].keys()
+    return filter(
+        lambda key: key != 'global',
+        self.data[app].keys()
+        )
 
   def path(self,app,version):
     """
@@ -138,7 +141,14 @@ class rceapp:
     version.
     """
 
-    return ' '.join(self.data[app][version]['args'])
+    try:
+      _retval = ' '.join(self.data[app][version]['args'])
+    except:
+      _retval = ' '.join(self.data[app]['global']['args'])
+    else:
+      _retval = None
+
+    return _retval
 
   def memory(self,app,version):
     """
@@ -152,5 +162,5 @@ class rceapp:
     try:
       _memory = self.data[app][version]['memory']
     except:
-      _memory = self.data[app]['default']['memory']
+      _memory = self.data[app]['global']['memory']
     return _memory
