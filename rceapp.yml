@@ -22,6 +22,7 @@ SAS:
     args:
       - -memsize 0
   9.3:
+    default: true
     path: /nfs/tools/apps/sas/9.3/SASFoundation/9.3/sas
 gauss:
   global: 

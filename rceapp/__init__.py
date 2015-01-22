@@ -21,6 +21,26 @@ class RCEAppGlobalError(Exception):
     return repr('A stanza in %s is missing the global value heading.'
         %(self.cfg))
 
+class RCEAppDefaultError(Exception):
+  """
+  This is a self-defined exception such that I can output a useful error
+  message which says that at least one version of an app should have the
+  default set to True
+
+  Variables:
+  cfg: path to the RCEApp YML configuration
+  value: KeyError exception object
+  """
+
+  def __init__(self, cfg, value):
+    self.value = value
+    self.cfg = cfg
+  def __str__(self):
+    return repr("Either at least one version requires the default\
+     boolean in %s, two versions have the default boolean, or default is\
+     not set to true or false." %(self.cfg))
+
+
 class RCEAppGlobalMemoryError(Exception):
   """
   This is a self-defined exception such that I can output a useful error
@@ -96,14 +116,14 @@ class rceapp:
     try:
       map(lambda app: self.data[app]['global'], self.apps())
     except KeyError as e:
-      raise RCEAppDefaultError(self.cfg, e)
+      raise RCEAppGlobalError(self.cfg, e)
 
     # Checks whether default stanzas contain default memory
     try:
       map(lambda app: self.data[app]['global']['memory'],
         self.apps())
     except KeyError as e:
-      raise RCEAppDefaultMemoryError(self.cfg, e)
+      raise RCEAppGlobalMemoryError(self.cfg, e)
 
     # Checks whether default memory is an integer, which it should be.
     try:
@@ -111,7 +131,21 @@ class rceapp:
           self.apps())
     except TypeError as e:
       raise RCEAppIntError(self.cfg, e)
-      
+
+    # Checks whether at least one version is default, no more than one
+    # default key per entry, and that value is a boolean.
+    default_map = map(lambda app: map(lambda version:
+      self.data[app][version]['default'] if
+      self.data[app][version].has_key('default') else None,
+      self.versions(app)),
+      self.apps())
+
+    sorted_count = sorted(map(lambda x: x.count(True), default_map))
+    if sorted_count[0] == 0:
+      raise RCEAppDefaultError(self.cfg, "No default.")
+    elif sorted_count[-1] > 1:
+      raise RCEAppDefaultError(self.cfg, "Too many defaults.")
+
   def apps(self):
     """apps() returns the keys of the data loaded from the yaml"""
     return self.data.keys()
@@ -149,6 +183,19 @@ class rceapp:
       _retval = None
 
     return _retval
+
+  def is_default(self,app,version):
+    """
+    Returns True if app,version is the default version for the app.
+    """
+   
+    try:
+      _is_default = self.data[app][version]['default']
+    except:
+      _is_default = False
+
+    return _is_default
+
 
   def memory(self,app,version):
     """
