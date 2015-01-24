@@ -78,5 +78,5 @@ shell:
   2.31.3:
     default: true 
     command: /usr/bin/gnome-terminal
-    command_nogui: /bin/bash
+    command_nogui: $ENV(SHELL)
   
