@@ -50,7 +50,6 @@ matlab:
     args:
       - -singleCompThread
   R2010b:
-    default: true
     command: /nfs/tools/apps/matlab/R2010b/bin/matlab
   R2012a:
     command: /nfs/tools/apps/matlab/R2012a/bin/matlab
@@ -59,6 +58,7 @@ matlab:
   R2014a:
     command: /nfs/tools/apps/matlab/R2014a/bin/matlab
   R2014b:
+    default: true
     command: /nfs/tools/apps/matlab/R2014b/bin/matlab
 rstudio:
   global:

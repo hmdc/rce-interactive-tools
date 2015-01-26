@@ -87,14 +87,14 @@ if __name__ == '__main__':
   # Runtime
   if _run and _app:
     if rceapps.app_version_exists(_app,_version):
-      print "{0}, {1} exists.".format(_app, _version)
+      __version = _version if _version else rceapps.get_default_version(_app)
       job = HMDCCondor().submit(
           _app,
-          _version,
+          __version,
           rceapps.command(_app,_version),
-          rceapps.args(_app,_version),
           1, 
-          rceapps.memory(_app, _version)
+          rceapps.memory(_app, _version),
+          rceapps.args(_app,_version)
           )
       print job
       exit(0)
