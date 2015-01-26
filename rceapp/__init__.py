@@ -188,9 +188,10 @@ class rceapp:
     try:
       _retval = ' '.join(self.data[app][_version]['args'])
     except:
-      _retval = ' '.join(self.data[app]['global']['args'])
-    else:
-      _retval = None
+      try:
+        _retval = ' '.join(self.data[app]['global']['args'])
+      except:
+        _retval = None
 
     return _retval
 

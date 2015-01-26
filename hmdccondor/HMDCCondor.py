@@ -4,6 +4,7 @@ import simpleldap
 import classad
 import htcondor
 import hmdccondor.HMDCConstants as CONSTANTS
+import re
 from datetime import datetime
 
 class HMDCCondor:
@@ -68,4 +69,4 @@ class HMDCCondor:
           'dc=login,dc=hmdc,dc=harvard,dc=edu')[-1].values()[-1]) 
 
   def _get_environment(self):
-    return ' '.join(map(lambda (x,y): "%s='%s'" %(x,y), os.environ.iteritems()))
+    return ' '.join(filter(lambda pair: not re.match("^DBUS|^GNOME", pair), map(lambda (x,y): "%s='%s'" %(x,y), os.environ.iteritems())))
