@@ -84,15 +84,14 @@ shell:
 python:
   global:
     memory: 2048
-  2.7:
+  '2.7':
     default: true
     command: /usr/bin/gnome-terminal
     command_nogui: /usr/local/bin/python27
     args:
       - -e /usr/local/bin/python27
-  3.3:
+  '3.3':
     command: /usr/bin/gnome-terminal
     command_nogui: /usr/local/bin/python33
     args:
       - -e /usr/local/bin/python33
-  
