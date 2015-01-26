@@ -20,6 +20,8 @@ SAS:
   global:
     memory: 2048
     args:
+# -memsize 0 means unlimited memory
+# http://support.sas.com/documentation/cdl/en/hostwin/63285/HTML/default/viewer.htm#win-sysop-memsize.htm
       - -memsize 0
   9.3:
     default: true
@@ -79,4 +81,18 @@ shell:
     default: true 
     command: /usr/bin/gnome-terminal
     command_nogui: $ENV(SHELL)
+python:
+  global:
+    memory: 2048
+  2.7:
+    default: true
+    command: /usr/bin/gnome-terminal
+    command_nogui: /usr/local/bin/python27
+    args:
+      - -e /usr/local/bin/python27
+  3.3:
+    command: /usr/bin/gnome-terminal
+    command_nogui: /usr/local/bin/python33
+    args:
+      - -e /usr/local/bin/python33
   
