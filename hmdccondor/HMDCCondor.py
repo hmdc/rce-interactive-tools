@@ -35,6 +35,8 @@ class HMDCCondor:
     dt = datetime.utcnow().strftime("%Y%m%d%s")
 
     __classad = classad.ClassAd({
+      'HMDCApplicationName': app_name,
+      'HMDCApplicationVersion': app_version,
       'Cmd': cmd,
       'Args': args,
       'RequestMemory': memory,

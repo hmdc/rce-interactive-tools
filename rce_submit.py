@@ -1,5 +1,6 @@
 #!/usr/bin/env/python
 from tabulate import tabulate
+from hmdccondor import HMDCCondor
 import argparse
 import rceapp
 
@@ -47,11 +48,11 @@ if __name__ == '__main__':
       help='Run a job'
       )
 
-  parser.add_argument('-a', '--app', action='store_true',
+  parser.add_argument('-a', '--app',
       help='App to run on the RCE Cluster.'
       )
 
-  parser.add_argument('-v', '--version', action='store_true',
+  parser.add_argument('-v', '--version', 
       help='Version of app to run on the RCE cluster'
       )
 
@@ -71,6 +72,9 @@ if __name__ == '__main__':
 
   _config = args.config
   _list = args.list
+  _run = args.run
+  _app = args.app
+  _version = args.version
 
   rceapps = rceapp.rceapp(_config)
 
@@ -79,3 +83,30 @@ if __name__ == '__main__':
   if _list:
     list_apps(rceapps)
     exit(0)
+
+  # Runtime
+  if _run and _app:
+    if rceapps.app_version_exists(_app,_version):
+      print "{0}, {1} exists.".format(_app, _version)
+      job = HMDCCondor().submit(
+          _app,
+          _version,
+          rceapps.command(_app,_version),
+          rceapps.args(_app,_version),
+          1, 
+          rceapps.memory(_app, _version)
+          )
+      print job
+      exit(0)
+    else:
+      print "Application {0} does not exist.".format(_app)
+      print "Run rce_submit.py -l to view a list of available applications."
+      exit(1)
+  elif _run:
+    print "You specified -run, but did not specify an app to run.\
+    Please re-run with the -a flag set to the desired application."
+    exit(1)
+  else:
+    print "You need to specify either -r, or -l."
+    exit(1)
+

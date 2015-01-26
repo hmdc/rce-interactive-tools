@@ -162,27 +162,43 @@ class rceapp:
         self.data[app].keys()
         )
 
-  def command(self,app,version):
+  def app_version_exists(self,app,version=None):
+    if version:
+      return (True if app in self.apps() and version in
+      self.versions(app) else False)
+    else:
+      return (True if app in self.apps() else False)
+
+  def command(self,app,version=None):
     """
     command() returns the full path of an application given its version and
     application name as arguments.
     """
-    return self.data[app][version]['command']
+    _version = version if version else self.get_default_version(app)
+    return self.data[app][_version]['command']
 
-  def args(self,app,version):
+  def args(self,app,version=None):
     """
     args() returns a string of arguments for an given application's
     version.
     """
+    
+    _version = version if version else self.get_default_version(app)
 
     try:
-      _retval = ' '.join(self.data[app][version]['args'])
+      _retval = ' '.join(self.data[app][_version]['args'])
     except:
       _retval = ' '.join(self.data[app]['global']['args'])
     else:
       _retval = None
 
     return _retval
+
+  def get_default_version(self, app):
+    _versions = map (lambda version: version if self.is_default(app,version) else
+        None,
+        self.versions(app))
+    return sorted(_versions)[-1]
 
   def is_default(self,app,version):
     """
@@ -197,17 +213,17 @@ class rceapp:
     return _is_default
 
 
-  def memory(self,app,version):
+  def memory(self,app,version=None):
     """
     memory() returns the default memory requirements of an application's
     specified version. If a memory default is not specified for that
     particular version, it grabs the default memory from the default
     stanza for that app.
     """
-
+    _version = version if version else self.get_default_version(app)
     _memory = 0
     try:
-      _memory = self.data[app][version]['memory']
+      _memory = self.data[app][_version]['memory']
     except:
       _memory = self.data[app]['global']['memory']
     return _memory
