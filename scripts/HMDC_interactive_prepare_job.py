@@ -58,37 +58,20 @@ debug(_debug, debug_fd,
     "ClassAd application is {0}, version {1}.".format(
       application, str(application_version)))
 
-if application_version:
-  job_dir = "{0}_{1}_{2}_{3}_{4}".format(host, clusterid, application,
-      application_version, timestamp)
-else:
-  job_dir = "{0}_{1}_{2}_{3}".format(host, clusterid, application,
-      timestamp)
+job_dir = job_classad['LocalJobDir'].eval()
 
 debug(_debug, debug_fd,
     "{0} will create directory {1}".format(__BASENAME__,job_dir))
 
-job_directory = "{0}/.HMDC/jobs/interactive/{1}".format(home, job_dir) 
-
-debug(_debug, debug_fd,
-    "{0} will create above directory, full path: {1}".
-    format(__BASENAME__,job_directory))
-
 try:
-  os.mkdir(job_directory, 0755)
+  os.mkdir(job_dir, 0755)
   debug(_debug, debug_fd,
-      "Successfully created directory: {0}".format(job_directory))
+      "Successfully created directory: {0}".format(job_dir))
 except Exception as e:
   debug(_debug, debug_fd,
       "Encountered exception when running os.mkdir: {0}".format(
         e))
   raise
-
-debug(_debug, debug_fd, "Modifying ClassAd elements.")
-
-job_classad['HMDCJobInfoDirectory'] = job_directory
-job_classad['Out'] = "{0}/{1}".format(job_directory, 'out.txt')
-job_classad['Err'] = "{0}/{1}".format(job_directory, 'err.txt')
 
 debug(_debug, debug_fd, 
     "Writing the following modified ClassAd to stdout")

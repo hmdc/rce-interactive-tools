@@ -24,7 +24,7 @@ class HMDCCondor:
         memory)
 
     jobid = self._interactive_schedd.submit(__classad, 1)
-
+    
     # set HMDCApplicationName ClassAd
     # set HMDCApplicationVersion ClassAd
 
@@ -35,20 +35,31 @@ class HMDCCondor:
 
   def _create_classad(self, app_name, app_version, cmd, cpu, memory, args=None):
     dt = datetime.utcnow().strftime("%Y%m%d%s")
+   
+    _out = "{0}_{1}".format(app_name, app_version)
+
+    home = pwd.getpwnam(pwd.getpwuid(os.getuid())[0]).pw_dir
+    job_dir_base= "{0}/.HMDC/jobs/interactive".format(home)
+    job_dir = classad.Function('strcat', job_dir_base, '/', _out, '_', classad.ExprTree('ClusterId'), '_', dt)
+
+    out = classad.Function('strcat', job_dir_base, '/', _out, '_', classad.ExprTree('ClusterId'), '_', dt, '/out.txt')
+    err = classad.Function('strcat', job_dir_base, '/', _out, '_', classad.ExprTree('ClusterId'), '_', dt, '/err.txt')
 
     _classad = classad.ClassAd({
       'HMDCApplicationName': app_name,
       'HMDCApplicationVersion': app_version,
       'HMDCInteractive': True,
       'HMDCUseXpra': True,
+      'LocalJobDir': job_dir,
+      'DebugPrepareJobHook': True,
       'Cmd': cmd,
       'Args': args if args else False,
       'RequestMemory': memory,
       'ShouldTransferFiles': 'NO',
       'TransferExecutable': False,
       'TransferIn': False,
-      'Out': '{0}_{1}_{2}.out.txt'.format(app_name, app_version, dt),
-      'Err': '{0}_{1}_{2}.err.txt'.format(app_name, app_version, dt),
+      'Out': out,
+      'Err': err,
       'Entitlements': self._get_entitlements(),
       'Environment': self._get_environment(),
       'FileSystemDomain': CONSTANTS.FILESYSTEM_DOMAIN
