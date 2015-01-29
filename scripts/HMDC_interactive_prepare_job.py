@@ -6,6 +6,9 @@ import pwd
 from datetime import datetime
 # Import classad
 
+__BASENAME__ = os.path.basename(__file__)
+
+
 # Quick and dirty debug function, please replace.
 def debug(will_debug, _fd, message): 
   if will_debug:
@@ -30,8 +33,8 @@ host = job_classad['RemoteHost'].split('@')[-1]
 
 DEBUG_LOG = None
 DEBUG_LOG_BASE_PRIMARY = "{0}/.HMDC/jobs/debug/{1}.{2}.log".format(home,
-    __file__, clusterid)
-DEBUG_LOG_BASE_ALTERNATE = "/tmp/{0}.{1}.log".format(__file__,clusterid)
+    __BASENAME__, clusterid)
+DEBUG_LOG_BASE_ALTERNATE = "/tmp/{0}.{1}.log".format(__BASENAME__,clusterid)
 
 try:
   debug_fd = open(DEBUG_LOG_BASE,'w+') if _debug else None
@@ -63,13 +66,13 @@ else:
       timestamp)
 
 debug(_debug, debug_fd,
-    "{0} will create directory {1}".format(__file__,job_dir))
+    "{0} will create directory {1}".format(__BASENAME__,job_dir))
 
 job_directory = "{0}/.HMDC/jobs/interactive/{1}".format(home, job_dir) 
 
 debug(_debug, debug_fd,
     "{0} will create above directory, full path: {1}".
-    format(__file__,job_directory))
+    format(__BASENAME__,job_directory))
 
 try:
   os.mkdir(job_directory, 0755)
