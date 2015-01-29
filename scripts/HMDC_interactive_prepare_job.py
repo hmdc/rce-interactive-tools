@@ -37,7 +37,7 @@ DEBUG_LOG_BASE_PRIMARY = "{0}/.HMDC/jobs/debug/{1}.{2}.log".format(home,
 DEBUG_LOG_BASE_ALTERNATE = "/tmp/{0}.{1}.log".format(__BASENAME__,clusterid)
 
 try:
-  debug_fd = open(DEBUG_LOG_BASE,'w+') if _debug else None
+  debug_fd = open(DEBUG_LOG_BASE_PRIMARY,'w+') if _debug else None
   DEBUG_LOG = DEBUG_LOG_BASE_PRIMARY
 except:
   debug_fd = open(DEBUG_LOG_BASE_ALTERNATE,'w+') if _debug else None
