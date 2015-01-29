@@ -93,3 +93,16 @@ debug(_debug, debug_fd,
     job_classad.printOld())
 
 sys.stdout.write (job_classad.printOld())
+
+if debug_fd:
+  try:
+    debug(_debug,debug_fd, 
+        "Closing file descriptor to {0}".format(DEBUG_LOG))
+    debug_fd.close()
+  except:
+    debug(_debug,debug_fd,
+        "Encountered exception closing file descriptor to {0}".format(
+          DEBUG_LOG))
+    raise
+
+sys.exit(0)
