@@ -51,6 +51,7 @@ class HMDCCondor:
       'HMDCInteractive': True,
       'HMDCUseXpra': True,
       'LocalJobDir': job_dir,
+      'HookKeyword': 'LOG',
       'DebugPrepareJobHook': True,
       'Cmd': cmd,
       'Args': args if args else False,
