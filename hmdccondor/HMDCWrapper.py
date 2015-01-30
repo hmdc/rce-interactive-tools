@@ -18,6 +18,7 @@ class HMDCWrapper:
     self.app_log = "{0}/{1}.out.txt".format(
         self.localjobdir,
         self.app)
+    self.__BASENAME__ = os.path.basename(__file__)
 
   def __set_limits__(self):
     return 0
@@ -32,7 +33,9 @@ class HMDCWrapper:
       return self.run_xpra() if self.use_xpra else self.run_screen()
 
   def run_sshd(self):
-    os.execvp(self.cmd_orig[0], self.cmd_orig[1:])
+    os.execvp(self.cmd_orig[0], 
+        [self.__BASENAME__] +
+        self.cmd_orig[1:])
 
   def run_xpra(self):
     xpra = '/usr/bin/xpra'
@@ -42,7 +45,7 @@ class HMDCWrapper:
         self.cmd)
 
     os.execlp(xpra,
-        '--exit-with-children',
+        self.__BASENAME__,
         '--no-daemon',
         '--exit-with-children',
         'start',
