@@ -43,7 +43,7 @@ class HMDCWrapper:
     return 0
 
   def run_screen():
-    os.environ['SCREENDIR'] = self.localjobdir
+    os.environ['SCREENDIR'] = os.environ['TEMP']
     screen = '/usr/bin/screen'
     os.execvpe(screen,
         ['-L'] + self.orig_cmd,
