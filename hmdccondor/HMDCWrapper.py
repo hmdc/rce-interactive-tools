@@ -18,7 +18,6 @@ class HMDCWrapper:
     self.app_log = "{0}/{1}.out.txt".format(
         self.localjobdir,
         self.app)
-    self.debug_log = "{0}/{1}.wrapper.out.txt"
 
   def __set_limits__(self):
     return 0
@@ -33,11 +32,6 @@ class HMDCWrapper:
       return self.run_xpra() if self.use_xpra else self.run_screen()
 
   def run_sshd(self):
-    with open(self.debug_log, 'w+') as _debug_fd:
-      _debug_fd.write("Running condor_ssh_to_job cmd {0} {1}").format(
-          self.cmd_orig[0], 
-          ' '.join(self.cmd_orig[1:]))
-
     os.execvp(self.cmd_orig[0], self.cmd_orig[1:])
 
   def run_xpra(self):
