@@ -1,7 +1,5 @@
 from distutils.core import setup
 
-from distutils.core import setup
-
 setup(name='rce-interactive-tools',
       version='1.0',
       description='HMDC utilities and scripts to submit condor jobs.',
