@@ -69,9 +69,9 @@ try:
       "Successfully created directory: {0}".format(job_dir))
 except Exception as e:
   debug(_debug, debug_fd,
-      "Encountered exception when running os.mkdir: {0}".format(
+      "Encountered exception when running os.mkdir, continuing anyway: {0}".format(
         e))
-  raise
+
 
 debug(_debug, debug_fd, 
     "Writing the following modified ClassAd to stdout")
