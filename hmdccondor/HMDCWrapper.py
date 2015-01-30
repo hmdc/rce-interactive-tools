@@ -24,7 +24,15 @@ class HMDCWrapper:
 
   def run(self):
     self.__set_limits__()
-    return self.run_xpra() if self.use_xpra else self.run_screen()
+    # We need this for condor_ssh_to_job, otherwise it goes under
+    # pexpect and.. bonkers!
+    if self.cmd_orig[0] == '/usr/sbin/sshd':
+      return self.run_sshd()
+    else:
+      return self.run_xpra() if self.use_xpra else self.run_screen()
+
+  def run_sshd(self):
+    os.execvpe(self.cmd_orig)
 
   def run_xpra(self):
     xpra = '/usr/bin/xpra'
