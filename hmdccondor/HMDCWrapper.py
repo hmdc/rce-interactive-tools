@@ -32,7 +32,7 @@ class HMDCWrapper:
       return self.run_xpra() if self.use_xpra else self.run_screen()
 
   def run_sshd(self):
-    os.execvpe(self.cmd_orig)
+    os.execvpe(self.cmd_orig[0], self.cmd_orig[1:])
 
   def run_xpra(self):
     xpra = '/usr/bin/xpra'
