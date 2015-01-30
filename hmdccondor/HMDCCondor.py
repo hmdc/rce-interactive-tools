@@ -46,6 +46,7 @@ class HMDCCondor:
     err = classad.Function('strcat', job_dir_base, '/', _out, '_', classad.ExprTree('ClusterId'), '_', dt, '/err.txt')
 
     _classad = classad.ClassAd({
+      'HMDCNewSubmit': true,
       'HMDCApplicationName': app_name,
       'HMDCApplicationVersion': app_version,
       'HMDCInteractive': True,
