@@ -1,5 +1,5 @@
 import os
-import sys.argv
+import sys
 import htcondor
 import classad
 
@@ -10,7 +10,7 @@ class HMDCWrapper:
         open(os.environ['_CONDOR_JOB_AD']))
 
     self.cmd_orig = argv[1:]
-    self.cmd = ' '.join(cmd_orig)
+    self.cmd = ' '.join(self.cmd_orig)
 
     self.app = self.classad['HMDCApplicationName']
     self.use_xpra = self.classad['HMDCUseXpra']
@@ -19,7 +19,7 @@ class HMDCWrapper:
         self.localjobdir,
         self.app)
 
-  def __set_limits__():
+  def __set_limits__(self):
     return 0
 
   def run(self):
@@ -33,10 +33,12 @@ class HMDCWrapper:
         self.app_log,
         self.cmd)
 
-    os.execlp(xpra, 'start', '--no-daemon',
+    os.execlp(xpra,
         '--exit-with-children',
-        '--start-child=\"{0}\"'.format(pexpect_cmd),
-        '--socket-dir=\"{0}\"'.format(self.localjobdir))
+        '--no-daemon',
+        'start',
+        '--start-child={0}'.format(pexpect_cmd),
+        '--socket-dir={0}'.format(os.environ['TEMP']))
 
     return 0
 

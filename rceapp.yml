@@ -74,6 +74,14 @@ octave:
   3.4.3:
     default: true
     command: /usr/bin/octave
+'sleep':
+  global:
+    memory: 2048
+  '1.0':
+    default: true
+    command: /bin/sleep
+    args:
+      - 9000000s
 shell:
   global:
     memory: 2048
