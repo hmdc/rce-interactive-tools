@@ -36,6 +36,7 @@ class HMDCWrapper:
     os.execlp(xpra,
         '--exit-with-children',
         '--no-daemon',
+        '--exit-with-children',
         'start',
         '--start-child={0}'.format(pexpect_cmd),
         '--socket-dir={0}'.format(os.environ['TEMP']))
