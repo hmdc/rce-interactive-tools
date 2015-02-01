@@ -51,6 +51,7 @@ class HMDCCondor:
       'HMDCApplicationVersion': app_version,
       'HMDCInteractive': True,
       'HMDCUseXpra': True,
+      'JobLeaseDuration': 1200,
       'LocalJobDir': job_dir,
       'HookKeyword': 'LOG',
       'DebugPrepareJobHook': True,
