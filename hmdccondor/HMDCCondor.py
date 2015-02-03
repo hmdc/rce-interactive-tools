@@ -30,7 +30,57 @@ class HMDCCondor:
 
     return jobid
 
-  def poll(jobid):
+  def poll(self, jobid):
+    self.__poll_thread(jobid)
+   
+  def __poll_thread(self, jobid):
+    # loop until the process is running or halted.
+    while 1:
+
+      try:
+        (my_job_status, my_job) = self.__get_job_status_from_queue(
+            jobid)
+      except:
+        # Job apparently doesn't exist in running queue.
+        try:
+          (my_job_status, my_job) = self.__get_job_status_from_history(jobid)
+        except:
+          (my_job_status, my_job) = None, None
+
+      if not my_job_status:
+        time.sleep(5)
+        continue
+
+      # If value is 1, then we're still negotiating.
+      # See http://pages.cs.wisc.edu/~adesmet/status.html
+      is_returnable_value = sum(
+          map(lambda st: int(st==my_job_status), [2,3,4,5,6])
+          ) > 0
+
+      if is_returnable_value:
+        return (my_job, my_job_status)
+      else:
+        # Still in negotiation
+        time.sleep(5)
+        continue
+
+  def __get_job_status_from_queue(self,jobid):
+    job = self._interactive_schedd.query("ClusterId =?= {0}".format(jobid))
+    return (int(job[-1]['JobStatus']), job[-1])
+
+  def __get_job_status_from_history(jobid):
+    # History returns an iterator, unlike query, so we have to turn it
+    # into an array of arrays, which is what the map does.
+    job_iterator = self._interactive_schedd.history("ClusterId =?= {0}".
+        format(jobid), [''], 1)
+    job = map(lambda x: x, job_iterator)[-1]
+    job_status = int(job['JobStatus'])
+    return (job_status, job)
+
+  def attach(self,jobid):
+    return 0
+
+  def __poll_xpra_alive(self,jobid):
     return 0
 
   def _create_classad(self, app_name, app_version, cmd, cpu, memory, args=None):
