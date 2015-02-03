@@ -88,7 +88,8 @@ if __name__ == '__main__':
   if _run and _app:
     if rceapps.app_version_exists(_app,_version):
       __version = _version if _version else rceapps.get_default_version(_app)
-      job = HMDCCondor().submit(
+      hmdc_condor = HMDCCondor()
+      job = hmdc_condor.submit(
           _app,
           __version,
           rceapps.command(_app,_version),
@@ -96,7 +97,9 @@ if __name__ == '__main__':
           rceapps.memory(_app, _version),
           rceapps.args(_app,_version)
           )
-      print job
+      # poll for job
+      job_status,classad = hmdc_condor.poll(job)
+      print "Job {0} has status {1}".format(job, job_status)
       exit(0)
     else:
       print "Application {0} does not exist.".format(_app)

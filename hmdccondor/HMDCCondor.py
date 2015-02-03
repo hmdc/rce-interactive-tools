@@ -4,8 +4,19 @@ import simpleldap
 import classad
 import htcondor
 import hmdccondor.HMDCConstants as CONSTANTS
+import hmdccondor.HMDCPoller
 import re
+import time
+import multiprocessing as mp
+import copy
 from datetime import datetime
+
+def poll_thread(id,return_status):
+  schedd = HMDCCondor()._interactive_schedd
+
+  poller = hmdccondor.HMDCPoller(id,return_status,schedd)
+ 
+  return poller.run()
 
 class HMDCCondor:
   def __init__(self):
@@ -13,6 +24,13 @@ class HMDCCondor:
     self._collector_int = htcondor.Collector(CONSTANTS.HMDC_INT_HEAD)
     self._batch_schedd = htcondor.Schedd(self._collector_batch.locate(htcondor.DaemonTypes.Schedd))
     self._interactive_schedd = htcondor.Schedd(self._collector_int.locate(htcondor.DaemonTypes.Schedd))
+    self._return_status = [
+      CONSTANTS.JOB_STATUS_RUNNING,
+      CONSTANTS.JOB_STATUS_REMOVED,
+      CONSTANTS.JOB_STATUS_COMPLETED,
+      CONSTANTS.JOB_STATUS_HELD,
+      CONSTANTS.JOB_STATUS_SUBMIT_ERR]
+    self.POLL_TIMEOUT = 90
 
   def submit(self, app_name, app_version, cmd, args, cpu, memory):
     __classad = self._create_classad(
@@ -25,58 +43,22 @@ class HMDCCondor:
 
     jobid = self._interactive_schedd.submit(__classad, 1)
     
-    # set HMDCApplicationName ClassAd
-    # set HMDCApplicationVersion ClassAd
-
     return jobid
 
-  def poll(self, jobid):
-    self.__poll_thread(jobid)
+  def poll(self, jobid, return_status=None):
+    _return_status = return_status if return_status else self._return_status
+
+    # start a thread so we can timeout on polling.
+    pool = mp.Pool(1)
+    result = pool.apply_async(poll_thread, (jobid, _return_status))
+    pool.close()
+
+    try:
+      return result.get(self.POLL_TIMEOUT) 
+    except:
+      pool.terminate()
+      raise
    
-  def __poll_thread(self, jobid):
-    # loop until the process is running or halted.
-    while 1:
-
-      try:
-        (my_job_status, my_job) = self.__get_job_status_from_queue(
-            jobid)
-      except:
-        # Job apparently doesn't exist in running queue.
-        try:
-          (my_job_status, my_job) = self.__get_job_status_from_history(jobid)
-        except:
-          (my_job_status, my_job) = None, None
-
-      if not my_job_status:
-        time.sleep(5)
-        continue
-
-      # If value is 1, then we're still negotiating.
-      # See http://pages.cs.wisc.edu/~adesmet/status.html
-      is_returnable_value = sum(
-          map(lambda st: int(st==my_job_status), [2,3,4,5,6])
-          ) > 0
-
-      if is_returnable_value:
-        return (my_job, my_job_status)
-      else:
-        # Still in negotiation
-        time.sleep(5)
-        continue
-
-  def __get_job_status_from_queue(self,jobid):
-    job = self._interactive_schedd.query("ClusterId =?= {0}".format(jobid))
-    return (int(job[-1]['JobStatus']), job[-1])
-
-  def __get_job_status_from_history(jobid):
-    # History returns an iterator, unlike query, so we have to turn it
-    # into an array of arrays, which is what the map does.
-    job_iterator = self._interactive_schedd.history("ClusterId =?= {0}".
-        format(jobid), [''], 1)
-    job = map(lambda x: x, job_iterator)[-1]
-    job_status = int(job['JobStatus'])
-    return (job_status, job)
-
   def attach(self,jobid):
     return 0
 
