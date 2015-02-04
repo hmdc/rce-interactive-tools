@@ -7,9 +7,12 @@ class HMDCPoller:
     self.return_status = return_status
     self.schedd = schedd
 
-  def run(self):
+  def run(self,id=None):
     # loop until the process is running or halted.
-    
+   
+    if id:
+      self.id = id
+ 
     jobid = self.id
     return_status = self.return_status
     

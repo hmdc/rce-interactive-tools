@@ -99,7 +99,8 @@ if __name__ == '__main__':
           )
       # poll for job
       job_status,classad = hmdc_condor.poll(job)
-      print "Job {0} has status {1}".format(job, job_status)
+      print "Job {0} has status {1}. Attaching.".format(job, job_status)
+      hmdc_condor.attach(job)
       exit(0)
     else:
       print "Application {0} does not exist.".format(_app)

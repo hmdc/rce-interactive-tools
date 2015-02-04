@@ -18,12 +18,28 @@ def poll_thread(id,return_status):
  
   return poller.run()
 
+def poll_xpra_thread(out_txt):
+  while 1:
+    try:
+      with open(out_txt, 'r') as out:
+        line = out.readlines()
+        xpra_socket = int(map(lambda _line: re.findall('Xdummy: :(\d)$', _line),line)[0][0])
+        return xpra_socket
+    except:
+      os.sleep(5)
+      continue
+  
 class HMDCCondor:
   def __init__(self):
     self._collector_batch = htcondor.Collector(CONSTANTS.HMDC_BATCH_HEAD)
     self._collector_int = htcondor.Collector(CONSTANTS.HMDC_INT_HEAD)
+
     self._batch_schedd = htcondor.Schedd(self._collector_batch.locate(htcondor.DaemonTypes.Schedd))
-    self._interactive_schedd = htcondor.Schedd(self._collector_int.locate(htcondor.DaemonTypes.Schedd))
+
+    self._sched_ad = self._collector_int.locate(htcondor.DaemonTypes.Schedd)
+    self._sched_ip = self._sched_ad['ScheddIpAddr']
+    self._interactive_schedd = htcondor.Schedd(self._sched_ad)
+
     self._return_status = [
       CONSTANTS.JOB_STATUS_RUNNING,
       CONSTANTS.JOB_STATUS_REMOVED,
@@ -31,6 +47,7 @@ class HMDCCondor:
       CONSTANTS.JOB_STATUS_HELD,
       CONSTANTS.JOB_STATUS_SUBMIT_ERR]
     self.POLL_TIMEOUT = 90
+    self.__BASENAME__ = os.path.basename(__file__)
 
   def submit(self, app_name, app_version, cmd, args, cpu, memory):
     __classad = self._create_classad(
@@ -60,11 +77,39 @@ class HMDCCondor:
       raise
    
   def attach(self,jobid):
-    return 0
+    status,_classad = self.poll(jobid)
+    display = self.poll_xpra(jobid)
 
-  def __poll_xpra_alive(self,jobid):
-    return 0
+    return self.attach_xpra(classad.parseOld(_classad),display)
 
+  def attach_xpra(self,_classad,display):
+    condor_ssh = '/usr/bin/condor_ssh_to_job'
+    xpra = '/usr/bin/xpra'
+
+    job_id = int(_classad['ClusterId'])
+    machine = str(_classad['RemoteHost']).split('@')[-1]
+
+    os.execlp(xpra, self.__BASENAME__,
+      "attach",
+      "--socket-dir=$TEMP",
+      "--ssh={0} -name '{1}' -pool dev-cod6-head.priv.hmdc.harvard.edu {2}".format(condor_ssh,self._sched_ip,job_id),
+      "ssh:{0}:{1}".format(machine, display))
+
+  def poll_xpra(self,jobid):
+    job_status, _classad = self.poll(jobid)
+    _classad = classad.parseOld(_classad)
+    _out = str(_classad['Out'].eval())
+   
+    pool = mp.Pool(1)
+    result = pool.apply_async(poll_xpra_thread, [_out])
+    pool.close()
+
+    try:
+      return result.get(self.POLL_TIMEOUT)
+    except:
+      pool.terminate()
+      raise
+ 
   def _create_classad(self, app_name, app_version, cmd, cpu, memory, args=None):
     dt = datetime.utcnow().strftime("%Y%m%d%s")
    
