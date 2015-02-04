@@ -60,7 +60,7 @@ if __name__ == '__main__':
       help='Set this if you want to run the app without a GUI'
       )
 
-  parser.add_argument('-attach', '--attach', action='store_true',
+  parser.add_argument('-attach', '--attach',
       help='Takes a JobID as an argument. Accesses a running job.'
       )
 
@@ -75,6 +75,7 @@ if __name__ == '__main__':
   _run = args.run
   _app = args.app
   _version = args.version
+  _attach = args.attach
 
   rceapps = rceapp.rceapp(_config)
 
@@ -85,6 +86,10 @@ if __name__ == '__main__':
     exit(0)
 
   # Runtime
+  
+  if _attach and isinstance(_attach, (int,float)):
+     HMDCCondor().attach(_attach)
+
   if _run and _app:
     if rceapps.app_version_exists(_app,_version):
       __version = _version if _version else rceapps.get_default_version(_app)

@@ -26,7 +26,7 @@ def poll_xpra_thread(out_txt):
         xpra_socket = int(map(lambda _line: re.findall('Xdummy: :(\d)$', _line),line)[0][0])
         return xpra_socket
     except:
-      os.sleep(5)
+      time.sleep(5)
       continue
   
 class HMDCCondor:
