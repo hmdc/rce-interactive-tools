@@ -87,8 +87,8 @@ if __name__ == '__main__':
 
   # Runtime
   
-  if _attach and isinstance(_attach, (int,float)):
-     HMDCCondor().attach(_attach)
+  if _attach and isinstance(_attach, (int,float,str)):
+     HMDCCondor().attach(int(_attach))
 
   if _run and _app:
     if rceapps.app_version_exists(_app,_version):
