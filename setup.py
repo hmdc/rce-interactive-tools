@@ -9,7 +9,7 @@ setup(name='rce-interactive-tools',
       license='MIT',
       packages=['hmdccondor', 'rceapp'],
       requires=['pexpect', 'tabulate', 'progressbar', 'pyyaml'],
-      data_files=[('/usr/local/HMDC/etc', ['rceapp.yml'])],
+      data_files=[('/etc', ['rceapp.yml.example'])],
       scripts=[
         'scripts/rce_submit.py',
         'scripts/HMDC_interactive_prepare_job.py',
