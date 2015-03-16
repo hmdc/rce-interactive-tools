@@ -20,4 +20,4 @@ setup(name='rce-interactive-tools',
 )
 
 # This needs to be world-readable
-chmod('/etc/rceapp.yml.example', 0644)
+# chmod('/etc/rceapp.yml.example', 0644)
