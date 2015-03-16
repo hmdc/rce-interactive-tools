@@ -1,3 +1,4 @@
+from os import chmod
 from distutils.core import setup
 
 setup(name='rce-interactive-tools',
@@ -17,3 +18,6 @@ setup(name='rce-interactive-tools',
         'scripts/pexpect_run.py'
         ]
 )
+
+# This needs to be world-readable
+chmod('/etc/rceapp.yml.example', 0644)
