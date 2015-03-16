@@ -39,7 +39,7 @@ class HMDCWrapper:
 
   def run_xpra(self):
     xpra = '/usr/bin/xpra'
-    pexpect_run = '/usr/local/HMDC/bin/pexpect_run.py'
+    pexpect_run = '/usr/bin/pexpect_run.py'
     pexpect_cmd = "{0} {1} {2}".format(pexpect_run,
         self.app_log,
         self.cmd)
