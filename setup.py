@@ -14,6 +14,7 @@ setup(name='rce-interactive-tools',
       scripts=[
         'scripts/rce_submit.py',
         'scripts/HMDC_interactive_prepare_job.py',
+        'scripts/HMDC_periodic_job_is_idle.py',
         'scripts/HMDC_job_wrapper.py',
         'scripts/pexpect_run.py'
         ]

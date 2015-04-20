@@ -3,6 +3,7 @@ include rceapp.yml.example
 include scripts/rce_submit.py
 include scripts/HMDC_interactive_preapre_job.py
 include scripts/HMDC_job_wrapper.py
+include scripts/HMDC_periodic_job_is_idle.py
 include scripts/pexpect_run.py
 include rceapp/*
 include hmdccondor/*
