@@ -21,6 +21,17 @@ def debug(will_debug, _fd, message):
 job_classad = classad.parseOld(sys.stdin)
 home = pwd.getpwnam(pwd.getpwuid(os.getuid())[0]).pw_dir
 
+# 'HMDCNewSubmit'
+
+try:
+  hmdc_new_submit = job_classad['HMDCNewSubmit'].eval()
+  hmdc_interactive_job = job_classad['HMDCInteractive'].eval()
+except:
+  sys.exit(0)
+
+if hmdc_new_submit == False or hmdc_interactive_job == False:
+  sys.exit(0)
+
 # Should we debug this hook?
 try:
   _debug = job_classad['DebugPrepareJobHook']

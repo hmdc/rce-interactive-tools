@@ -130,7 +130,6 @@ class HMDCCondor:
       'HMDCUseXpra': True,
       'JobLeaseDuration': 1200,
       'LocalJobDir': job_dir,
-      'HookKeyword': 'LOG',
       'DebugPrepareJobHook': True,
       'Cmd': cmd,
       'Args': args if args else False,
