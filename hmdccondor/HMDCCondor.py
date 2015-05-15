@@ -92,7 +92,10 @@ class HMDCCondor:
     os.execlp(xpra, self.__BASENAME__,
       "attach",
       "--socket-dir=$TEMP",
-      "--ssh={0} -name '{1}' -pool dev-cod6-head.priv.hmdc.harvard.edu {2}".format(condor_ssh,self._sched_ip,job_id),
+      "--ssh={0} -name '{1}' -pool {2} {3}".format(condor_ssh,
+        self._sched_ip,
+        CONSTANTS.HMDC_INT_HEAD,
+        job_id),
       "ssh:{0}:{1}".format(machine, display))
 
   def poll_xpra(self,jobid):
