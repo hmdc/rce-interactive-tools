@@ -1,5 +1,7 @@
 include README
 include rceapp.yml.example
+include scripts/rce-info.sh
+include scripts/HMDC_job_wrapper_switch.sh
 include scripts/rce_submit.py
 include scripts/HMDC_interactive_preapre_job.py
 include scripts/HMDC_job_wrapper.py
