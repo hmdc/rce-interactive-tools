@@ -83,6 +83,15 @@ def main():
 
   job_classad = classad.parseOld(sys.stdin)
 
+  try:
+    is_interactive = job_classad['HMDCInteractive'].eval()
+  except:
+    sys.exit(0)
+
+  if is_interactive == False:
+    sys.exit(0) 
+
+  
   # If the job isn't currently running, we don't care.
   if job_classad['JobStatus'] != 2:
     job.info('Job is no longer running, exiting.')
