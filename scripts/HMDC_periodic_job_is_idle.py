@@ -84,7 +84,7 @@ def main():
   job_classad = classad.parseOld(sys.stdin)
 
   try:
-    is_interactive = job_classad['HMDCInteractive'].eval()
+    is_interactive = job_classad['HMDCInteractive']
   except:
     sys.exit(0)
 

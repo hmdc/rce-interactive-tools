@@ -24,8 +24,8 @@ home = pwd.getpwnam(pwd.getpwuid(os.getuid())[0]).pw_dir
 # 'HMDCNewSubmit'
 
 try:
-  hmdc_new_submit = job_classad['HMDCNewSubmit'].eval()
-  hmdc_interactive_job = job_classad['HMDCInteractive'].eval()
+  hmdc_new_submit = job_classad['HMDCNewSubmit']
+  hmdc_interactive_job = job_classad['HMDCInteractive']
 except:
   sys.exit(0)
 
