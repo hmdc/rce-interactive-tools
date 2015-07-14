@@ -12,7 +12,7 @@ import copy
 from datetime import datetime
 
 def poll_thread(id,return_status):
-  schedd = HMDCCondor()._interactive_schedd
+  schedd = HMDCCondor()._schedd
 
   poller = hmdccondor.HMDCPoller(id,return_status,schedd)
  
@@ -31,14 +31,9 @@ def poll_xpra_thread(out_txt):
   
 class HMDCCondor:
   def __init__(self):
-    self._collector_batch = htcondor.Collector(CONSTANTS.HMDC_BATCH_HEAD)
-    self._collector_int = htcondor.Collector(CONSTANTS.HMDC_INT_HEAD)
 
-    self._batch_schedd = htcondor.Schedd(self._collector_batch.locate(htcondor.DaemonTypes.Schedd))
-
-    self._sched_ad = self._collector_int.locate(htcondor.DaemonTypes.Schedd)
-    self._sched_ip = self._sched_ad['ScheddIpAddr']
-    self._interactive_schedd = htcondor.Schedd(self._sched_ad)
+    self._collector = htcondor.Collector(CONSTANTS.CONDOR_HOST)
+    self._schedd = htcondor.Schedd(self._collector.locate(htcondor.DaemonTypes.Schedd))
 
     self._return_status = [
       CONSTANTS.JOB_STATUS_RUNNING,
@@ -94,7 +89,7 @@ class HMDCCondor:
       "--socket-dir=$TEMP",
       "--ssh={0} -name '{1}' -pool {2} {3}".format(condor_ssh,
         self._sched_ip,
-        CONSTANTS.HMDC_INT_HEAD,
+        CONSTANTS.CONDOR_HOST,
         job_id),
       "ssh:{0}:{1}".format(machine, display))
 

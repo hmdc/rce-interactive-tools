@@ -1,8 +1,7 @@
 import htcondor
 
 FILESYSTEM_DOMAIN = htcondor.param.get("FILESYSTEM_DOMAIN")
-HMDC_BATCH_HEAD = htcondor.param.get("HMDC_BATCH_HEAD")
-HMDC_INT_HEAD = htcondor.param.get("HMDC_INT_HEAD")
+CONDOR_HOST = htcondor.param.get("CONDOR_HOST")
 JOB_STATUS_IDLE = 1
 JOB_STATUS_RUNNING = 2
 JOB_STATUS_REMOVED = 3

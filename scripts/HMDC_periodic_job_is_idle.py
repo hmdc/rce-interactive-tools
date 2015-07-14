@@ -78,8 +78,8 @@ def main():
   
   hmdc_condor = HMDCCondor()
 
-  schedd = hmdc_condor._interactive_schedd
-  int_collect = hmdc_condor._collector_int
+  schedd = hmdc_condor._schedd
+  int_collect = hmdc_condor._collector
 
   job_classad = classad.parseOld(sys.stdin)
 

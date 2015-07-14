@@ -1,7 +1,5 @@
 #!/bin/bash
 
-# condor_status -format "%d\n" Cpus -constraint '(RemoteOwner =?= undefined && ! regexp("ksg", Machine))' -pool cod6-head.priv.hmdc.harvard.edu|sort -n|tail -1
-
 # Description
 
 printhelp() {
