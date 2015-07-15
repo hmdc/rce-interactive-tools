@@ -45,7 +45,11 @@ class HMDCCondor:
     self.__BASENAME__ = os.path.basename(__file__)
 
   def get_sched_for_job(self, jobid):
-    return reduce(lambda x,y: x+y, filter(lambda t: len(t[1]) > 0, map(lambda t: [t,t.query('ClusterId =?= 211.0')], map(htcondor.Schedd, y.locateAll(htcondor.DaemonTypes.Schedd)))))
+    return reduce(lambda x,y: x+y,
+        filter(lambda t: len(t[1]) > 0,
+          map(lambda t: [t,t.query("ClusterId =?= {0}".format(jobid))],
+            map(htcondor.Schedd,
+              self._collector.locateAll(htcondor.DaemonTypes.Schedd)))))
 
   def submit(self, app_name, app_version, cmd, args, cpu, memory):
     __classad = self._create_classad(
@@ -56,7 +60,7 @@ class HMDCCondor:
         cpu,
         memory)
 
-    jobid = self._interactive_schedd.submit(__classad, 1)
+    jobid = self._schedd.submit(__classad, 1)
     
     return jobid
 

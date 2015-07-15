@@ -18,14 +18,17 @@ handler.setFormatter(formatter)
 
 log.addHandler(handler)
 
-def update_job(schedd, clusterid, jobid, is_job_idle):
+def update_job(condor, clusterid, jobid, is_job_idle):
+
   try:
-    q_classad = schedd.query('ClusterId =?= {0}'.format(clusterid))[0]
+    schedd, classad = condor.get_sched_for_job(jobid)
   except:
     log.critical('Job {0}: Could not find ClassAd'.format(jobid))
     return 0
 
   log.info('Job {0}: Found ClassAd.'.format(jobid))
+
+  q_classad = classad[0]
 
   try:
     current_time = int(q_classad['CurrentTime'].eval())
@@ -78,7 +81,6 @@ def main():
   
   hmdc_condor = HMDCCondor()
 
-  schedd = hmdc_condor._schedd
   int_collect = hmdc_condor._collector
 
   job_classad = classad.parseOld(sys.stdin)
@@ -117,7 +119,7 @@ def main():
     log.info('Job {0}: Unable to evaluate JobCpuIsIdle')
     return 0
 
-  return update_job(schedd,
+  return update_job(hmdc_condor,
       clusterid,
       jobid,
       is_job_idle)
