@@ -44,6 +44,9 @@ class HMDCCondor:
     self.POLL_TIMEOUT = 90
     self.__BASENAME__ = os.path.basename(__file__)
 
+  def get_sched_for_job(self, jobid):
+    return reduce(lambda x,y: x+y, filter(lambda t: len(t[1]) > 0, map(lambda t: [t,t.query('ClusterId =?= 211.0')], map(htcondor.Schedd, y.locateAll(htcondor.DaemonTypes.Schedd)))))
+
   def submit(self, app_name, app_version, cmd, args, cpu, memory):
     __classad = self._create_classad(
         app_name,
