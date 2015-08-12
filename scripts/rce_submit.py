@@ -38,8 +38,12 @@ if __name__ == '__main__':
   parser.add_argument('-c', '--config',
       help='Path to rce app configuration yml (e.g.:\
       /usr/local/HMDC/etc/rceapp.yml',
-      required=True
+      nargs='?',
+      const='/etc/rceapp.yml',
+      default='/etc/rceapp.yml',
+      type=str,
       )
+
   parser.add_argument('-l', '--list', action='store_true',
       help='List supported RCE applications and versions.'
       )
@@ -64,7 +68,7 @@ if __name__ == '__main__':
       help='Takes a JobID as an argument. Accesses a running job.'
       )
 
-  parser.add_argument('-list-jobs', '--list-jobs', action='store_true',
+  parser.add_argument('-jobs', '--jobs', action='store_true',
       help='Lists running jobs'
       )
 
@@ -76,10 +80,15 @@ if __name__ == '__main__':
   _app = args.app
   _version = args.version
   _attach = args.attach
+  _list_jobs = args.jobs
 
   rceapps = rceapp.rceapp(_config)
 
   # If -l, list.
+
+  if _list_jobs:
+	print tabulate(map(lambda ad: [float(ad['ClusterId']),ad['HMDCApplicationName'],ad['HMDCApplicationVersion'],ad['RequestCpus'],ad['RequestMemory']], HMDCCondor().get_my_jobs()), headers=['Job Id', 'Application', 'Version', 'Requested Cpus', 'Requested Memory'])
+	exit(0)
 
   if _list:
     list_apps(rceapps)
