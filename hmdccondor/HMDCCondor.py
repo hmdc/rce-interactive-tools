@@ -9,6 +9,7 @@ import re
 import time
 import multiprocessing as mp
 import copy
+import itertools
 from datetime import datetime
 
 def poll_thread(id,return_status):
@@ -43,6 +44,13 @@ class HMDCCondor:
       CONSTANTS.JOB_STATUS_SUBMIT_ERR]
     self.POLL_TIMEOUT = 90
     self.__BASENAME__ = os.path.basename(__file__)
+
+  def get_my_jobs(self):
+    my_username = pwd.getpwuid(os.getuid())[0]
+    return list(itertools.chain.from_iterable(
+	map(lambda schedd: htcondor.Schedd(schedd).query(
+		'Owner =?= "{0}" && HMDCInteractive =?= True && HMDCUseXpra =?= True && JobStatus =?= 2'.format(my_username)), 
+		self._collector.locateAll(htcondor.DaemonTypes.Schedd))))
 
   def get_sched_for_job(self, jobid):
     return reduce(lambda x,y: x+y,
