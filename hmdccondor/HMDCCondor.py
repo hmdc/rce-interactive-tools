@@ -16,7 +16,7 @@ def poll_thread(id,return_status):
   schedd = HMDCCondor()._schedd
 
   poller = hmdccondor.HMDCPoller(id,return_status,schedd)
- 
+
   return poller.run()
 
 def poll_xpra_thread(out_txt):
@@ -29,7 +29,7 @@ def poll_xpra_thread(out_txt):
     except:
       time.sleep(5)
       continue
-  
+
 class HMDCCondor:
   def __init__(self):
 
@@ -48,9 +48,9 @@ class HMDCCondor:
   def get_my_jobs(self):
     my_username = pwd.getpwuid(os.getuid())[0]
     return list(itertools.chain.from_iterable(
-	map(lambda schedd: htcondor.Schedd(schedd).query(
-		'Owner =?= "{0}" && HMDCInteractive =?= True && HMDCUseXpra =?= True && JobStatus =?= 2'.format(my_username)), 
-		self._collector.locateAll(htcondor.DaemonTypes.Schedd))))
+      map(lambda schedd: htcondor.Schedd(schedd).query(
+        'Owner =?= "{0}" && HMDCInteractive =?= True && HMDCUseXpra =?= True && JobStatus =?= 2'.format(my_username)), 
+        self._collector.locateAll(htcondor.DaemonTypes.Schedd))))
 
   def get_sched_for_job(self, jobid):
     return reduce(lambda x,y: x+y,
@@ -69,7 +69,7 @@ class HMDCCondor:
         memory)
 
     jobid = self._schedd.submit(__classad, 1)
-    
+
     return jobid
 
   def poll(self, jobid, return_status=None):
@@ -85,7 +85,7 @@ class HMDCCondor:
     except:
       pool.terminate()
       raise
-   
+
   def attach(self,jobid):
     status,_classad = self.poll(jobid)
     display = self.poll_xpra(jobid)
@@ -109,7 +109,7 @@ class HMDCCondor:
     job_status, _classad = self.poll(jobid)
     _classad = classad.parseOld(_classad)
     _out = str(_classad['Out'].eval())
-   
+
     pool = mp.Pool(1)
     result = pool.apply_async(poll_xpra_thread, [_out])
     pool.close()
@@ -119,10 +119,10 @@ class HMDCCondor:
     except:
       pool.terminate()
       raise
- 
+
   def _create_classad(self, app_name, app_version, cmd, cpu, memory, args=None):
     dt = datetime.utcnow().strftime("%Y%m%d%s")
-   
+
     _out = "{0}_{1}".format(app_name, app_version)
 
     home = pwd.getpwnam(pwd.getpwuid(os.getuid())[0]).pw_dir
