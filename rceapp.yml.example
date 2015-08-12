@@ -15,7 +15,9 @@ R:
     memory: 2048
   3.1:
     default: true
-    command: /usr/bin/R
+    command: /usr/bin/gnome-terminal
+    args: 
+      - -e /usr/bin/R
 SAS:
   global:
     memory: 2048
