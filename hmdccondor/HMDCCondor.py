@@ -33,7 +33,7 @@ class HMDCCondor:
   def __init__(self):
 
     self._collector = htcondor.Collector(CONSTANTS.CONDOR_HOST)
-    self._schedd = htcondor.Schedd(self._collector.locate(htcondor.DaemonTypes.Schedd))
+    self._schedd = htcondor.Schedd()
 
     self._return_status = [
       CONSTANTS.JOB_STATUS_RUNNING,
@@ -94,10 +94,7 @@ class HMDCCondor:
     os.execlp(xpra, self.__BASENAME__,
       "attach",
       "--socket-dir=$TEMP",
-      "--ssh={0} -name '{1}' -pool {2} {3}".format(condor_ssh,
-        self._sched_ip,
-        CONSTANTS.CONDOR_HOST,
-        job_id),
+      "--ssh={0} {1}".format(condor_ssh, job_id),
       "ssh:{0}:{1}".format(machine, display))
 
   def poll_xpra(self,jobid):
