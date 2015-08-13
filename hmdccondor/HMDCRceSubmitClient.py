@@ -5,7 +5,7 @@ import rceapp
 
 class HMDCRceSubmitClient:
   def __init__(self):
-    return 0
+    return None
 
   def __parse_args(self):
     parser = argparse.ArgumentParser(
@@ -73,13 +73,13 @@ class HMDCRceSubmitClient:
       _versions = rceapps.versions(app)
       
       table.append([app, 
-        self.__version_string(rceapps, app, _versions.pop())])
+        self.__version_string(app, _versions.pop())])
 
       map(lambda v: table.append(
-        ['', self.__version_string(rceapps, app,v)]),
+        ['', self.__version_string(app, v)]),
           _versions)
 
-    return table
+    return tabulate(table)
 
   def __list_jobs(self):
     return tabulate(map(
@@ -135,7 +135,7 @@ class HMDCRceSubmitClient:
 
     # If -l, list.
 
-    if args.list_jobs:
+    if args.jobs:
       self.list_jobs()
       exit(0)
     elif args.list:
