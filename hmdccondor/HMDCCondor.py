@@ -47,10 +47,33 @@ class HMDCCondor:
 
   def get_my_jobs(self):
     my_username = pwd.getpwuid(os.getuid())[0]
+
+    # pwd.getpwuid() should return a string.
+    assert isinstance(my_username, str)
+    # it should return a username greater than 0 characters.
+    assert len(my_username) > 0
+
     return list(itertools.chain.from_iterable(
       map(lambda schedd: htcondor.Schedd(schedd).query(
         'Owner =?= "{0}" && HMDCInteractive =?= True && HMDCUseXpra =?= True && JobStatus =?= 2'.format(my_username)), 
         self._collector.locateAll(htcondor.DaemonTypes.Schedd))))
+
+  def get_sched_ad_for_job(self, jobid):
+
+    assert isinstance(jobid, int)
+
+    try:
+      ad = filter(lambda t: len(t) > 0,
+          map(lambda ad: ([], ad)[len(htcondor.Schedd(ad).query(
+            "ClusterId =?= {0}".format(jobid))) > 0],
+            self._collector.locateAll(htcondor.DaemonTypes.Schedd)))[0]
+    except:
+      print "There is no HTCondor schedd currently running job\
+           {0}. Perhaps your job terminated?".format(jobid)
+      exit(1)
+
+    return ad
+
 
   def get_sched_for_job(self, jobid):
     return reduce(lambda x,y: x+y,
