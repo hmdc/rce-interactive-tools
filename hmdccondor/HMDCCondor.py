@@ -63,8 +63,6 @@ class HMDCCondor:
 
   def get_sched_ad_for_job(self, jobid):
 
-    assert isinstance(jobid, int)
-
     try:
       ad = filter(lambda t: len(t) > 0,
           map(lambda ad: ([], ad)[len(htcondor.Schedd(ad).query(
@@ -79,8 +77,6 @@ class HMDCCondor:
 
 
   def get_sched_for_job(self, jobid):
-
-    assert isinstance(jobid, int)
 
     return reduce(lambda x,y: x+y,
         filter(lambda t: len(t[1]) > 0,
