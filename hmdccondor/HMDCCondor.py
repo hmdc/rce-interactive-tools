@@ -34,7 +34,10 @@ class HMDCCondor:
   def __init__(self):
 
     self._collector = htcondor.Collector(CONSTANTS.CONDOR_HOST)
-    self._schedd = htcondor.Schedd()
+    try:
+      self._schedd = htcondor.Schedd()
+    except:
+      self._schedd = htcondor.Schedd(self._collector.locate(htcondor.DaemonTypes.Schedd))
 
     self._return_status = [
       CONSTANTS.JOB_STATUS_RUNNING,
