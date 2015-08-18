@@ -130,7 +130,7 @@ class HMDCCondor:
       "--socket-dir=$TEMP",
       "--ssh={0} -name '{1}' {2}".format(
         condor_ssh,
-        self.get_ad_for_job(jobid)['ScheddIpAddr'],
+        self.get_sched_ad_for_job(job_id)['ScheddIpAddr'],
         job_id),
       "ssh:{0}:{1}".format(machine, display))
 
