@@ -79,6 +79,9 @@ class HMDCCondor:
 
 
   def get_sched_for_job(self, jobid):
+
+    assert isinstance(jobid, int)
+
     return reduce(lambda x,y: x+y,
         filter(lambda t: len(t[1]) > 0,
           map(lambda t: [t,t.query("ClusterId =?= {0}".format(jobid))],
@@ -86,6 +89,7 @@ class HMDCCondor:
               self._collector.locateAll(htcondor.DaemonTypes.Schedd)))))
 
   def submit(self, app_name, app_version, cmd, args, cpu, memory):
+
     __classad = self._create_classad(
         app_name,
         app_version,
@@ -128,7 +132,10 @@ class HMDCCondor:
     os.execlp(xpra, self.__BASENAME__,
       "attach",
       "--socket-dir=$TEMP",
-      "--ssh={0} {1}".format(condor_ssh, job_id),
+      "--ssh={0} -name '{1}' {2}".format(
+        condor_ssh,
+        self.get_ad_for_job(jobid)['ScheddIpAddr'],
+        job_id),
       "ssh:{0}:{1}".format(machine, display))
 
   def poll_xpra(self,jobid):
