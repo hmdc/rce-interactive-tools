@@ -21,7 +21,7 @@ log.addHandler(handler)
 def update_job(condor, clusterid, jobid, is_job_idle):
 
   try:
-    schedd, classad = condor.get_sched_for_job(jobid)
+    schedd, classad = condor.get_sched_for_job(int(jobid))
   except:
     log.critical('Job {0}: Could not find ClassAd'.format(jobid))
     return 0
