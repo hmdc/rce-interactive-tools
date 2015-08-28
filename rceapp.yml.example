@@ -1,19 +1,23 @@
 xstata-mp:
   global:
-    memory: 4096
+    memory: 6144
   13.1:
+    command: /usr/local/bin/xstata-se-13.1
+  14.0:
     default: true
-    command: /nfs/tools/apps/stata/13.1/xstata-mp
+    command: /usr/local/bin/stata-mp-14
 xstata-se:
   global:
-    memory: 2048
+    memory: 6144
   13.1:
+    command: /usr/local/bin/xstata-se-13.1
+  14.0:
     default: true
-    command: /nfs/tools/apps/stata/13.1/xstata-se
+    command: /usr/local/bin/xstata-se-14
 R:
   global:
     memory: 2048
-  3.1:
+  3.2:
     default: true
     command: /usr/bin/gnome-terminal
     args: 
@@ -42,6 +46,9 @@ mathematica:
   10.0.1:
     default: true
     command: /nfs/tools/apps/mathematica/10.0.1/Executables/Mathematica
+  10.2.0:
+    default: true
+    command: /nfs/tools/apps/mathematica/10.2.0/Executables/Mathematica
 StatTransfer:
   global:
     memory: 2048
@@ -50,7 +57,7 @@ StatTransfer:
     command: /nfs/tools/apps/StatTransfer12/stattransfer
 matlab:
   global:
-    memory: 6144
+    memory: 12288
     args:
       - -singleCompThread
   R2010b:
@@ -62,8 +69,10 @@ matlab:
   R2014a:
     command: /nfs/tools/apps/matlab/R2014a/bin/matlab
   R2014b:
-    default: true
     command: /nfs/tools/apps/matlab/R2014b/bin/matlab
+  R2015a:
+    default: true
+    command: /nfs/tools/apps/matlab/R2015a/bin/matlab
 rstudio:
   global:
     memory: 6144
