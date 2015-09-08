@@ -50,7 +50,6 @@ mathematica:
     cpu: 1
     memory: 6144
   10.0.1:
-    default: true
     command: /nfs/tools/apps/mathematica/10.0.1/Executables/Mathematica
   10.2.0:
     default: true
