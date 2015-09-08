@@ -59,6 +59,25 @@ class RCEAppGlobalMemoryError(Exception):
     return repr('A stanza in %s is missing a global memory value.'
         %(self.cfg))
 
+class RCEAppGlobalCpuError(Exception):
+  """
+  This is a self-defined exception such that I can output a useful error
+  message which says that a default stanza in the provided YML is
+  missing a default cpu assignment.
+
+  Variables:
+  cfg: path to the RCEApp YML configuration
+  value: KeyError exception object
+  """
+
+  def __init__(self, cfg, value):
+    self.value = value
+    self.cfg = cfg
+  def __str__(self):
+    return repr('A stanza in %s is missing a cpu value.'
+        %(self.cfg))
+
+
 class RCEAppIntError(Exception):
   """
   This is a self-defined exception such that I can output a useful error
@@ -74,7 +93,7 @@ class RCEAppIntError(Exception):
     self.value = value
     self.cfg = cfg
   def __str__(self):
-    return repr('Default memory values in %s must be integers.'
+    return repr('Default memory/cpu values in %s must be integers.'
         %(self.cfg))
 
 
@@ -125,12 +144,28 @@ class rceapp:
     except KeyError as e:
       raise RCEAppGlobalMemoryError(self.cfg, e)
 
+    # Checks whether default stanzas contain default cpu count
+    try:
+      map(lambda app: self.data[app]['global']['cpu'],
+          self.apps())
+    except KeyError as e:
+      raise RCEAppGlobalCpuError(self.cfg, e)
+
     # Checks whether default memory is an integer, which it should be.
     try:
       map(lambda app: self.data[app]['global']['memory'] + 1,
           self.apps())
     except TypeError as e:
       raise RCEAppIntError(self.cfg, e)
+
+    # Checks whether default cpu is an integer, which it should be.
+    try:
+      map(lambda app: self.data[app]['global']['cpu'] + 1,
+          self.apps())
+    except TypeError as e:
+      raise RCEAppIntError(self.cfg, e)
+
+
 
     # Checks whether at least one version is default, no more than one
     # default key per entry, and that value is a boolean.
@@ -156,7 +191,6 @@ class rceapp:
     by the app argument, in an array.
     """
 
-    _versions = []
     return filter(
         lambda key: key != 'global',
         self.data[app].keys()
@@ -182,18 +216,15 @@ class rceapp:
     args() returns a string of arguments for an given application's
     version.
     """
-    
     _version = version if version else self.get_default_version(app)
 
     try:
-      _retval = ' '.join(self.data[app][_version]['args'])
+      return ' '.join(self.data[app][_version]['args'])
     except:
       try:
-        _retval = ' '.join(self.data[app]['global']['args'])
+        return ' '.join(self.data[app]['global']['args'])
       except:
-        _retval = None
-
-    return _retval
+        return None
 
   def get_default_version(self, app):
     _versions = map (lambda version: version if self.is_default(app,version) else
@@ -205,14 +236,11 @@ class rceapp:
     """
     Returns True if app,version is the default version for the app.
     """
-   
+
     try:
-      _is_default = self.data[app][version]['default']
+      return self.data[app][version]['default']
     except:
-      _is_default = False
-
-    return _is_default
-
+      return False
 
   def memory(self,app,version=None):
     """
@@ -222,9 +250,20 @@ class rceapp:
     stanza for that app.
     """
     _version = version if version else self.get_default_version(app)
-    _memory = 0
     try:
-      _memory = self.data[app][_version]['memory']
+      return self.data[app][_version]['memory']
     except:
-      _memory = self.data[app]['global']['memory']
-    return _memory
+      return self.data[app]['global']['memory']
+
+  def cpu(self,app,version=None):
+    """
+    cpu() returns the default CPU count requirement of an application's
+    specified version. If a cpu default is not specified for that
+    particular version, it grabs the default memory from the default
+    stanza for that app.
+    """
+    _version = version if version else self.get_default_version(app)
+    try:
+      return self.data[app][_version]['cpu']
+    except:
+      return self.data[app]['global']['cpu']

@@ -1,5 +1,6 @@
 xstata-mp:
   global:
+    cpu: 4
     memory: 6144
   13.1:
     command: /usr/local/bin/xstata-se-13.1
@@ -8,6 +9,7 @@ xstata-mp:
     command: /usr/local/bin/stata-mp-14
 xstata-se:
   global:
+    cpu: 1
     memory: 6144
   13.1:
     command: /usr/local/bin/xstata-se-13.1
@@ -16,6 +18,7 @@ xstata-se:
     command: /usr/local/bin/xstata-se-14
 R:
   global:
+    cpu: 1
     memory: 2048
   3.2:
     default: true
@@ -25,6 +28,7 @@ R:
 SAS:
   global:
     memory: 2048
+    cpu: 1
     args:
 # -memsize 0 means unlimited memory
 # http://support.sas.com/documentation/cdl/en/hostwin/63285/HTML/default/viewer.htm#win-sysop-memsize.htm
@@ -35,6 +39,7 @@ SAS:
 gauss:
   global: 
     memory: 2048
+    cpu: 1
   8:
     command: /usr/local/bin/gauss-8.0
   14:
@@ -42,6 +47,7 @@ gauss:
     command: /usr/local/bin/gauss14
 mathematica:
   global:
+    cpu: 1
     memory: 6144
   10.0.1:
     default: true
@@ -52,12 +58,14 @@ mathematica:
 StatTransfer:
   global:
     memory: 2048
+    cpu: 1
   12:
     default: true
     command: /nfs/tools/apps/StatTransfer12/stattransfer
 matlab:
   global:
     memory: 12288
+    cpu: 1
     args:
       - -singleCompThread
   R2010b:
@@ -76,18 +84,21 @@ matlab:
 rstudio:
   global:
     memory: 6144
+    cpu: 1
   0.98:
     default: true
     command: /usr/bin/rstudio
 octave:
   global:
     memory: 2048
+    cpu: 1
   3.4.3:
     default: true
     command: /usr/bin/octave
 'sleep':
   global:
     memory: 2048
+    cpu: 1
   '1.0':
     default: true
     command: /bin/sleep
@@ -96,6 +107,7 @@ octave:
 shell:
   global:
     memory: 2048
+    cpu: 1
   2.31.3:
     default: true 
     command: /usr/bin/gnome-terminal
@@ -103,6 +115,7 @@ shell:
 python:
   global:
     memory: 2048
+    cpu: 1
   '2.7':
     default: true
     command: /usr/bin/gnome-terminal

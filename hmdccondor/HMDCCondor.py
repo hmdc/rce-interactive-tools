@@ -84,7 +84,7 @@ class HMDCCondor:
             map(htcondor.Schedd,
               self._collector.locateAll(htcondor.DaemonTypes.Schedd)))))
 
-  def submit(self, app_name, app_version, cmd, args, cpu, memory):
+  def submit(self, app_name, app_version, cmd, args, memory, cpu):
 
     __classad = self._create_classad(
         app_name,

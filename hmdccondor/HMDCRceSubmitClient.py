@@ -36,6 +36,18 @@ class HMDCRceSubmitClient:
         help='App to run on the RCE Cluster.'
         )
 
+    parser.add_argument('-memory', '--memory',
+        type=int,
+        help='Amount of memory to request for job (in GB)',
+        default=None
+        )
+
+    parser.add_argument('-cpu', '--cpu',
+        type=int,
+        help='Number of CPUs to request for job.',
+        default=None
+        )
+
     parser.add_argument('-v', '--version', 
         help='Version of app to run on the RCE cluster'
         )
@@ -45,6 +57,7 @@ class HMDCRceSubmitClient:
         )
 
     parser.add_argument('-attach', '--attach',
+        type=int,
         help='Takes a JobID as an argument. Accesses a running job.'
         )
 
@@ -105,7 +118,7 @@ class HMDCRceSubmitClient:
   def attach_app(self, jobid):
     return HMDCCondor().attach(jobid)
 
-  def run_app(self, application, version):
+  def run_app(self, application, version, memory=None, cpu=None):
     if self.rceapps.app_version_exists(application, version):
       _version = version if version else self.rceapps.get_default_version(application)
     else:
@@ -119,8 +132,9 @@ class HMDCRceSubmitClient:
         application,
         _version,
         self.rceapps.command(application,_version),
-        1,
-        self.rceapps.memory(application,_version),
+        self.rceapps.memory(application, _version) if memory is None
+        else memory,
+        self.rceapps.cpu(application, _version) if cpu is None else cpu,
         self.rceapps.args(application,_version))
 
     job_status, classad = rce.poll(job)
@@ -142,7 +156,7 @@ class HMDCRceSubmitClient:
       self.list_apps()
       exit(0)
     elif args.run and args.app:
-      exit(self.run_app(args.app, args.version))
+      exit(self.run_app(args.app, args.version, args.memory, args.cpu))
     elif args.attach and isinstance(args.attach, (int, float, str)):
       self.attach_app(int(args.attach))
     else:
