@@ -92,7 +92,7 @@ class HMDCRceSubmitClient:
         ['', self.__version_string(app, v)]),
           _versions)
 
-    return tabulate(table)
+    return tabulate(table, headers=['Application', 'Version(s)'])
 
   def __list_jobs(self):
     return tabulate(map(
