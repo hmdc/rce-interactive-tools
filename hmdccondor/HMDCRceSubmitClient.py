@@ -130,15 +130,18 @@ class HMDCRceSubmitClient:
 
     _cpu = self.rceapps.cpu(application, _version) if cpu is None else cpu
 
+
     _memory = self.rceapps.memory(application,_version) if memory is None else memory
+
+    print "Cpu,Memory: {0},{1}".format(_cpu,_memory)
 
     job = rce.submit(
         application,
         _version,
         self.rceapps.command(application,_version),
-        _cpu,
+        self.rceapps.args(application,_version),
         _memory,
-        self.rceapps.args(application,_version))
+        _cpu)
 
     job_status, classad = rce.poll(job)
 

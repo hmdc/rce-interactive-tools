@@ -149,7 +149,7 @@ class HMDCCondor:
       pool.terminate()
       raise
 
-  def _create_classad(self, app_name, app_version, cmd, cpu, memory, args=None):
+  def _create_classad(self, app_name, app_version, cmd, args, cpu, memory):
     dt = datetime.utcnow().strftime("%Y%m%d%s")
 
     _out = "{0}_{1}".format(app_name, app_version)
@@ -172,6 +172,7 @@ class HMDCCondor:
       'DebugPrepareJobHook': True,
       'Cmd': cmd,
       'Args': args if args else False,
+      'RequestCpus': cpu,
       'RequestMemory': memory,
       'ShouldTransferFiles': 'NO',
       'TransferExecutable': False,
