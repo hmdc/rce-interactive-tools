@@ -128,13 +128,16 @@ class HMDCRceSubmitClient:
 
     rce = HMDCCondor()
 
+    _cpu = self.rceapps.cpu(application, _version) if cpu is None else cpu
+
+    _memory = self.rceapps.memory(application,_version) if memory is None else memory
+
     job = rce.submit(
         application,
         _version,
         self.rceapps.command(application,_version),
-        self.rceapps.memory(application, _version) if memory is None
-        else memory,
-        self.rceapps.cpu(application, _version) if cpu is None else cpu,
+        _cpu,
+        _memory,
         self.rceapps.args(application,_version))
 
     job_status, classad = rce.poll(job)
