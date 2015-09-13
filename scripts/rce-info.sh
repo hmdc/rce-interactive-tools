@@ -65,7 +65,7 @@ cat <<EOF|fold -w 70 -s
 This displays the amount of cpu(s) and memory in gigabytes available for use on each host in our cluster. If you're submitting an RCE powered job, make sure that the amount of memory and cpu(s) requested fall within available resources on at least one of the cluster hosts listed below. Otherwise, your job will remain in the queue until enough resources become available.
 
 EOF
-(echo CpusAvailable MemoryAvailable\(gb\) Machine; condor_status -constraint "regexp(\"^slot1@\",Name) && ${CONSTRAINT}" -format "%d " Cpus -format "%d " Memory/1024 -format "%s\n" Name |sort -n -r)|column -t
+(echo CpusAvailable MemoryAvailable\(gb\) Machine; condor_status -constraint "regexp(\"^slot1@\",Name) && ${CONSTRAINT}" -format "%d " Cpus -format "%d " Memory/1024 -format "%s\n" "regexps(\"^slot1@(.*)\", Name, \"\\1\")" |sort -n -r)|column -t
     ;;
     used)
       ${FIGLET} -f small 'RCE Cluster' 2> /dev/null|| echo "==== RCE Cluster ===="
