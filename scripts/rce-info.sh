@@ -53,17 +53,19 @@ FIGLET=$(which figlet 2>/dev/null || echo /usr/bin/figlet)
 
 # Only include ksg machines if user has kennedy entitlement
 _CONSTRAINT='RemoteOwner =?= undefined'
-CONSTRAINT="($(echo ${_CONDOR_ENTITLEMENTS}|grep kennedy >/dev/null 2>&1 && echo "${_CONSTRAINT}" || echo "${_CONSTRAINT} && ! regexp(\"ksg\", Machine) && ! regexp (\"edlabs\", Machine) "))"
+CONSTRAINT="$(echo ${_CONDOR_ENTITLEMENTS}|grep kennedy >/dev/null 2>&1 && echo "${_CONSTRAINT}" || echo "${_CONSTRAINT} && ! regexp(\"ksg\", Machine) && ! regexp (\"edlabs\", Machine) ")"
 
 # Main
 
 case "$TYPE" in
     available)
-      cat <<EOF
-$(${FIGLET} -f small 'RCE Cluster' 2> /dev/null|| echo "==== RCE Cluster ====")
-    Largest Possible CPU Reservation: $(condor_status -autoformat Cpus -constraint "${CONSTRAINT}"|sort -n|tail -1)
-    Largest Possible Memory Reservation: $(condor_status -format "%d GB\n" Memory/1024  -constraint "${CONSTRAINT}"|sort -n|tail -1)
+${FIGLET} -f small 'RCE Cluster' 2> /dev/null|| echo "==== RCE Cluster ===="
+cat <<EOF|fold -w 70 -s
+
+This displays the amount of cpu(s) and memory in gigabytes available for use on each host in our cluster. If you're submitting an RCE powered job, make sure that the amount of memory and cpu(s) requested fall within available resources on at least one of the cluster hosts listed below. Otherwise, your job will remain in the queue until enough resources become available.
+
 EOF
+(echo CpusAvailable MemoryAvailable\(gb\) Machine; condor_status -constraint "regexp(\"^slot1@\",Name) && ${CONSTRAINT}" -format "%d " Cpus -format "%d " Memory/1024 -format "%s\n" Name |sort -n -r)|column -t
     ;;
     used)
       ${FIGLET} -f small 'RCE Cluster' 2> /dev/null|| echo "==== RCE Cluster ===="
