@@ -112,8 +112,14 @@ class HMDCCondor:
       pool.terminate()
       raise
 
-  def attach(self,jobid):
-    status,_classad = self.poll(jobid)
+  def attach(self,jobid,ad=None):
+
+    # If attach is being run from submit, then, we don't have to poll.
+    if ad is None:
+      status, _classad = self.poll(jobid)
+    else:
+      status, _classad = classad.parseOld(ad)['JobStatus'], ad
+
     display = self.poll_xpra(jobid)
 
     return self.attach_xpra(classad.parseOld(_classad),display)

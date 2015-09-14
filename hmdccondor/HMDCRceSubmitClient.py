@@ -1,5 +1,6 @@
 from tabulate import tabulate
 from hmdccondor import HMDCCondor
+from ProgressBarThreadCli import ProgressBarThreadCli
 import argparse
 import rceapp
 
@@ -115,8 +116,8 @@ class HMDCRceSubmitClient:
     print "** denotes default"
     print self.__list_apps()
 
-  def attach_app(self, jobid):
-    return HMDCCondor().attach(jobid)
+  def attach_app(self, jobid, ad=None):
+    return HMDCCondor().attach(jobid, ad=ad)
 
   def run_app(self, application, version, memory=None, cpu=None):
     if self.rceapps.app_version_exists(application, version):
@@ -133,7 +134,9 @@ class HMDCRceSubmitClient:
 
     _memory = self.rceapps.memory(application,_version) if memory is None else memory
 
-    print "Cpu,Memory: {0},{1}".format(_cpu,_memory)
+
+    job_submit_bar = ProgressBarThreadCli('* Submitting job')
+    job_submit_bar.start()
 
     job = rce.submit(
         application,
@@ -143,11 +146,21 @@ class HMDCRceSubmitClient:
         _memory,
         _cpu)
 
-    job_status, classad = rce.poll(job)
+    job_submit_bar.stop()
+    job_submit_bar.join()
 
-    print "Job {0} has status {1}. Attaching to job.".format(job, job_status)
+   
+    job_wait_bar = ProgressBarThreadCli('* Waiting for job to start')
+    job_wait_bar.start()
 
-    return self.attach_app(job)
+    job_status, ad = rce.poll(job)
+
+    job_wait_bar.stop()
+    job_wait_bar.join()
+
+    print "* Job {0} has status {1}. Attaching to job via xpra".format(job, job_status)
+
+    return self.attach_app(job, ad=ad)
 
   def run(self):
     args = self.__parse_args()
