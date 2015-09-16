@@ -12,8 +12,12 @@ import copy
 import itertools
 from datetime import datetime
 
-def poll_thread(id,return_status):
-  schedd = HMDCCondor()._schedd
+def poll_thread(id,return_status,use_local_schedd):
+
+  if use_local_schedd:
+    schedd = HMDCCondor()._schedd
+  else:
+    schedd = htcondor.Schedd(HMDCCondor().get_sched_ad_for_job(id))
 
   poller = hmdccondor.HMDCPoller(id,return_status,schedd)
 
@@ -86,24 +90,21 @@ class HMDCCondor:
 
   def submit(self, app_name, app_version, cmd, args, memory, cpu):
 
-    __classad = self._create_classad(
-        app_name,
-        app_version,
-        cmd,
-        args,
-        cpu,
-        memory)
+    return self._schedd.submit(self._create_classad(
+      app_name,
+      app_version,
+      cmd,
+      args,
+      cpu,
+      memory), 1)
 
-    jobid = self._schedd.submit(__classad, 1)
-
-    return jobid
-
-  def poll(self, jobid, return_status=None):
+  def poll(self, jobid, return_status=None,use_local_schedd=False):
     _return_status = return_status if return_status else self._return_status
 
     # start a thread so we can timeout on polling.
     pool = mp.Pool(1)
-    result = pool.apply_async(poll_thread, (jobid, _return_status))
+    result = pool.apply_async(poll_thread, (jobid, _return_status,
+      use_local_sched))
     pool.close()
 
     try:
@@ -120,7 +121,7 @@ class HMDCCondor:
     else:
       status, _classad = classad.parseOld(ad)['JobStatus'], ad
 
-    display = self.poll_xpra(jobid)
+    display = self.poll_xpra(classad.parseOld(_classad))
 
     return self.attach_xpra(classad.parseOld(_classad),display)
 
@@ -140,10 +141,8 @@ class HMDCCondor:
         job_id),
       "ssh:{0}:{1}".format(machine, display))
 
-  def poll_xpra(self,jobid):
-    job_status, _classad = self.poll(jobid)
-    _classad = classad.parseOld(_classad)
-    _out = str(_classad['Out'].eval())
+  def poll_xpra(self,ad):
+    _out = str(ad['Out'].eval())
 
     pool = mp.Pool(1)
     result = pool.apply_async(poll_xpra_thread, [_out])

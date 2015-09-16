@@ -149,11 +149,10 @@ class HMDCRceSubmitClient:
     job_submit_bar.stop()
     job_submit_bar.join()
 
-   
     job_wait_bar = ProgressBarThreadCli('* Waiting for job to start')
     job_wait_bar.start()
 
-    job_status, ad = rce.poll(job)
+    job_status, ad = rce.poll(job, use_local_schedd=True)
 
     job_wait_bar.stop()
     job_wait_bar.join()
