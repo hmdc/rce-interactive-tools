@@ -104,7 +104,7 @@ class HMDCCondor:
     # start a thread so we can timeout on polling.
     pool = mp.Pool(1)
     result = pool.apply_async(poll_thread, (jobid, _return_status,
-      use_local_sched))
+      use_local_schedd))
     pool.close()
 
     try:
