@@ -6,7 +6,7 @@ xstata-mp:
     command: /usr/local/bin/xstata-se-13.1
   14.0:
     default: true
-    command: /usr/local/bin/stata-mp-14
+    command: /usr/local/bin/xstata-mp-14
 xstata-se:
   global:
     cpu: 1
