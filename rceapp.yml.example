@@ -2,6 +2,7 @@ xstata-mp:
   global:
     cpu: 4
     memory: 6144
+    icon: /usr/share/icons/hicolor/48x48/apps/icon-stata.png
   13.1:
     command: /usr/local/bin/xstata-se-13.1
   14.0:
@@ -11,6 +12,7 @@ xstata-se:
   global:
     cpu: 1
     memory: 6144
+    icon: /usr/share/icons/hicolor/48x48/apps/icon-stata.png
   13.1:
     command: /usr/local/bin/xstata-se-13.1
   14.0:
@@ -20,6 +22,7 @@ R:
   global:
     cpu: 1
     memory: 2048
+    icon: /usr/share/icons/hicolor/48x48/apps/icon-R.png
   3.2:
     default: true
     command: /usr/bin/gnome-terminal
@@ -29,6 +32,7 @@ SAS:
   global:
     memory: 2048
     cpu: 1
+    icon: /usr/share/icons/hicolor/48x48/apps/icon-sas.png
     args:
 # -memsize 0 means unlimited memory
 # http://support.sas.com/documentation/cdl/en/hostwin/63285/HTML/default/viewer.htm#win-sysop-memsize.htm
@@ -40,6 +44,7 @@ gauss:
   global: 
     memory: 2048
     cpu: 1
+    icon: /usr/share/icons/hicolor/48x48/apps/icon-gauss.png
   8:
     command: /usr/local/bin/gauss-8.0
   14:
@@ -49,6 +54,7 @@ mathematica:
   global:
     cpu: 1
     memory: 6144
+    icon: /usr/share/icons/hicolor/48x48/apps/icon-mathematica-8.0.png
   10.0.1:
     command: /nfs/tools/apps/mathematica/10.0.1/Executables/Mathematica
   10.2.0:
@@ -58,6 +64,7 @@ StatTransfer:
   global:
     memory: 2048
     cpu: 1
+    icon: /usr/share/icons/hicolor/48x48/apps/icon-st.png
   12:
     default: true
     command: /nfs/tools/apps/StatTransfer12/stattransfer
@@ -65,6 +72,7 @@ matlab:
   global:
     memory: 12288
     cpu: 1
+    icon: /usr/share/icons/hicolor/48x48/apps/icon-matlab.png
     args:
       - -singleCompThread
   R2010b:
@@ -84,6 +92,7 @@ rstudio:
   global:
     memory: 6144
     cpu: 1
+    icon: /usr/share/icons/hicolor/48x48/apps/icon-R.png
   0.98:
     default: true
     command: /usr/bin/rstudio
@@ -91,22 +100,15 @@ octave:
   global:
     memory: 2048
     cpu: 1
+    icon: /mnt/deployment/hmdc-admin/shared/system/xdg/HMDC-icon-octave.png
   3.4.3:
     default: true
     command: /usr/bin/octave
-'sleep':
-  global:
-    memory: 2048
-    cpu: 1
-  '1.0':
-    default: true
-    command: /bin/sleep
-    args:
-      - 9000000s
 shell:
   global:
     memory: 2048
     cpu: 1
+    icon: /usr/share/icons/gnome/32x32/apps/gnome-terminal.png
   2.31.3:
     default: true 
     command: /usr/bin/gnome-terminal
@@ -115,6 +117,7 @@ python:
   global:
     memory: 2048
     cpu: 1
+    icon: /usr/share/icons/hicolor/48x48/apps/icon-python.png
   '2.7':
     default: true
     command: /usr/bin/gnome-terminal
