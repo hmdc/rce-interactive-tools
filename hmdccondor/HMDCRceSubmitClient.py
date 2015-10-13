@@ -157,9 +157,15 @@ class HMDCRceSubmitClient:
     job_wait_bar.stop()
     job_wait_bar.join()
 
-    print "* Job {0} has status {1}. Attaching to job via xpra".format(job, job_status)
+    job_xpra_wait_bar = ProgressBarThreadCli("* Attaching to job {0}".format(job))
+    job_xpra_wait_bar.start()
 
-    return self.attach_app(job, ad=ad)
+    xpra_client_pid = self.attach_app(job, ad=ad)
+
+    job_xpra_wait_bar.stop()
+    job_xpra_wait_bar.join()
+
+    return xpra_client_pid
 
   def run(self):
     args = self.__parse_args()
