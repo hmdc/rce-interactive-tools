@@ -57,6 +57,11 @@ class HMDCRceSubmitClient:
         help='Set this if you want to run the app without a GUI'
         )
 
+    parser.add_argument('-attachall', '--attachall',
+        action='store_true',
+        help='Attach all running graphical jobs',
+        default=False)
+
     parser.add_argument('-attach', '--attach',
         type=int,
         help='Takes a JobID as an argument. Accesses a running job.'
@@ -115,6 +120,9 @@ class HMDCRceSubmitClient:
   def list_apps(self):
     print "** denotes default"
     print self.__list_apps()
+
+  def attach_all(self):
+    return map(lambda ad: self.attach_app(int(ad['ClusterId'])), HMDCCondor().get_my_jobs())
 
   def attach_app(self, jobid, ad=None):
     return HMDCCondor().attach(jobid, self.rceapps, ad=ad)
@@ -178,6 +186,9 @@ class HMDCRceSubmitClient:
       exit(0)
     elif args.list:
       self.list_apps()
+      exit(0)
+    elif args.attachall:
+      self.attach_all()
       exit(0)
     elif args.run and args.app:
       exit(self.run_app(args.app, args.version, args.memory, args.cpu))
