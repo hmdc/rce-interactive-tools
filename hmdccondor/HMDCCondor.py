@@ -10,6 +10,7 @@ import time
 import multiprocessing as mp
 import copy
 import itertools
+import subprocess
 from datetime import datetime
 
 def poll_thread(id,return_status,use_local_schedd):
@@ -113,7 +114,7 @@ class HMDCCondor:
       pool.terminate()
       raise
 
-  def attach(self,jobid,ad=None):
+  def attach(self,jobid,rceapps,ad=None):
 
     # If attach is being run from submit, then, we don't have to poll.
     if ad is None:
@@ -123,23 +124,24 @@ class HMDCCondor:
 
     display = self.poll_xpra(classad.parseOld(_classad))
 
-    return self.attach_xpra(classad.parseOld(_classad),display)
+    return self.attach_xpra(classad.parseOld(_classad), rceapps, display)
 
-  def attach_xpra(self,_classad,display):
+  def attach_xpra(self, _classad, rceapps, display):
     condor_ssh = '/usr/bin/condor_ssh_to_job'
     xpra = '/usr/bin/xpra'
 
     job_id = int(_classad['ClusterId'])
     machine = str(_classad['RemoteHost']).split('@')[-1]
-
-    os.execlp(xpra, self.__BASENAME__,
-      "attach",
-      "--socket-dir=$TEMP",
-      "--ssh={0} -name '{1}' {2}".format(
-        condor_ssh,
-        self.get_sched_ad_for_job(job_id)['ScheddIpAddr'],
-        job_id),
-      "ssh:{0}:{1}".format(machine, display))
+    
+    return subprocess.Popen([xpra,
+     "attach",
+     "--socket-dir=$TEMP",
+     "--tray-icon={0}".format(rceapps.icon(_classad['HMDCApplicationName'])),
+     "--ssh={0} -name '{1}' {2}".format(
+       condor_ssh,
+       self.get_sched_ad_for_job(job_id)['ScheddIpAddr'],
+       job_id),
+     "ssh:{0}:{1}".format(machine, display)]).pid
 
   def poll_xpra(self,ad):
     _out = str(ad['Out'].eval())

@@ -117,7 +117,7 @@ class HMDCRceSubmitClient:
     print self.__list_apps()
 
   def attach_app(self, jobid, ad=None):
-    return HMDCCondor().attach(jobid, ad=ad)
+    return HMDCCondor().attach(jobid, self.rceapps, ad=ad)
 
   def run_app(self, application, version, memory=None, cpu=None):
     if self.rceapps.app_version_exists(application, version):

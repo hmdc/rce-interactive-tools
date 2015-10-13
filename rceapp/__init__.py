@@ -255,6 +255,21 @@ class rceapp:
     except:
       return self.data[app]['global']['memory']
 
+  def icon(self, app, version=None):
+    """
+    icon() returns the icon path for an application. If no icon, return
+    none.
+    """
+    _version = version if version else self.get_default_version(app)
+    try:
+      return self.data[app][_version]['icon']
+    except:
+      try:
+        return self.data[app]['global']['icon']
+      except:
+        return None
+
+    
   def cpu(self,app,version=None):
     """
     cpu() returns the default CPU count requirement of an application's
