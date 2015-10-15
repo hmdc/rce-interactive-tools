@@ -24,14 +24,14 @@ class HMDCWrapper:
         self.app)
     self.__BASENAME__ = os.path.basename(__file__)
 
-    self.memory_bytes = int(self.machine_ad['Memory']) * 1024
+    self.memory_bytes = (int(self.machine_ad['Memory']) * 1024) * 1024
 
   def __set_limits__(self):
     # RLIMIT_AS segfaults here. It shouldn't.
     return map(lambda limit: resource.setrlimit(
       getattr(resource, limit),
       (self.memory_bytes, self.memory_bytes+1)),
-      ['RLIMIT_RSS', 'RLIMIT_DATA'])
+      ['RLIMIT_RSS', 'RLIMIT_DATA', 'RLIMIT_AS'])
 
   def run(self):
     try:
