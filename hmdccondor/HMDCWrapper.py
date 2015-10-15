@@ -24,7 +24,7 @@ class HMDCWrapper:
         self.app)
     self.__BASENAME__ = os.path.basename(__file__)
 
-    self.memory_bytes = self.machine_ad['Memory'] * 1024
+    self.memory_bytes = int(self.machine_ad['Memory']) * 1024
 
   def __set_limits__(self):
     return map(lambda limit: resource.setrlimit(
