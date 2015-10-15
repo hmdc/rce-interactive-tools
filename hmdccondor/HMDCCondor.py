@@ -203,7 +203,48 @@ class HMDCCondor:
         .search("uid={0}".format(_my_username),
           attrs = ['eduPersonEntitlement'], 
           base_dn =
-          'dc=login,dc=hmdc,dc=harvard,dc=edu')[-1].values()[-1]) 
+          'dc=login,dc=hmdc,dc=harvard,dc=edu')[-1].values()[-1])
+
+  def _get_email(self):
+    _my_username = pwd.getpwuid(os.getuid())[0]
+    _email_regex = re.compile(
+        "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$")
+
+    try:
+      _emails = simpleldap.Connection(self.ldap_server, encryption='ssl').search(
+          "uid={0}".format(_my_username),
+          attrs = ['gecos', 'mail'],
+          base_dn = self.ldap_base_dn)
+    except:
+      # DEBUG HERE: Unable to contact LDAP server
+      return None
+
+    assert len(_emails) == 1
+
+    _email_from_gecos = ','.join(list(itertools.chain.from_iterable(filter(
+      lambda email: len(email) > 0,
+      map(
+        lambda email: _email_regex.findall(email),
+        _emails[0]['gecos'][0].split(','))))))
+
+    if len(_email_from_gecos) > 0:
+      return _email_from_gecos
+
+    # Print INFO: Unable to find email
+
+    _email_from_mail = ','.join(list(itertools.chain_from_iterable(map(
+      lambda email: _email_regex.findall(email),
+      _emails[0]['mail']))))
+
+    if len(_email_from_mail) > 0:
+      return _email_from_mail
+
+    # Print unable to find any email at all
+    return None
+
+
+
+
 
   def _get_environment(self):
     return ' '.join(filter(lambda pair: not re.match("^DBUS|^GNOME", pair), map(lambda (x,y): "%s='%s'" %(x,y), os.environ.iteritems())))
