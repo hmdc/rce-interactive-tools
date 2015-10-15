@@ -27,7 +27,6 @@ class HMDCWrapper:
     self.memory_bytes = (int(self.machine_ad['Memory']) * 1024) * 1024
 
   def __set_limits__(self):
-    # RLIMIT_AS segfaults here. It shouldn't.
     return map(lambda limit: resource.setrlimit(
       getattr(resource, limit),
       (self.memory_bytes, self.memory_bytes+1)),
