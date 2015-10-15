@@ -172,6 +172,9 @@ class HMDCCondor:
     err = classad.Function('strcat', job_dir_base, '/', _out, '_', classad.ExprTree('ClusterId'), '_', dt, '/err.txt')
 
     _classad = classad.ClassAd({
+      'AcctGroup': 'group_interactive',
+      'AcctGroupUser': pwd.getpwuid(os.getuid())[0],
+      'AccountingGroup': "group_interactive.{0}".format(pwd.getpwuid(os.getuid())[0]),
       'HMDCNewSubmit': True,
       'HMDCApplicationName': app_name,
       'HMDCApplicationVersion': app_version,
@@ -215,8 +218,7 @@ class HMDCCondor:
       return classad.Value.Undefined
 
   def _get_email_for_classad(self):
-    _email = self._get_email()
-    return classad.Value.Undefined if _email is None else _email
+    return (lambda email: classad.Value.Undefined if email is None else email)(self._get_email())
 
   def _get_email(self):
     _my_username = pwd.getpwuid(os.getuid())[0]
