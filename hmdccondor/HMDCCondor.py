@@ -53,6 +53,9 @@ class HMDCCondor:
     self.POLL_TIMEOUT = 90
     self.__BASENAME__ = os.path.basename(__file__)
 
+    self.ldap_server = 'ldap.hmdc.harvard.edu'
+    self.ldap_base_dn = 'dc=login,dc=hmdc,dc=harvard,dc=edu'
+
   def get_my_jobs(self):
     my_username = pwd.getpwuid(os.getuid())[0]
 
@@ -188,6 +191,8 @@ class HMDCCondor:
       'Err': err,
       'Entitlements': self._get_entitlements(),
       'Environment': self._get_environment(),
+      'JobNotification': 1,
+      'Email': self._get_email_for_classad(),
       'FileSystemDomain': CONSTANTS.FILESYSTEM_DOMAIN
       })
 
@@ -198,12 +203,20 @@ class HMDCCondor:
     # configuration, natively.
     _my_username = pwd.getpwuid(os.getuid())[0]
 
-    return ' '.join(
-        simpleldap.Connection('directory.hmdc.harvard.edu',encryption='ssl')
-        .search("uid={0}".format(_my_username),
-          attrs = ['eduPersonEntitlement'], 
-          base_dn =
-          'dc=login,dc=hmdc,dc=harvard,dc=edu')[-1].values()[-1])
+    try:
+      return ' '.join(
+          simpleldap.Connection(self.ldap_server, encryption='ssl')
+          .search("uid={0}".format(_my_username),
+            attrs = ['eduPersonEntitlement'], 
+            base_dn =
+            self.ldap_base_dn)[-1].values()[-1])
+    except:
+      # DEBUG HERE: Unable to contact LDAP server
+      return classad.Value.Undefined
+
+  def _get_email_for_classad(self):
+    _email = self._get_email()
+    return classad.Value.Undefined if _email is None else _email
 
   def _get_email(self):
     _my_username = pwd.getpwuid(os.getuid())[0]
