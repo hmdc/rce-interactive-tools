@@ -2,12 +2,15 @@ import os
 import sys
 import htcondor
 import classad
+import resource
 
 class HMDCWrapper:
   def __init__(self, argv):
 
     self.classad = classad.parseOld(
         open(os.environ['_CONDOR_JOB_AD']))
+    self.machine_ad = classad.parseOld(
+        open(os.environ['_CONDOR_MACHINE_AD']))
 
     self.cmd_orig = argv[1:]
     self.cmd = ' '.join(self.cmd_orig)
@@ -20,8 +23,11 @@ class HMDCWrapper:
         self.app)
     self.__BASENAME__ = os.path.basename(__file__)
 
+    self.memory_bytes = self.machine_ad['Memory'] * 1024
+
   def __set_limits__(self):
-    return 0
+    return map(lambda limit: resource.setrlimit(getattr(resource, limit), (self.memory_bytes, self.memory_bytes+1)),
+     ['RLIMIT_RSS', 'RLIMIT_AS', 'RLIMIT_DATA'])
 
   def run(self):
     self.__set_limits__()
