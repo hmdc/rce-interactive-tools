@@ -21,6 +21,8 @@ def is_xpra_job(ad):
   try:
     return ad if ad['HMDCUseXpra'] else False
   except:
+    log.info("Job {0} is not an xpra job. HMDCUseXpra is undefined. No clean-up required.".
+        format(int(ad['ClusterId'])))
     raise
 
 def remove_dir(dir, id):
@@ -32,8 +34,6 @@ def main():
   try:
     ad = is_xpra_job(classad.parseOld(sys.stdin))
   except:
-    log.info("Job {0} is not an xpra job. HMDCUseXpra is undefined. No clean-up required.".
-        format(int(ad['ClusterId'])))
     return 0
 
   if ad == False:
