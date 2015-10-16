@@ -2,7 +2,7 @@ from os import chmod
 from distutils.core import setup
 
 setup(name='rce-interactive-tools',
-      version='1.5.1',
+      version='1.5.2',
       description='HMDC utilities and scripts to submit condor jobs.',
       url='https://github.com/hmdc/rce-interactive-tools',
       author='Evan Sarmiento',
@@ -18,6 +18,7 @@ setup(name='rce-interactive-tools',
         'scripts/HMDC_interactive_prepare_job.py',
         'scripts/HMDC_periodic_job_is_idle.py',
         'scripts/HMDC_job_wrapper.py',
+        'scripts/HMDC_clean_up.py',
         'scripts/pexpect_run.py'
         ]
 )
