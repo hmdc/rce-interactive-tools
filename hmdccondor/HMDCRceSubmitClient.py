@@ -1,6 +1,5 @@
 from tabulate import tabulate
 from hmdccondor import HMDCCondor
-from hmdccondor import HMDCLog
 from hmdccondor import RCEJobNotFoundError, \
   RCEJobTookTooLongStartError, \
   RCEXpraTookTooLongStartError
@@ -10,7 +9,6 @@ import rceapp
 
 class HMDCRceSubmitClient:
   def __init__(self):
-    self.log = (HMDCLog(__name__)).log
     return None
 
   def __parse_args(self):
@@ -133,11 +131,6 @@ class HMDCRceSubmitClient:
     try:
       return HMDCCondor().attach(jobid, self.rceapps, ad=ad)
     except RCEJobNotFoundError:
-
-      self.log.debug(
-        "RCEJobNotFoundError: Job {0} could not be attached. Not found.".
-        format(jobid))
-
       print """
       Job {0} could not be attached. This job could not be found on the
       RCE. Are you sure this is the correct job id? Run the following
@@ -146,9 +139,6 @@ class HMDCRceSubmitClient:
       """.format(jobid)
       return 1
     except Exception as e:
-
-      self.log.critical("Encountered unknown exception: {0}".format(e))
-
       print """
       Encountered unknown exception. Please report this to
       support@help.hmdc.harvard.edu with the following exception data:
@@ -199,8 +189,6 @@ class HMDCRceSubmitClient:
       except:
         pass
 
-      self.log.critical("Job {0} took too long to start.".format(job))
-
       print """
       Your job {0} took too long to start. Typically, an RCE job should
       take between thirty seconds and one minute to start, unless the
@@ -230,8 +218,6 @@ class HMDCRceSubmitClient:
       except:
         pass
 
-      self.log.critical("Unknown exception: {0}".format(e))
-
       print """
       Application encountered unexpected exception while polling for Job
       {0} to start. Please notify support@help.hmdc.harvard.edu and
@@ -258,10 +244,6 @@ class HMDCRceSubmitClient:
       except:
         pass
 
-      self.log.critical(
-          "Remote node {0} unable to start xpra for job {1}".
-          format(e.__get_remote_node__(), job))
-
       print """
       Job {0}, {1} {2}, was unable to start Xpra. This is a critical
       error. Please send an email to support@help.hmdc.harvard.edu and
@@ -269,8 +251,8 @@ class HMDCRceSubmitClient:
       {3}
       """.format(
           job,
-          e.__get_application_name__(),
-          e.__get_application_version__(),
+          e.__get_application__name(),
+          e.__get_application__version(),
           e.__get_err__())
 
       return 1
@@ -280,10 +262,6 @@ class HMDCRceSubmitClient:
         job_xpra_wait_bar.join()
       except:
         pass
-
-      self.log.critical(
-          "Unknown exception in polling for xpra to start: {0}".
-          format(e))
 
       print """
       Application encountered unexpected exception while attempting to

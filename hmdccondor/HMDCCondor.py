@@ -15,9 +15,9 @@ from datetime import datetime
 from hmdccondor import RCEJobNotFoundError, \
     RCEJobTookTooLongStartError, \
     RCEXpraTookTooLongStartError
-from hmdccondor import HMDCLog
 
 def poll_thread(id,return_status,use_local_schedd):
+
 
   if use_local_schedd:
     return hmdccondor.HMDCPoller(id, return_status, HMDCCondor()._schedd).run()
@@ -40,12 +40,10 @@ def poll_xpra_thread(out_txt):
 class HMDCCondor:
   def __init__(self):
 
-    self.log = (HMDCLog(__name__)).log
     self._collector = htcondor.Collector(CONSTANTS.CONDOR_HOST)
     try:
       self._schedd = htcondor.Schedd()
     except:
-      self.log.debug("Unable to locate schedd; using secondary schedd.")
       self._schedd = htcondor.Schedd(self._collector.locate(htcondor.DaemonTypes.Schedd))
 
     self._return_status = [
@@ -201,8 +199,6 @@ class HMDCCondor:
       'FileSystemDomain': CONSTANTS.FILESYSTEM_DOMAIN
       })
 
-    self.log.debug("Creating classad for submission: {0}".format(_classad))
-
     return _classad
 
   def _get_entitlements(self):
@@ -218,11 +214,7 @@ class HMDCCondor:
             base_dn =
             self.ldap_base_dn)[-1].values()[-1])
     except:
-      self.log.critical("""
-      Unable to contact ldap server {0} or no entitlements listed on
-      user {1}.
-      """.format(self.ldap_server, _my_username))
-
+      # DEBUG HERE: Unable to contact LDAP server
       return classad.Value.Undefined
 
   def _get_email_for_classad(self):
@@ -239,10 +231,7 @@ class HMDCCondor:
           attrs = ['gecos', 'mail'],
           base_dn = self.ldap_base_dn)
     except:
-      self.log.critical("""
-      Unable to contact ldap server {0} or no gecos or mail field set
-      for user {1}.
-      """.format(self.ldap_server, _my_username))
+      # DEBUG HERE: Unable to contact LDAP server
       return None
 
     assert len(_emails) == 1
@@ -256,9 +245,7 @@ class HMDCCondor:
     if len(_email_from_gecos) > 0:
       return _email_from_gecos
 
-    self.log.critical("""
-    User {0} does not have an email listed in gecos field.
-    """.format(_my_username))
+    # Print INFO: Unable to find email
 
     _email_from_mail = ','.join(list(itertools.chain_from_iterable(map(
       lambda email: _email_regex.findall(email),
@@ -267,12 +254,12 @@ class HMDCCondor:
     if len(_email_from_mail) > 0:
       return _email_from_mail
 
-    self.log.critical("""
-    User {0} does not have an email listed in either the mail field or
-    the gecos field. Please check the LDAP entry for this user.
-    """.format(_my_username))
-
+    # Print unable to find any email at all
     return None
+
+
+
+
 
   def _get_environment(self):
     return ' '.join(filter(lambda pair: not re.match("^DBUS|^GNOME", pair), map(lambda (x,y): "%s='%s'" %(x,y), os.environ.iteritems())))
