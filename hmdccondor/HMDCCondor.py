@@ -12,7 +12,7 @@ import copy
 import itertools
 import subprocess
 from datetime import datetime
-from hmdccondor import RCEJobNotFoundError
+from hmdccondor import RCEJobNotFoundError, RCEJobTookTooLongStartError
 
 def poll_thread(id,return_status,use_local_schedd):
 
@@ -110,7 +110,7 @@ class HMDCCondor:
       return result.get(self.POLL_TIMEOUT) 
     except:
       pool.terminate()
-      raise
+      raise RCEJobTookTooLongStartError(jobid)
 
   def attach(self,jobid,rceapps,ad=None):
 

@@ -1,6 +1,6 @@
 from tabulate import tabulate
 from hmdccondor import HMDCCondor
-from hmdccondor import RCEJobNotFoundError
+from hmdccondor import RCEJobNotFoundError, RCEJobTookTooLongStartError
 from ProgressBarThreadCli import ProgressBarThreadCli
 import argparse
 import rceapp
@@ -178,7 +178,49 @@ class HMDCRceSubmitClient:
     job_wait_bar = ProgressBarThreadCli('* Waiting for job to start')
     job_wait_bar.start()
 
-    job_status, ad = rce.poll(job, use_local_schedd=True)
+    try:
+      job_status, ad = rce.poll(job, use_local_schedd=True)
+    except RCEJobTookTooLongStartError:
+      try:
+        job_wait_bar.stop()
+        job_wait_bar.join()
+      except:
+        pass
+
+      print """
+      Your job {0} took too long to start. Typically, an RCE job should
+      take between thirty seconds and one minute to start, unless the
+      following conditions are present:
+
+      * The RCE cluster is saturated and can no longer accept any more
+        jobs. Run 'rce-info.sh' to determine if any free space on the
+        cluster is available.
+      * You asked for too much memory or cpu. Run the following command
+        to determine if your requested memory or cpu allocation is too
+        large:
+          condor_q -analyze {0}
+      * Your job suddenly terminated and/or something is wrong with the
+        RCE. If you're unable to determine why your job failed to start,
+        send an e-mail to support@help.hmdc.harvard.edu.
+      """.format(job)
+
+      return 1
+    except Exception as e:
+      try:
+        job_wait_bar.stop()
+        job_wait_bar.join()
+      except:
+        pass
+
+      print """
+      Application encountered unexpected exception while polling for Job
+      {0} to start. Please notify support@help.hmdc.harvard.edu and
+      include the following exception output.
+
+      Exception: {1}
+      """.format(job, e)
+
+      return 1
 
     job_wait_bar.stop()
     job_wait_bar.join()
