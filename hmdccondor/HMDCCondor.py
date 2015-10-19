@@ -12,7 +12,9 @@ import copy
 import itertools
 import subprocess
 from datetime import datetime
-from hmdccondor import RCEJobNotFoundError, RCEJobTookTooLongStartError
+from hmdccondor import RCEJobNotFoundError, \
+    RCEJobTookTooLongStartError, \
+    RCEXpraTookTooLongStartError
 
 def poll_thread(id,return_status,use_local_schedd):
 
@@ -155,7 +157,7 @@ class HMDCCondor:
       return result.get(self.POLL_TIMEOUT)
     except:
       pool.terminate()
-      raise
+      raise RCEXpraTookTooLongStartError(ad)
 
   def _create_classad(self, app_name, app_version, cmd, args, cpu, memory):
     dt = datetime.utcnow().strftime("%Y%m%d%s")

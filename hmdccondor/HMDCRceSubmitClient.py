@@ -1,6 +1,8 @@
 from tabulate import tabulate
 from hmdccondor import HMDCCondor
-from hmdccondor import RCEJobNotFoundError, RCEJobTookTooLongStartError
+from hmdccondor import RCEJobNotFoundError, \
+  RCEJobTookTooLongStartError, \
+  RCEXpraTookTooLongStartError
 from ProgressBarThreadCli import ProgressBarThreadCli
 import argparse
 import rceapp
@@ -202,6 +204,10 @@ class HMDCRceSubmitClient:
       * Your job suddenly terminated and/or something is wrong with the
         RCE. If you're unable to determine why your job failed to start,
         send an e-mail to support@help.hmdc.harvard.edu.
+
+      Job {0} will remain in the queue for ten minutes. If job {0} is
+      unable to match a resource after ten minutes, the RCE will
+      automatically remove this job.
       """.format(job)
 
       return 1
@@ -229,7 +235,43 @@ class HMDCRceSubmitClient:
         format(job))
     job_xpra_wait_bar.start()
 
-    xpra_client_pid = self.attach_app(job, ad=ad)
+    try:
+      xpra_client_pid = self.attach_app(job, ad=ad)
+    except RCEXpraTookTooLongStartError as e:
+      try:
+        job_xpra_wait_bar.stop()
+        job_xpra_wait_bar.join()
+      except:
+        pass
+
+      print """
+      Job {0}, {1} {2}, was unable to start Xpra. This is a critical
+      error. Please send an email to support@help.hmdc.harvard.edu and
+      include the contents following file:
+      {3}
+      """.format(
+          job,
+          e.__get_application__name(),
+          e.__get_application__version(),
+          e.__get_err__())
+
+      return 1
+    except Exception as e:
+      try:
+        job_xpra_wait_bar.stop()
+        job_xpra_wait_bar.join()
+      except:
+        pass
+
+      print """
+      Application encountered unexpected exception while attempting to
+      attach to job {0}. Please notify support@help.hmdc.harvard.edu and
+      include the following exception output.
+
+      Exception: {1}
+      """.format(job, e)
+
+      return 1
 
     job_xpra_wait_bar.stop()
     job_xpra_wait_bar.join()
