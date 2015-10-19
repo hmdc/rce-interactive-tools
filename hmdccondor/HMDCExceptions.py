@@ -17,6 +17,8 @@ class RCEJobTookTooLongStartError(Exception):
 class RCEXpraTookTooLongStartError(Exception):
   def __init__(self, ad):
     self.ad = ad
+  def __get_remote_node__(self):
+    return ad['RemoteHost']
   def __get_err__(self):
     return ad['Err'].eval()
   def __get_application_name__(self):
