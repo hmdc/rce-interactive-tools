@@ -130,13 +130,8 @@ class HMDCRceSubmitClient:
   def attach_app(self, jobid, ad=None):
     try:
       return HMDCCondor().attach(jobid, self.rceapps, ad=ad)
-    except RCEJobNotFoundError:
-      print """
-      Job {0} could not be attached. This job could not be found on the
-      RCE. Are you sure this is the correct job id? Run the following
-      command to determine your currently running jobs on the RCE.
-        rce_submit.py -jobs
-      """.format(jobid)
+    except RCEJobNotFoundError as e:
+      print e.message()  
       return 1
     except Exception as e:
       print """
@@ -182,33 +177,14 @@ class HMDCRceSubmitClient:
 
     try:
       job_status, ad = rce.poll(job, use_local_schedd=True)
-    except RCEJobTookTooLongStartError:
+    except RCEJobTookTooLongStartError as e:
       try:
         job_wait_bar.stop()
         job_wait_bar.join()
       except:
         pass
 
-      print """
-      Your job {0} took too long to start. Typically, an RCE job should
-      take between thirty seconds and one minute to start, unless the
-      following conditions are present:
-
-      * The RCE cluster is saturated and can no longer accept any more
-        jobs. Run 'rce-info.sh' to determine if any free space on the
-        cluster is available.
-      * You asked for too much memory or cpu. Run the following command
-        to determine if your requested memory or cpu allocation is too
-        large:
-          condor_q -analyze {0}
-      * Your job suddenly terminated and/or something is wrong with the
-        RCE. If you're unable to determine why your job failed to start,
-        send an e-mail to support@help.hmdc.harvard.edu.
-
-      Job {0} will remain in the queue for ten minutes. If job {0} is
-      unable to match a resource after ten minutes, the RCE will
-      automatically remove this job.
-      """.format(job)
+      print e.message()
 
       return 1
     except Exception as e:
@@ -244,16 +220,7 @@ class HMDCRceSubmitClient:
       except:
         pass
 
-      print """
-      Job {0}, {1} {2}, was unable to start Xpra. This is a critical
-      error. Please send an email to support@help.hmdc.harvard.edu and
-      include the contents following file:
-      {3}
-      """.format(
-          job,
-          e.__get_application__name(),
-          e.__get_application__version(),
-          e.__get_err__())
+      print e.message()
 
       return 1
     except Exception as e:
