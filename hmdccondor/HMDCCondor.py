@@ -12,25 +12,25 @@ import copy
 import itertools
 import subprocess
 from datetime import datetime
+from hmdccondor import RCEJobNotFoundError
 
 def poll_thread(id,return_status,use_local_schedd):
 
+
   if use_local_schedd:
-    schedd = HMDCCondor()._schedd
+    return hmdccondor.HMDCPoller(id, return_status, HMDCCondor()._schedd).run()
   else:
-    schedd = htcondor.Schedd(HMDCCondor().get_sched_ad_for_job(id))
-
-  poller = hmdccondor.HMDCPoller(id,return_status,schedd)
-
-  return poller.run()
+    try:
+      return hmdccondor.HMDCPoller(id, return_status, htcondor.Schedd(HMDCCondor().get_sched_ad_for_job(id))).run()
+    except:
+      return (None,None)
 
 def poll_xpra_thread(out_txt):
   while 1:
     try:
       with open(out_txt, 'r') as out:
-        line = out.readlines()
-        xpra_socket = int(map(lambda _line: re.findall('Xdummy: :(\d)$', _line),line)[0][0])
-        return xpra_socket
+        return int(map(lambda _line: re.findall('Xdummy: :(\d)$',
+          _line),out.readlines())[0][0])
     except:
       time.sleep(5)
       continue
@@ -72,17 +72,12 @@ class HMDCCondor:
   def get_sched_ad_for_job(self, jobid):
 
     try:
-      ad = filter(lambda t: len(t) > 0,
+      return filter(lambda t: len(t) > 0,
           map(lambda ad: ([], ad)[len(htcondor.Schedd(ad).query(
             "ClusterId =?= {0}".format(jobid))) > 0],
             self._collector.locateAll(htcondor.DaemonTypes.Schedd)))[0]
     except:
-      print "There is no HTCondor schedd currently running job\
-           {0}. Perhaps your job terminated?".format(jobid)
-      exit(1)
-
-    return ad
-
+      raise
 
   def get_sched_for_job(self, jobid):
 
@@ -120,14 +115,17 @@ class HMDCCondor:
   def attach(self,jobid,rceapps,ad=None):
 
     # If attach is being run from submit, then, we don't have to poll.
+
     if ad is None:
       status, _classad = self.poll(jobid)
     else:
       status, _classad = classad.parseOld(ad)['JobStatus'], ad
 
-    display = self.poll_xpra(classad.parseOld(_classad))
+    if status is None or _classad is None:
+      raise RCEJobNotFoundError(jobid)
 
-    return self.attach_xpra(classad.parseOld(_classad), rceapps, display)
+    return (lambda ad: self.attach_xpra(ad, rceapps,
+      self.poll_xpra(ad)))(classad.parseOld(_classad))
 
   def attach_xpra(self, _classad, rceapps, display):
     condor_ssh = '/usr/bin/condor_ssh_to_job'

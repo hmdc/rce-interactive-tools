@@ -1,5 +1,6 @@
 from tabulate import tabulate
 from hmdccondor import HMDCCondor
+from hmdccondor import RCEJobNotFoundError
 from ProgressBarThreadCli import ProgressBarThreadCli
 import argparse
 import rceapp
@@ -106,8 +107,8 @@ class HMDCRceSubmitClient:
         ad['HMDCApplicationName'],
         ad['HMDCApplicationVersion'],
         ad['RequestCpus'],
-        ad['RequestMemory']], 
-      HMDCCondor().get_my_jobs()), 
+        ad['RequestMemory']],
+      HMDCCondor().get_my_jobs()),
       headers=['Job Id', 
         'Application', 
         'Version', 
@@ -116,7 +117,7 @@ class HMDCRceSubmitClient:
 
   def list_jobs(self):
     print self.__list_jobs()
-	
+
   def list_apps(self):
     print "** denotes default"
     print self.__list_apps()
@@ -125,7 +126,24 @@ class HMDCRceSubmitClient:
     return map(lambda ad: self.attach_app(int(ad['ClusterId'])), HMDCCondor().get_my_jobs())
 
   def attach_app(self, jobid, ad=None):
-    return HMDCCondor().attach(jobid, self.rceapps, ad=ad)
+    try:
+      return HMDCCondor().attach(jobid, self.rceapps, ad=ad)
+    except RCEJobNotFoundError:
+      print """
+      Job {0} could not be attached. This job could not be found on the
+      RCE. Are you sure this is the correct job id? Run the following
+      command to determine your currently running jobs on the RCE.
+        rce_submit.py -jobs
+      """.format(jobid)
+      return 1
+    except Exception as e:
+      print """
+      Encountered unknown exception. Please report this to
+      support@help.hmdc.harvard.edu with the following exception data:
+
+      Exception: {0}
+      """.format(e)
+      return 1
 
   def run_app(self, application, version, memory=None, cpu=None):
     if self.rceapps.app_version_exists(application, version):
@@ -165,7 +183,8 @@ class HMDCRceSubmitClient:
     job_wait_bar.stop()
     job_wait_bar.join()
 
-    job_xpra_wait_bar = ProgressBarThreadCli("* Attaching to job {0}".format(job))
+    job_xpra_wait_bar = ProgressBarThreadCli("* Attaching to job {0}".
+        format(job))
     job_xpra_wait_bar.start()
 
     xpra_client_pid = self.attach_app(job, ad=ad)
