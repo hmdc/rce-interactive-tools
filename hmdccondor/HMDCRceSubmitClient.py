@@ -255,10 +255,9 @@ class HMDCRceSubmitClient:
     args = self.__parse_args()
     self.rceapps = rceapp.rceapp(args.config)
 
-    
     logging.getLogger('rce_submit').setLevel(logging.DEBUG)
     handler = logging.handlers.SysLogHandler(address='/dev/log')
-    handler.setFormatter(logging.Formatter('%(module)s.%(funcName)s: %(message)s'))
+    handler.setFormatter(logging.Formatter('RceSubmit.%(user)s.%(process)d.%(module)s.%(funcName)s: %(message)s'))
     logging.getLogger('rce_submit').addHandler(handler)
 
 
