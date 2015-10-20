@@ -6,6 +6,8 @@ from hmdccondor import RCEJobNotFoundError, \
 from ProgressBarThreadCli import ProgressBarThreadCli
 import argparse
 import rceapp
+import logging
+import logging.handlers
 
 class HMDCRceSubmitClient:
   def __init__(self):
@@ -249,7 +251,12 @@ class HMDCRceSubmitClient:
     args = self.__parse_args()
     self.rceapps = rceapp.rceapp(args.config)
 
-    # If -l, list.
+    
+    logging.getLogger('rce_submit').setLevel(logging.DEBUG)
+    handler = logging.handlers.SysLogHandler(address='/dev/log')
+    handler.setFormatter(logging.Formatter('%(module)s.%(funcName)s: %(message)s'))
+    logging.getLogger('rce_submit').addHandler(handler)
+
 
     if args.jobs:
       self.list_jobs()

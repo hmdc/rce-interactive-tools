@@ -11,6 +11,7 @@ import multiprocessing as mp
 import copy
 import itertools
 import subprocess
+import logging
 from datetime import datetime
 from hmdccondor import RCEJobNotFoundError, \
     RCEJobTookTooLongStartError, \
@@ -198,6 +199,9 @@ class HMDCCondor:
       'Email': self._get_email_for_classad(),
       'FileSystemDomain': CONSTANTS.FILESYSTEM_DOMAIN
       })
+
+    logging.getLogger('rce_submit').info("Generated classad for submission")
+
 
     return _classad
 
