@@ -133,12 +133,12 @@ class HMDCRceSubmitClient:
     try:
       return HMDCCondor().attach(jobid, self.rceapps, ad=ad)
     except RCEJobNotFoundError as e:
-      logging.getLogger().critical("Job {0} not found.".
+      logging.getLogger('rce_submit').critical("Job {0} not found.".
           format(e.jobid))
       print e.message()  
       return 1
     except Exception as e:
-      logging.getLogger().critical("Unknown exception: {0}".
+      logging.getLogger('rce_submit').critical("Unknown exception: {0}".
           format(e))
       print """
       Encountered unknown exception. Please report this to
