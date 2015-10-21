@@ -2,7 +2,8 @@ from tabulate import tabulate
 from hmdccondor import HMDCCondor
 from hmdccondor import RCEJobNotFoundError, \
   RCEJobTookTooLongStartError, \
-  RCEXpraTookTooLongStartError
+  RCEXpraTookTooLongStartError, \
+  rcelog
 from ProgressBarThreadCli import ProgressBarThreadCli
 import argparse
 import rceapp
@@ -133,13 +134,11 @@ class HMDCRceSubmitClient:
     try:
       return HMDCCondor().attach(jobid, self.rceapps, ad=ad)
     except RCEJobNotFoundError as e:
-      logging.getLogger('rce_submit').critical("Job {0} not found.".
-          format(e.jobid))
+      rcelog('critical', "attach_app(): Job {0} not found.".format(e.jobid))
       print e.message()  
       return 1
     except Exception as e:
-      logging.getLogger('rce_submit').critical("Unknown exception: {0}".
-          format(e))
+      rcelog('critical', "attach_app(): Unkown exception: {0}".format(e))
       print """
       Encountered unknown exception. Please report this to
       support@help.hmdc.harvard.edu with the following exception data:
@@ -190,6 +189,9 @@ class HMDCRceSubmitClient:
       except:
         pass
 
+      rcelog('critical', 'run_app(): Job {0} took too long to start: Application={1},Version={2},RequestMemory={3},RequestCpu={4}'.
+	format(job, application, _version, _memory, _cpu))
+
       print e.message()
 
       return 1
@@ -199,6 +201,8 @@ class HMDCRceSubmitClient:
         job_wait_bar.join()
       except:
         pass
+
+      rcelog('critical', "run_app(): Unknown exception: {0}".format(e))
 
       print """
       Application encountered unexpected exception while polling for Job
@@ -226,6 +230,8 @@ class HMDCRceSubmitClient:
       except:
         pass
 
+      rcelog('critical', "run_app(): Job {0}, xpra took too long to start. Printing classad.".format(job))
+      rcelog('critical', e.get_ad())
       print e.message()
 
       return 1
@@ -235,6 +241,8 @@ class HMDCRceSubmitClient:
         job_xpra_wait_bar.join()
       except:
         pass
+
+      rcelog('critical', "run_app(): Encountered unknown exception: {0}".format(e))
 
       print """
       Application encountered unexpected exception while attempting to

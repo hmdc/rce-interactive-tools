@@ -45,6 +45,8 @@ class RCEJobTookTooLongStartError(Exception):
 class RCEXpraTookTooLongStartError(Exception):
   def __init__(self, ad):
     self.ad = ad
+  def get_ad(self):
+    return self.ad
   def __get_err__(self):
     return ad['Err'].eval()
   def __get_application_name__(self):

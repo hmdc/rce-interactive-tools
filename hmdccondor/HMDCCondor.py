@@ -16,6 +16,7 @@ from datetime import datetime
 from hmdccondor import RCEJobNotFoundError, \
     RCEJobTookTooLongStartError, \
     RCEXpraTookTooLongStartError
+from hmdccondor.HMDCLog import rcelog
 
 def poll_thread(id,return_status,use_local_schedd):
 
@@ -200,8 +201,8 @@ class HMDCCondor:
       'FileSystemDomain': CONSTANTS.FILESYSTEM_DOMAIN
       })
 
-    logging.getLogger('rce_submit').info("Generated classad for submission")
-
+    rcelog('info', "Generated classad for submission. ClassAd printed below.")
+    rcelog('info', _classad)
 
     return _classad
 
@@ -219,6 +220,7 @@ class HMDCCondor:
             self.ldap_base_dn)[-1].values()[-1])
     except:
       # DEBUG HERE: Unable to contact LDAP server
+      rcelog('critical', "_get_entitlements(): Unable to contact ldap server {0}".format(self.ldap_server))
       return classad.Value.Undefined
 
   def _get_email_for_classad(self):
@@ -236,6 +238,7 @@ class HMDCCondor:
           base_dn = self.ldap_base_dn)
     except:
       # DEBUG HERE: Unable to contact LDAP server
+      rcelog('critical', "_get_email(): Unable to contact ldap server {0}".format(self.ldap_server))
       return None
 
     assert len(_emails) == 1
@@ -247,23 +250,24 @@ class HMDCCondor:
         _emails[0]['gecos'][0].split(','))))))
 
     if len(_email_from_gecos) > 0:
+      rcelog('info', "_get_email(): Found email {0} in gecos field.".format(_email_from_gecos))
       return _email_from_gecos
 
     # Print INFO: Unable to find email
+
+    rcelog('critical', "_get_email(): Unable to find email in gecos field. Using mail field.")
 
     _email_from_mail = ','.join(list(itertools.chain_from_iterable(map(
       lambda email: _email_regex.findall(email),
       _emails[0]['mail']))))
 
     if len(_email_from_mail) > 0:
+      rcelog('info', "_get_email(): Found email in mail field: {0}".format(_email_from_mail))
       return _email_from_mail
 
     # Print unable to find any email at all
+    rcelog('critical', "_get_email(): Unable to find email in either gecos or mail field. Investigate.")
     return None
-
-
-
-
 
   def _get_environment(self):
     return ' '.join(filter(lambda pair: not re.match("^DBUS|^GNOME", pair), map(lambda (x,y): "%s='%s'" %(x,y), os.environ.iteritems())))
