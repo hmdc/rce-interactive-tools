@@ -15,7 +15,8 @@ import logging
 from datetime import datetime
 from hmdccondor import RCEJobNotFoundError, \
     RCEJobTookTooLongStartError, \
-    RCEXpraTookTooLongStartError
+    RCEXpraTookTooLongStartError, \
+    RCEJobDidNotStart
 from hmdccondor.HMDCLog import rcelog
 
 def poll_thread(id,return_status,use_local_schedd):
@@ -101,7 +102,17 @@ class HMDCCondor:
       cpu,
       memory), 1)
 
-  def poll(self, jobid, return_status=None,use_local_schedd=False):
+  def poll(self, jobid, return_status=None, use_local_schedd=False, want_results=[CONSTANTS.JOB_STATUS_RUNNING]):
+
+    assert isinstance(want_results, list)
+    assert isinstance(use_local_schedd, bool)
+
+    def check_result(result):
+      if result[0] in want_results:
+        return result
+      else:
+        raise RCEJobDidNotStart(result)
+      
     _return_status = return_status if return_status else self._return_status
 
     # start a thread so we can timeout on polling.
@@ -111,7 +122,10 @@ class HMDCCondor:
     pool.close()
 
     try:
-      return result.get(self.POLL_TIMEOUT) 
+      return check_result(result.get(self.POLL_TIMEOUT))
+    except RCEJobDidNotStart:
+      pool.terminate()
+      raise 
     except:
       pool.terminate()
       raise RCEJobTookTooLongStartError(jobid)
@@ -124,7 +138,7 @@ class HMDCCondor:
       status, _classad = self.poll(jobid)
     else:
       status, _classad = classad.parseOld(ad)['JobStatus'], ad
-
+ 
     if status is None or _classad is None:
       raise RCEJobNotFoundError(jobid)
 

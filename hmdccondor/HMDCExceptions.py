@@ -14,6 +14,49 @@ class RCEJobNotFoundError(Exception):
         rce_submit.py -jobs
     """.format(self.jobid)
 
+class RCEJobDidNotStart(Exception):
+  def __init__(self, result):
+    self.status = result[0]
+    self.ad = classad.parseOld(result[1])
+  def __str__(self):
+    return repr('Job {0} did not start properly. Return status: {1}'.
+      format(int(self.ad['ClusterId']), self.ad['JobStatus']))
+  def __determine_cause__(self):
+    try:
+      return "HoldReason={0}".format(self.ad['HoldReason'])
+    except:
+      pass
+
+    try:
+      return "RemoveReason={0}".format(self.ad['RemoveReason'])
+    except:
+      pass
+
+    try:
+      return "Job completed prematurely: {0}".format(self.ad['CompletionDate'])
+    except:
+      return "Unknown reason"
+  def message(self):
+    return """
+    Your job {0} exited before launching {1}. This indicates that one
+    of the following conditions are present:
+
+    * Your application crashed immediately upon execution.
+    * You allocated an improper amount of memory and/or CPU.
+    * An internal problem with the RCE.
+
+    According to your job's ClassAd, your job exited due to the following
+    reason: 
+
+    {2}
+
+    For more information, run:
+
+    condor_history -l {0}
+
+    or email support@help.hmdc.harvard.edu
+    """.format(self.ad['ClusterId'], self.ad['HMDCApplicationName'], self.__determine_cause__())
+
 class RCEJobTookTooLongStartError(Exception):
   def __init__(self, jobid):
     self.jobid = jobid

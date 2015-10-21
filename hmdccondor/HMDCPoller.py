@@ -1,6 +1,7 @@
 import time
 import classad
 import htcondor
+from hmdccondor.HMDCLog import rcelog
 
 class HMDCPoller:
   def __init__(self,id,return_status,schedd):
@@ -14,13 +15,19 @@ class HMDCPoller:
     self.schedd = schedd
 
   def find_job_and_job_status(self):
+
+    def find_job_and_job_status_log_history(f):
+      rcelog('critical', "find_job_and_status(): Found job {0} in history. Terminated in error.".
+        format(self.id))
+      return f
+      
     try:
       return self.__get_job_status_from_queue__()
     except:
       pass
 
     try:
-      return self.__get_job_status_from_history__()
+      return find_job_and_job_status_log_history(self.__get_job_status_from_history__())
     except:
       return (None, None)
 

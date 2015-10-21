@@ -3,15 +3,36 @@ import sys
 import htcondor
 import classad
 import resource
+import logging
+import logging.handlers
+
+# Setup logging
+log = logging.getLogger(__name__)
+
+log.setLevel(logging.DEBUG)
+handler = logging.handlers.SysLogHandler(address='/dev/log')
+
+formatter = logging.Formatter('RceSubmit.%(module)s.%(funcName)s: %(message)s')
+handler.setFormatter(formatter)
+
+log.addHandler(handler)
 
 class HMDCWrapper:
   def __init__(self, argv):
 
-    self.classad = classad.parseOld(
+    try:
+      self.classad = classad.parseOld(
         open(os.environ['_CONDOR_JOB_AD']))
-    self.machine_ad = classad.parseOld(
+    except Exception as e:
+      log.critical("Unable to open classad from environment variable _CONDOR_JOB_AD: {0}".format(e))
+      sys.exit(1)
+     
+    try: 
+      self.machine_ad = classad.parseOld(
         open(os.environ['_CONDOR_MACHINE_AD']))
-    # Add debugging here (INFO)
+    except Exception as e:
+      log.critical("Unable to open machinead from environment variable _CONDOR_MACHINE_AD: {0}".format(e))
+      sys.exit(1)
 
     self.cmd_orig = argv[1:]
     self.cmd = ' '.join(self.cmd_orig)
@@ -27,6 +48,7 @@ class HMDCWrapper:
     self.memory_bytes = (int(self.machine_ad['Memory']) * 1024) * 1024
 
   def __set_limits__(self):
+    log.info("Setting limits on memory: {0}".format(self.memory_bytes))
     return map(lambda limit: resource.setrlimit(
       getattr(resource, limit),
       (self.memory_bytes, self.memory_bytes+1)),
@@ -35,8 +57,8 @@ class HMDCWrapper:
   def run(self):
     try:
       self.__set_limits__()
-    except:
-      # Add debugging here (INFO)
+    except Exception as e:
+      log.critical("Encountered exception setting memory limits: {0}".format(e))
       pass
 
     # We need this for condor_ssh_to_job, otherwise it goes under

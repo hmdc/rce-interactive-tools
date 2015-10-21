@@ -3,6 +3,7 @@ from hmdccondor import HMDCCondor
 from hmdccondor import RCEJobNotFoundError, \
   RCEJobTookTooLongStartError, \
   RCEXpraTookTooLongStartError, \
+  RCEJobDidNotStart, \
   rcelog
 from ProgressBarThreadCli import ProgressBarThreadCli
 import argparse
@@ -194,6 +195,17 @@ class HMDCRceSubmitClient:
 
       print e.message()
 
+      return 1
+    except RCEJobDidNotStart as e:
+      try:
+        job_wait_bar.stop()
+        job_wait_bar.join()
+      except:
+        pass
+
+      rcelog('critical', 'run_app(): Job {0} did not start. Reason: {1}'.format(job, e))
+
+      print e.message()
       return 1
     except Exception as e:
       try:
