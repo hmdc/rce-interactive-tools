@@ -152,7 +152,7 @@ class HMDCRceSubmitClient:
     if self.rceapps.app_version_exists(application, version):
       _version = version if version else self.rceapps.get_default_version(application)
     else:
-      print 'Application {0} does not exist.'
+      print 'Application {0} does not exist.'.format(application)
       print 'Run rce_submit.py -l to view a list of available applications.'
       return 1
 
