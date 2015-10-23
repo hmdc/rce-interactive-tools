@@ -63,10 +63,10 @@ gauss:
     supports_cpu_adjustable: true
     supports_cli_mode: false
   8:
-    command: /usr/local/bin/gauss-8.0
+    command: /nfs/tools/apps/gauss/8.0/tgauss
   14:
     default: true
-    command: /usr/local/bin/gauss14
+    command: /nfs/tools/apps/gauss/14.0/tgauss
 mathematica:
   global:
     cpu: 1
