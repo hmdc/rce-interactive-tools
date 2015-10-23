@@ -92,7 +92,7 @@ StatTransfer:
     supports_cli_mode: false
   12:
     default: true
-    command: /nfs/tools/apps/StatTransfer12/stattransfer
+    command: /nfs/tools/apps/StatTransfer/12/stattransfer
 matlab:
   global:
     memory: 12288
