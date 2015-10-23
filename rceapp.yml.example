@@ -6,9 +6,9 @@ xstata-mp:
     supports_cpu_adjustable: true
     supports_cli_mode: false
     icon: /usr/share/icons/hicolor/48x48/apps/icon-stata.png
-  13.1:
+  '13.1':
     command: /usr/local/bin/xstata-se-13.1
-  14.0:
+  '14.0':
     default: true
     command: /usr/local/bin/xstata-mp-14
 xstata-se:
@@ -19,9 +19,9 @@ xstata-se:
     supports_cpu_adjustable: false
     supports_cli_mode: false
     icon: /usr/share/icons/hicolor/48x48/apps/icon-stata.png
-  13.1:
+  '13.1':
     command: /usr/local/bin/xstata-se-13.1
-  14.0:
+  '14.0':
     default: true
     command: /usr/local/bin/xstata-se-14
 R:
@@ -32,7 +32,7 @@ R:
     supports_memory_adjustable: true
     supports_cpu_adjustable: true
     supports_cli_mode: true
-  3.2:
+  '3.2':
     default: true
     command: /usr/bin/gnome-terminal
     args: 
@@ -49,9 +49,9 @@ SAS:
 # -memsize 0 means unlimited memory
 # http://support.sas.com/documentation/cdl/en/hostwin/63285/HTML/default/viewer.htm#win-sysop-memsize.htm
       - -memsize 0
-  9.3:
+  '9.3':
     command: /nfs/tools/apps/sas/9.3/SASFoundation/9.3/sas
-  9.4:
+  '9.4':
     default: true
     command: /nfs/tools/apps/sas/9.4_1/SASFoundation/9.4/sas
 gauss:
@@ -62,11 +62,15 @@ gauss:
     supports_memory_adjustable: true
     supports_cpu_adjustable: true
     supports_cli_mode: false
-  8:
-    command: /nfs/tools/apps/gauss/8.0/tgauss
-  14:
+  '8':
+    command: /usr/bin/gnome-terminal
+    args:
+      - -e /nfs/tools/apps/gauss/8.0/tgauss
+  '14':
     default: true
-    command: /nfs/tools/apps/gauss/14.0/tgauss
+    command: /usr/bin/gnome-terminal
+    args:
+      - -e /nfs/tools/apps/gauss/14.0/tgauss
 mathematica:
   global:
     cpu: 1
@@ -75,11 +79,11 @@ mathematica:
     supports_memory_adjustable: true
     supports_cpu_adjustable: true
     supports_cli_mode: false
-  10.1.0:
+  '10.1.0':
     command: /nfs/tools/apps/mathematica/10.1/Executables/Mathematica
-  10.2.0:
+  '10.2.0':
     command: /nfs/tools/apps/mathematica/10.2.0/Executables/Mathematica
-  10.3.0:
+  '10.3.0':
     default: true
     command: /nfs/tools/apps/mathematica/10.3/Executables/Mathematica
 StatTransfer:
@@ -90,7 +94,7 @@ StatTransfer:
     supports_memory_adjustable: true
     supports_cpu_adjustable: true
     supports_cli_mode: false
-  12:
+  '12':
     default: true
     command: /nfs/tools/apps/StatTransfer/12/stattransfer
 matlab:
@@ -124,7 +128,7 @@ rstudio:
     supports_memory_adjustable: true
     supports_cpu_adjustable: true
     supports_cli_mode: false
-  0.98:
+  '0.98':
     default: true
     command: /usr/bin/rstudio
 octave:
@@ -135,9 +139,11 @@ octave:
     supports_memory_adjustable: true
     supports_cpu_adjustable: true
     supports_cli_mode: false
-  3.4.3:
+  '3.4.3':
     default: true
-    command: /usr/bin/octave
+    command: /usr/bin/gnome-terminal
+    args:
+      - -e /usr/bin/octave
 shell:
   global:
     memory: 2048
@@ -146,7 +152,7 @@ shell:
     supports_memory_adjustable: true
     supports_cpu_adjustable: true
     supports_cli_mode: true
-  2.31.3:
+  '2.31.3':
     default: true 
     command: /usr/bin/gnome-terminal
     command_nogui: $ENV(SHELL)
