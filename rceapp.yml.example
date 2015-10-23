@@ -50,8 +50,10 @@ SAS:
 # http://support.sas.com/documentation/cdl/en/hostwin/63285/HTML/default/viewer.htm#win-sysop-memsize.htm
       - -memsize 0
   9.3:
-    default: true
     command: /nfs/tools/apps/sas/9.3/SASFoundation/9.3/sas
+  9.4:
+    default: true
+    command: /nfs/tools/apps/sas/9.4_1/SASFoundation/9.4/sas
 gauss:
   global: 
     memory: 2048
@@ -73,11 +75,13 @@ mathematica:
     supports_memory_adjustable: true
     supports_cpu_adjustable: true
     supports_cli_mode: false
-  10.0.1:
-    command: /nfs/tools/apps/mathematica/10.0.1/Executables/Mathematica
+  10.1.0:
+    command: /nfs/tools/apps/mathematica/10.1/Executables/Mathematica
   10.2.0:
-    default: true
     command: /nfs/tools/apps/mathematica/10.2.0/Executables/Mathematica
+  10.3.0:
+    default: true
+    command: /nfs/tools/apps/mathematica/10.3/Executables/Mathematica
 StatTransfer:
   global:
     memory: 2048
