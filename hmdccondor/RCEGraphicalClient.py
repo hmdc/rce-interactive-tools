@@ -12,10 +12,24 @@ import gettext
 from RCELaunchLaunchWindowFrame import RCELaunchLaunchWindowFrame
 
 class RceSubmitLaunch(wx.App):
+  def __init__(self, *args, **kwargs):
+    self.rceapps = kwargs['rceapps']
+    self.application = kwargs['application']
+    self.version = kwargs['version']
+    self.memory = kwargs['memory']
+    self.cpu = kwargs['cpu']
+    super(RceSubmitLaunch, self).__init__(*args)
+    return
+
   def OnInit(self):
     gettext.install("RceGraphicalClient")
     wx.InitAllImageHandlers()
-    LaunchWindow = RCELaunchLaunchWindowFrame(None, wx.ID_ANY, "")
+    LaunchWindow = RCELaunchLaunchWindowFrame(None, wx.ID_ANY, "",
+	rceapps = self.rceapps,
+        application = self.application,
+        version = self.version,
+        memory = self.memory,
+        cpu = self.cpu)
     self.SetTopWindow(LaunchWindow)
     LaunchWindow.Show()
     return 1
@@ -23,10 +37,3 @@ class RceSubmitLaunch(wx.App):
   def __call__(self):
     gettext.install("RceSubmit")
     self.MainLoop()
-  
-  
-# if __name__ == "__main__":
-#  gettext.install("RceSubmit") # replace with the appropriate catalog name
-
-# RceSubmit = RceSubmitLaunch(0)
-#  RceSubmit.MainLoop()

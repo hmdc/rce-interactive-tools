@@ -138,7 +138,12 @@ class HMDCRceSubmitClient:
 
   def run_app(self, rceapps, application, version, memory, cpu, graphical):
     return RCEConsoleClient(rceapps, application, version,
-        memory, cpu).run_app() if graphical is False else RceSubmitLaunch(0)()
+        memory, cpu).run_app() if graphical is False else RceSubmitLaunch(0,
+ 		rceapps = rceapps,
+		application = application,
+		version = version,
+		memory = memory,
+		cpu = cpu)()
 
   def list_jobs(self):
     print self.__list_jobs()

@@ -14,9 +14,27 @@ import wx
 class RCELaunchLaunchWindowFrame(wx.Frame):
   def __init__(self, *args, **kwds):
     # begin wxGlade: RCELaunchLaunchWindowFrame.__init__
-    wx.Frame.__init__(self, *args, **kwds)
-    self.RCEApplicationIcon = wx.StaticBitmap(self, wx.ID_ANY, wx.Bitmap("/mnt/deployment/hmdc-admin/shared/system/xdg/HMDC-icon-octave.png", wx.BITMAP_TYPE_ANY))
-    self.HMDCApplicationNameVersion = wx.StaticText(self, wx.ID_ANY, _("mathematica 13.1"))
+    wx.Frame.__init__(self, *args) # **kwds)
+
+    self.rceapps = kwds['rceapps']
+    self.application = kwds['application']
+    self.version = kwds['version']
+    self.cpu = kwds['cpu']
+    self.memory = kwds['memory']
+
+    _version = self.version if self.version else \
+               self.rceapps.get_default_version(self.application)
+
+    _cpu = self.rceapps.cpu(self.application, _version) if \
+                self.cpu is None else self.cpu
+
+    _memory = self.rceapps.memory(self.application,_version) if \
+                self.memory is None else self.memory
+
+    _app_name = "{0} {1}".format(self.application, _version)
+
+    self.RCEApplicationIcon = wx.StaticBitmap(self, wx.ID_ANY, wx.Bitmap(self.rceapps.icon(self.application), wx.BITMAP_TYPE_ANY))
+    self.HMDCApplicationNameVersion = wx.StaticText(self, wx.ID_ANY, _(_app_name))
     self.JobMemorySizeLabel = wx.StaticText(self, wx.ID_ANY, _("Memory (GB)"))
     self.JobMemoryTextCtrl = wx.TextCtrl(self, wx.ID_ANY, "")
     # No node in the cluster currently has > 999GiB memory to reserve
