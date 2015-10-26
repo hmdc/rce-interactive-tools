@@ -13,7 +13,7 @@ import logging.handlers
 
 
 class RCEConsoleClient:
-    def __init__(self, rceapps, application, version, memory=None, cpu=None):
+    def __init__(self, rceapps, application=None, version=None, memory=None, cpu=None):
         self.rceapps = rceapps
         self.application = application
         self.version = version
@@ -43,7 +43,7 @@ class RCEConsoleClient:
 
     def run_app(self):
         _version = self.version if self.version else \
-                self.rceapps.get_default_version(application)
+                self.rceapps.get_default_version(self.application)
 
         # else:
         #  print 'Application {0} does not exist.'.format(application)

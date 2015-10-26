@@ -128,9 +128,16 @@ class HMDCRceSubmitClient:
         'Requested Cpus', 
         'Requested Memory'])
 
-  def run_app(rceapps, application, version, memory, cpu, graphical):
+  def attach_all(self, rceapps):
+    return RCEConsoleClient(rceapps).attach_all()
+
+  def attach_app(self, rceapps, jobid):
+    return RCEConsoleClient(rceapps).attach_app(jobid)
+
+  def run_app(self, rceapps, application, version, memory, cpu, graphical):
     return RCEConsoleClient(rceapps, application, version,
         memory, cpu).run_app()
+
   def list_jobs(self):
     print self.__list_jobs()
 
@@ -155,12 +162,12 @@ class HMDCRceSubmitClient:
       self.list_apps()
       exit(0)
     elif args.attachall:
-      self.attach_all()
+      self.attach_all(self.rceapps)
       exit(0)
     elif args.run and args.app:
-      exit(self.run_app(args.app, args.version, args.memory, args.cpu,
+      exit(self.run_app(self.rceapps, args.app, args.version, args.memory, args.cpu,
         args.graphical))
     elif args.attach and isinstance(args.attach, (int, float, str)):
-      self.attach_app(int(args.attach))
+      self.attach_app(self.rceapps, int(args.attach))
     else:
       exit(0)
