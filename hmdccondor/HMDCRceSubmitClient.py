@@ -56,8 +56,14 @@ class HMDCRceSubmitClient:
         default=None
         )
 
-    parser.add_argument('-v', '--version', 
+    parser.add_argument('-v', '--version',
         help='Version of app to run on the RCE cluster'
+        )
+
+    parser.add_argument('-graphical', '--graphical',
+        action='store_true',
+        help='Use rce_submit gui',
+        default=False,
         )
 
     parser.add_argument('-nogui', '--nogui', action='store_true',
@@ -148,7 +154,8 @@ class HMDCRceSubmitClient:
       """.format(e)
       return 1
 
-  def run_app(self, application, version, memory=None, cpu=None):
+  def run_app(self, application, version, memory=None, cpu=None,
+      graphical=False):
     if self.rceapps.app_version_exists(application, version):
       _version = version if version else self.rceapps.get_default_version(application)
     else:
@@ -291,7 +298,8 @@ class HMDCRceSubmitClient:
       self.attach_all()
       exit(0)
     elif args.run and args.app:
-      exit(self.run_app(args.app, args.version, args.memory, args.cpu))
+      exit(self.run_app(args.app, args.version, args.memory, args.cpu,
+        args.graphical))
     elif args.attach and isinstance(args.attach, (int, float, str)):
       self.attach_app(int(args.attach))
     else:
