@@ -17,10 +17,10 @@ class RCEGraphicalTaskDispatcher(Thread):
     return self._stop.set()
 
   def run(self):
-    self.f(self.args)
+    self.f(*self.args)
 
-  def run_app(application, version, command, args, memory, cpu):
-    job = rce.submit(application, version, command, args, memory, cpu)
+  def run_app(self, application, version, command, args, memory, cpu):
+    job = self.rce.submit(application, version, command, args, memory, cpu)
     CallAfter(pub.sendMessage, 'rce_submit.job_submitted',
         jobid = job)
 

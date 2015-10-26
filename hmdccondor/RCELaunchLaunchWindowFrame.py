@@ -12,7 +12,7 @@ from wx.lib.pubsub import pub
 # begin wxGlade: extracode
 # end wxGlade
 from ProgressBarThreadGUI import ProgressBarThreadGUI
-from RCEGraphicalTaskDispatcher import RCEGraphicalTaskDispatcher
+from RCEGraphicalDispatcher import RCEGraphicalTaskDispatcher
 
 class RCELaunchLaunchWindowFrame(wx.Frame):
   def __init__(self, *args, **kwds):
@@ -53,7 +53,7 @@ class RCELaunchLaunchWindowFrame(wx.Frame):
     self.HelpBtn = wx.Button(self, wx.ID_ANY, _("Help"))
     self.RunJobBtn = wx.Button(self, wx.ID_ANY, _("Run"))
     self.RunJobBtn.Bind(wx.EVT_BUTTON, self.OnRunJobBtn)
-    pub.subscribe(self.OnSubmitEvent, 'rce_submit.job_started')
+    pub.subscribe(self.OnSubmitEvent, 'rce_submit.job_submitted')
     self.__set_properties()
     self.__do_layout()
     # end wxGlade
@@ -66,36 +66,21 @@ class RCELaunchLaunchWindowFrame(wx.Frame):
     return
   def OnSubmitEvent(self, jobid = None):
     print "Received event. JobId = {0}".format(jobid)
+    self.progress_bar_window.complete_task()
+
   def OnRunJobBtn(self, event):
     self.Hide()
-    progress_bar_window = ProgressBarThreadGUI(None, wx.ID_ANY, " ", icon = self.rceapps.icon(self.application))
-    progress_bar_window.Show()
-    progress_bar_window.start_task("Submitting job")
-    RCEGraphicalTaskDispatcher('run_app',
+    self.progress_bar_window = ProgressBarThreadGUI(None, wx.ID_ANY, " ", icon = self.rceapps.icon(self.application))
+    self.progress_bar_window.Show()
+    self.progress_bar_window.start_task("Submitting job")
+    self.dispatcher = RCEGraphicalTaskDispatcher('run_app',
         self.application,
         self._version,
         self.rceapps.command(self.application, self._version),
         self.rceapps.args(self.application, self._version),
-        self.memory*1024,
-        self._cpu).start()
-
-
-
-    # print "Submitting a job"
-
-    # job = rce.submit(
-    #  self.application,
-    #  self._version,
-    #  self.rceapps.command(self.application, self._version),
-    #  self.rceapps.args(self.application, self._version),
-    #  self._memory*1024,
-    #  self._cpu)
-
-    # progress_bar_window.complete_task()
-
-    # progress_bar_window.start_task("Waiting for job to start")
-
-    # job_status, ad = rce.poll(job, use_local_schedd=True)
+        self._memory*1024,
+        self._cpu)
+    self.dispatcher.start()
 
   def __set_properties(self):
     # begin wxGlade: RCELaunchLaunchWindowFrame.__set_properties
