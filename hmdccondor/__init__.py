@@ -10,3 +10,4 @@ from .HMDCWrapper import HMDCWrapper
 from .HMDCPoller import HMDCPoller
 from .HMDCLog import rcelog
 from .RCEConsoleClient import RCEConsoleClient
+from .RCEGraphicalClient import RceSubmitLaunch

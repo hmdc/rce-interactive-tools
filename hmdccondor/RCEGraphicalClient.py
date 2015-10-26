@@ -13,16 +13,20 @@ from RCELaunchLaunchWindowFrame import RCELaunchLaunchWindowFrame
 
 class RceSubmitLaunch(wx.App):
   def OnInit(self):
+    gettext.install("RceGraphicalClient")
     wx.InitAllImageHandlers()
     LaunchWindow = RCELaunchLaunchWindowFrame(None, wx.ID_ANY, "")
     self.SetTopWindow(LaunchWindow)
     LaunchWindow.Show()
     return 1
 
-# end of class RceSubmitLaunch
+  def __call__(self):
+    gettext.install("RceSubmit")
+    self.MainLoop()
+  
+  
+# if __name__ == "__main__":
+#  gettext.install("RceSubmit") # replace with the appropriate catalog name
 
-if __name__ == "__main__":
-  gettext.install("RceSubmit") # replace with the appropriate catalog name
-
-  RceSubmit = RceSubmitLaunch(0)
-  RceSubmit.MainLoop()
+# RceSubmit = RceSubmitLaunch(0)
+#  RceSubmit.MainLoop()

@@ -5,12 +5,14 @@ from hmdccondor import RCEJobNotFoundError, \
   RCEXpraTookTooLongStartError, \
   RCEJobDidNotStart, \
   RCEConsoleClient, \
+  RceSubmitLaunch, \
   rcelog
 from ProgressBarThreadCli import ProgressBarThreadCli
 import argparse
 import rceapp
 import logging
 import logging.handlers
+import wx
 
 class HMDCRceSubmitClient:
   def __init__(self):
@@ -136,7 +138,7 @@ class HMDCRceSubmitClient:
 
   def run_app(self, rceapps, application, version, memory, cpu, graphical):
     return RCEConsoleClient(rceapps, application, version,
-        memory, cpu).run_app()
+        memory, cpu).run_app() if graphical is False else RceSubmitLaunch(0)()
 
   def list_jobs(self):
     print self.__list_jobs()
