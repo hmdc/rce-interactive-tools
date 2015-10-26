@@ -14,14 +14,40 @@ import wx
 class ProgressBarThreadGUI(wx.Frame):
   def __init__(self, *args, **kwds):
     # begin wxGlade: ProgressBarThreadGUI.__init__
-    wx.Frame.__init__(self, *args, **kwds)
-    self.RCEApplicationIcon = wx.StaticBitmap(self, wx.ID_ANY, wx.Bitmap("/mnt/deployment/hmdc-admin/shared/system/xdg/HMDC-icon-octave.png", wx.BITMAP_TYPE_ANY))
+    wx.Frame.__init__(self, *args)
+    self.RCEApplicationIcon = wx.StaticBitmap(self, wx.ID_ANY, wx.Bitmap(kwds['icon']))
     self.RCECurrentTask = wx.StaticText(self, wx.ID_ANY, _("Current Task"))
     self.CancelJobTaskBtn = wx.Button(self, wx.ID_CANCEL, "")
+    self.RCECurrentTaskGauge = wx.Gauge(self, range=180)
+    self.RCECurrentTaskGauge.SetValue(0)
+    self.RCECurrentTaskGaugeTimer = wx.Timer(self, 1)
+    self.Bind(wx.EVT_TIMER, self.__update_gauge__, self.RCECurrentTaskGaugeTimer)
 
     self.__set_properties()
     self.__do_layout()
     # end wxGlade
+
+  def start_task(self, task_name):
+    self.RCECurrentTask.SetLabel(task_name)
+    self.RCECurrentTaskGaugeTimer.Start(1000)
+
+  def stop_task(self):
+    self.RCECurrentTaskGaugeTimer.Stop()
+  
+  def complete_task(self):
+    if self.RCECurrentTaskGauge.GetValue() <= 60:
+      gauge_value = 60
+    elif 60 <= self.RCECurrentTaskGauge.GetValue() <= 120:
+      gauge_value = 120
+    elif self.RCECurrentTaskGauge.GetValue() >= 120:
+      gauge_value = 180
+
+    self.RCECurrentTaskGaugeTimer.Stop()
+    self.RCECurrentTaskGauge.SetValue(gauge_value)
+
+  def __update_gauge__(self, evt):
+    print "{0} {1}".format(self.RCECurrentTaskGauge.GetValue(), self.RCECurrentTaskGauge.GetValue()+1)
+    self.RCECurrentTaskGauge.SetValue(self.RCECurrentTaskGauge.GetValue() + 1)
 
   def __set_properties(self):
     # begin wxGlade: ProgressBarThreadGUI.__set_properties
@@ -39,7 +65,7 @@ class ProgressBarThreadGUI(wx.Frame):
     ProgressBarIconAndTaskNameSizer.AddGrowableCol(0)
     ProgressBarIconAndTaskNameSizer.AddGrowableCol(1)
     ProgressBarThreadGuiParentSizer.Add(ProgressBarIconAndTaskNameSizer, 1, 0, 0)
-    ProgressBarThreadGuiParentSizer.Add((20, 20), 0, 0, 0)
+    ProgressBarThreadGuiParentSizer.Add(self.RCECurrentTaskGauge, 0, wx.EXPAND)
     ProgressBarThreadGuiParentSizer.Add(self.CancelJobTaskBtn, 0, wx.ALIGN_CENTER, 0)
     self.SetSizer(ProgressBarThreadGuiParentSizer)
     self.Layout()
