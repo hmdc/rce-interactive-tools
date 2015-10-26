@@ -18,7 +18,7 @@ class RCEConsoleClient:
         self.application = application
         self.version = version
         self.memory = memory
-        self.cpu = None
+        self.cpu = cpu
         return
 
     def attach_all(self):
@@ -61,7 +61,7 @@ class RCEConsoleClient:
 
         job_submit_bar = ProgressBarThreadCli('* Submitting job')
         job_submit_bar.start()
-
+ 
         job = rce.submit(
             self.application,
             _version,

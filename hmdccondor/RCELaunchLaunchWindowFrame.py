@@ -57,7 +57,11 @@ class RCELaunchLaunchWindowFrame(wx.Frame):
 
   def OnException(self, progress_bar_window, excpt):
     return
-  
+
+  def OnAttachSuccessful(self, event):
+    return
+  def OnSubmitSuccessful(self, event):
+    return 
   def OnRunJobBtn(self, event):
     rce = HMDCCondor()
 
@@ -77,6 +81,10 @@ class RCELaunchLaunchWindowFrame(wx.Frame):
       self._cpu)
 
     progress_bar_window.complete_task()
+
+    progress_bar_window.start_task("Waiting for job to start")
+
+    job_status, ad = rce.poll(job, use_local_schedd=True)
 
   def __set_properties(self):
     # begin wxGlade: RCELaunchLaunchWindowFrame.__set_properties
