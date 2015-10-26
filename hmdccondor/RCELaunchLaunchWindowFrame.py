@@ -4,13 +4,16 @@
 #
 import time
 import wx
+from wx.lib.pubsub import setupkwargs
+from wx.lib.pubsub import pub
 # begin wxGlade: dependencies
 # end wxGlade
 
 # begin wxGlade: extracode
 # end wxGlade
-from HMDCCondor import HMDCCondor
 from ProgressBarThreadGUI import ProgressBarThreadGUI
+from RCEGraphicalTaskDispatcher import RCEGraphicalTaskDispatcher
+
 class RCELaunchLaunchWindowFrame(wx.Frame):
   def __init__(self, *args, **kwds):
     # begin wxGlade: RCELaunchLaunchWindowFrame.__init__
@@ -45,46 +48,54 @@ class RCELaunchLaunchWindowFrame(wx.Frame):
     self.JobCpuTextCtrl = wx.TextCtrl(self, wx.ID_ANY, str(self._cpu))
     # Make sure that only integers can be teyped into this field
     self.JobCpuTextCtrl.Bind(wx.EVT_CHAR, self.__validate_mem_cpu_entry)
-    # No one should try to acquire interactive job slots > 999 CPU(s) 
+    # No one should try to acquire interactive job slots > 999 CPU(s)
     self.JobCpuTextCtrl.SetMaxLength(3)
     self.HelpBtn = wx.Button(self, wx.ID_ANY, _("Help"))
     self.RunJobBtn = wx.Button(self, wx.ID_ANY, _("Run"))
     self.RunJobBtn.Bind(wx.EVT_BUTTON, self.OnRunJobBtn)
-
+    pub.subscribe(self.OnSubmitEvent, 'rce_submit.job_started')
     self.__set_properties()
     self.__do_layout()
     # end wxGlade
 
   def OnException(self, progress_bar_window, excpt):
     return
-
-  def OnAttachSuccessful(self, event):
+  def OnPollEvent(self, event):
     return
-  def OnSubmitSuccessful(self, event):
-    return 
+  def OnAttachEvent(self, event):
+    return
+  def OnSubmitEvent(self, jobid = None):
+    print "Received event. JobId = {0}".format(jobid)
   def OnRunJobBtn(self, event):
-    rce = HMDCCondor()
-
     self.Hide()
     progress_bar_window = ProgressBarThreadGUI(None, wx.ID_ANY, " ", icon = self.rceapps.icon(self.application))
     progress_bar_window.Show()
     progress_bar_window.start_task("Submitting job")
-   
-    print "Submitting a job"
- 
-    job = rce.submit(
-      self.application,
-      self._version,
-      self.rceapps.command(self.application, self._version),
-      self.rceapps.args(self.application, self._version),
-      self._memory*1024,
-      self._cpu)
+    RCEGraphicalTaskDispatcher('run_app',
+        self.application,
+        self._version,
+        self.rceapps.command(self.application, self._version),
+        self.rceapps.args(self.application, self._version),
+        self.memory*1024,
+        self._cpu).start()
 
-    progress_bar_window.complete_task()
 
-    progress_bar_window.start_task("Waiting for job to start")
 
-    job_status, ad = rce.poll(job, use_local_schedd=True)
+    # print "Submitting a job"
+
+    # job = rce.submit(
+    #  self.application,
+    #  self._version,
+    #  self.rceapps.command(self.application, self._version),
+    #  self.rceapps.args(self.application, self._version),
+    #  self._memory*1024,
+    #  self._cpu)
+
+    # progress_bar_window.complete_task()
+
+    # progress_bar_window.start_task("Waiting for job to start")
+
+    # job_status, ad = rce.poll(job, use_local_schedd=True)
 
   def __set_properties(self):
     # begin wxGlade: RCELaunchLaunchWindowFrame.__set_properties
