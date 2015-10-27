@@ -10,7 +10,11 @@ setup(name='rce-interactive-tools',
       license='MIT',
       packages=['hmdccondor', 'rceapp'],
       requires=['pexpect', 'tabulate', 'progressbar', 'pyyaml'],
-      data_files=[('/etc', ['rceapp.yml.example'])],
+      data_files=[
+        ('/etc', ['rceapp.yml.example']),
+        ('/etc/xdg/autostart',
+          ['share/desktop/rcesubmit-reattach-jobs.desktop']),
+        ],
       scripts=[
         'scripts/rce-info.sh',
         'scripts/HMDC_job_wrapper_switch.sh',
