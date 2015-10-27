@@ -7,6 +7,7 @@ import wx
 from wx.lib.pubsub import setupkwargs
 from wx.lib.pubsub import pub
 import classad
+import htcondor
 # begin wxGlade: dependencies
 # end wxGlade
 
@@ -93,7 +94,24 @@ class RCELaunchLaunchWindowFrame(wx.Frame):
       self.dispatcher.start() 
 
     return on_excpt()
- 
+
+  def OnCancelSubmission(self, event):
+
+    # Unsubscribe from all events
+
+    map(lambda evt: pub.unsubscribe(*evt), [(self.OnSubmitEvent, 'rce_submit.job_submitted'), 
+      (self.OnPollEvent, 'rce_submit.job_started'),
+      (self.OnAttachEvent, 'rce_submit.xpra_attached')])
+
+    htcondor.Schedd().act(htcondor.JobAction.Remove, [ str(float(self.jobid)) ])
+
+    # This is lazy because I'm not stopping the polling thread, but it will stop on its own.
+
+    self.progress_bar_window.complete_task()
+    self.progress_bar_window.Destroy()
+
+    return self.Destroy()
+
   def OnAttachEvent(self, pid=None, excpt=None):
 
     def on_excpt():
@@ -108,18 +126,20 @@ class RCELaunchLaunchWindowFrame(wx.Frame):
     return on_excpt()
 
   def OnSubmitEvent(self, jobid = None):
-    print "Received event. JobId = {0}".format(jobid)
     self.progress_bar_window.complete_task()
     self.dispatcher.join()
     self.progress_bar_window.start_task("Waiting for job to start") 
     # Run polling
     self.jobid = jobid
+    self.progress_bar_window.CancelJobTaskBtn.Enable()
+    self.progress_bar_window.CancelJobTaskBtn.Bind(wx.EVT_BUTTON, self.OnCancelSubmission)
     self.dispatcher = RCEGraphicalTaskDispatcher('poll_app', self.jobid)
     self.dispatcher.start()
 
   def OnRunJobBtn(self, event):
     self.Hide()
     self.progress_bar_window = ProgressBarThreadGUI(None, wx.ID_ANY, " ", icon = self.rceapps.icon(self.application))
+    self.progress_bar_window.CancelJobTaskBtn.Disable()
     self.progress_bar_window.Show()
     self.progress_bar_window.start_task("Submitting job")
     self.dispatcher = RCEGraphicalTaskDispatcher('run_app',
