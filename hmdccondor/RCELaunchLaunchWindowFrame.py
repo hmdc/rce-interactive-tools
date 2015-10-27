@@ -92,6 +92,8 @@ class RCELaunchLaunchWindowFrame(wx.Frame):
     print "in event attached!"
     self.progress_bar_window.complete_task()
     self.dispatcher.join()
+    # Quit application
+    self.progress_bar_window.Destroy()
     self.Destroy()
     return
 
