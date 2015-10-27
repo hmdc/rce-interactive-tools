@@ -15,19 +15,22 @@ class RCEExceptionFrame(wx.Frame):
   def __init__(self, *args, **kwds):
     # begin wxGlade: RCEExceptionFrame.__init__
     wx.Frame.__init__(self, *args)
-    self.RCEApplicationIcon = wx.StaticBitmap(self, wx.ID_ANY, wx.Bitmap("/mnt/deployment/hmdc-admin/shared/system/xdg/HMDC-icon-octave.png", wx.BITMAP_TYPE_ANY))
+    self.RCEApplicationIcon = wx.StaticBitmap(self, wx.ID_ANY, wx.Bitmap(kwds['icon'], wx.BITMAP_TYPE_ANY))
     self.ExceptionLabel = wx.StaticText(self, wx.ID_ANY, _("Encountered Error"))
     self.ErrorMessageTextCtrl = wx.TextCtrl(self, wx.ID_ANY, kwds['msg'], style=wx.TE_MULTILINE | wx.TE_READONLY | wx.TE_RICH)
     self.ExceptionOkBtn = wx.Button(self, wx.ID_EXIT, "")
-
+    self.ExceptionOkBtn.Bind(wx.EVT_BUTTON, self.__exit_frame__)
     self.__set_properties()
     self.__do_layout()
     # end wxGlade
 
+  def __exit_frame__(self, event):
+    self.Destroy()
+
   def __set_properties(self):
     # begin wxGlade: RCEExceptionFrame.__set_properties
     self.SetTitle(_("Encountered Error"))
-    self.SetSize((450, 350))
+    self.SetSize((600, 350))
     self.ExceptionLabel.SetFont(wx.Font(14, wx.DEFAULT, wx.NORMAL, wx.NORMAL, 0, "Sans"))
     self.ErrorMessageTextCtrl.SetMinSize((276, 275))
     # end wxGlade

@@ -68,7 +68,7 @@ class RCELaunchLaunchWindowFrame(wx.Frame):
     self.dispatcher.join()
     self.progress_bar_window.Hide()
    
-    RCEExceptionFrame(None, wx.ID_ANY, " ", msg=exception_helper(excpt)).Show()
+    RCEExceptionFrame(None, wx.ID_ANY, " ", msg=exception_helper(excpt), icon = self.rceapps.icon(self.application)).Show()
 
     self.progress_bar_window.Destroy()
     self.Destroy()
