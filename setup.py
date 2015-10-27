@@ -2,7 +2,7 @@ from os import chmod
 from distutils.core import setup
 
 setup(name='rce-interactive-tools',
-      version='1.5.15',
+      version='1.6.0',
       description='HMDC utilities and scripts to submit condor jobs.',
       url='https://github.com/hmdc/rce-interactive-tools',
       author='Evan Sarmiento',
@@ -10,7 +10,11 @@ setup(name='rce-interactive-tools',
       license='MIT',
       packages=['hmdccondor', 'rceapp'],
       requires=['pexpect', 'tabulate', 'progressbar', 'pyyaml'],
-      data_files=[('/etc', ['rceapp.yml.example'])],
+      data_files=[
+        ('/etc', ['rceapp.yml.example']),
+        ('/etc/xdg/autostart',
+          ['share/desktop/rcesubmit-reattach-jobs.desktop']),
+        ],
       scripts=[
         'scripts/rce-info.sh',
         'scripts/HMDC_job_wrapper_switch.sh',

@@ -4,12 +4,15 @@ from hmdccondor import RCEJobNotFoundError, \
   RCEJobTookTooLongStartError, \
   RCEXpraTookTooLongStartError, \
   RCEJobDidNotStart, \
+  RCEConsoleClient, \
+  RceSubmitLaunch, \
   rcelog
 from ProgressBarThreadCli import ProgressBarThreadCli
 import argparse
 import rceapp
 import logging
 import logging.handlers
+import wx
 
 class HMDCRceSubmitClient:
   def __init__(self):
@@ -127,6 +130,21 @@ class HMDCRceSubmitClient:
         'Requested Cpus', 
         'Requested Memory'])
 
+  def attach_all(self, rceapps):
+    return RCEConsoleClient(rceapps).attach_all()
+
+  def attach_app(self, rceapps, jobid):
+    return RCEConsoleClient(rceapps).attach_app(jobid)
+
+  def run_app(self, rceapps, application, version, memory, cpu, graphical):
+    return RCEConsoleClient(rceapps, application, version,
+        memory, cpu).run_app() if graphical is False else RceSubmitLaunch(0,
+ 		rceapps = rceapps,
+		application = application,
+		version = version,
+		memory = memory,
+		cpu = cpu)()
+
   def list_jobs(self):
     print self.__list_jobs()
 
@@ -134,154 +152,10 @@ class HMDCRceSubmitClient:
     print "** denotes default"
     print self.__list_apps()
 
-  def attach_all(self):
-    return map(lambda ad: self.attach_app(int(ad['ClusterId'])), HMDCCondor().get_my_jobs())
-
-  def attach_app(self, jobid, ad=None):
-    try:
-      return HMDCCondor().attach(jobid, self.rceapps, ad=ad)
-    except RCEJobNotFoundError as e:
-      rcelog('critical', "attach_app(): Job {0} not found.".format(e.jobid))
-      print e.message()  
-      return 1
-    except Exception as e:
-      rcelog('critical', "attach_app(): Unkown exception: {0}".format(e))
-      print """
-      Encountered unknown exception. Please report this to
-      support@help.hmdc.harvard.edu with the following exception data:
-
-      Exception: {0}
-      """.format(e)
-      return 1
-
-  def run_app(self, application, version, memory=None, cpu=None,
-      graphical=False):
-    if self.rceapps.app_version_exists(application, version):
-      _version = version if version else self.rceapps.get_default_version(application)
-    else:
-      print 'Application {0} does not exist.'.format(application)
-      print 'Run rce_submit.py -l to view a list of available applications.'
-      return 1
-
-    rce = HMDCCondor()
-
-    _cpu = self.rceapps.cpu(application, _version) if cpu is None else cpu
-
-
-    _memory = self.rceapps.memory(application,_version) if memory is None else memory
-
-
-    job_submit_bar = ProgressBarThreadCli('* Submitting job')
-    job_submit_bar.start()
-
-    job = rce.submit(
-        application,
-        _version,
-        self.rceapps.command(application,_version),
-        self.rceapps.args(application,_version),
-        _memory,
-        _cpu)
-
-    job_submit_bar.stop()
-    job_submit_bar.join()
-
-    job_wait_bar = ProgressBarThreadCli('* Waiting for job to start')
-    job_wait_bar.start()
-
-    try:
-      job_status, ad = rce.poll(job, use_local_schedd=True)
-    except RCEJobTookTooLongStartError as e:
-      try:
-        job_wait_bar.stop()
-        job_wait_bar.join()
-      except:
-        pass
-
-      rcelog('critical', 'run_app(): Job {0} took too long to start: Application={1},Version={2},RequestMemory={3},RequestCpu={4}'.
-	format(job, application, _version, _memory, _cpu))
-
-      print e.message()
-
-      return 1
-    except RCEJobDidNotStart as e:
-      try:
-        job_wait_bar.stop()
-        job_wait_bar.join()
-      except:
-        pass
-
-      rcelog('critical', 'run_app(): Job {0} did not start. Reason: {1}'.format(job, e))
-
-      print e.message()
-      return 1
-    except Exception as e:
-      try:
-        job_wait_bar.stop()
-        job_wait_bar.join()
-      except:
-        pass
-
-      rcelog('critical', "run_app(): Unknown exception: {0}".format(e))
-
-      print """
-      Application encountered unexpected exception while polling for Job
-      {0} to start. Please notify support@help.hmdc.harvard.edu and
-      include the following exception output.
-
-      Exception: {1}
-      """.format(job, e)
-
-      return 1
-
-    job_wait_bar.stop()
-    job_wait_bar.join()
-
-    job_xpra_wait_bar = ProgressBarThreadCli("* Attaching to job {0}".
-        format(job))
-    job_xpra_wait_bar.start()
-
-    try:
-      xpra_client_pid = self.attach_app(job, ad=ad)
-    except RCEXpraTookTooLongStartError as e:
-      try:
-        job_xpra_wait_bar.stop()
-        job_xpra_wait_bar.join()
-      except:
-        pass
-
-      rcelog('critical', "run_app(): Job {0}, xpra took too long to start. Printing classad.".format(job))
-      rcelog('critical', e.get_ad())
-      print e.message()
-
-      return 1
-    except Exception as e:
-      try:
-        job_xpra_wait_bar.stop()
-        job_xpra_wait_bar.join()
-      except:
-        pass
-
-      rcelog('critical', "run_app(): Encountered unknown exception: {0}".format(e))
-
-      print """
-      Application encountered unexpected exception while attempting to
-      attach to job {0}. Please notify support@help.hmdc.harvard.edu and
-      include the following exception output.
-
-      Exception: {1}
-      """.format(job, e)
-
-      return 1
-
-    job_xpra_wait_bar.stop()
-    job_xpra_wait_bar.join()
-
-    return xpra_client_pid
-
   def run(self):
     args = self.__parse_args()
     self.rceapps = rceapp.rceapp(args.config)
-
+ 
     logging.getLogger('rce_submit').setLevel(logging.DEBUG)
     handler = logging.handlers.SysLogHandler(address='/dev/log')
     handler.setFormatter(logging.Formatter('RceSubmit.%(user)s.%(process)d.%(module)s.%(funcName)s: %(message)s'))
@@ -295,12 +169,12 @@ class HMDCRceSubmitClient:
       self.list_apps()
       exit(0)
     elif args.attachall:
-      self.attach_all()
+      self.attach_all(self.rceapps)
       exit(0)
     elif args.run and args.app:
-      exit(self.run_app(args.app, args.version, args.memory, args.cpu,
+      exit(self.run_app(self.rceapps, args.app, args.version, args.memory, args.cpu,
         args.graphical))
     elif args.attach and isinstance(args.attach, (int, float, str)):
-      self.attach_app(int(args.attach))
+      self.attach_app(self.rceapps, int(args.attach))
     else:
       exit(0)
