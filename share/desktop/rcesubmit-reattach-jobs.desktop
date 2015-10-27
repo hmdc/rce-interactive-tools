@@ -1,0 +1,7 @@
+[Desktop Entry]
+Version=1.0
+Encoding=UTF-8
+Name=HMDC RCE Submit
+Exec=/usr/bin/rce_submit.py --attachall
+X-GNOME-Autostart-enabled=true
+Type=Application

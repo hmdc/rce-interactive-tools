@@ -8,5 +8,6 @@ include scripts/HMDC_job_wrapper.py
 include scripts/HMDC_periodic_job_is_idle.py
 include scripts/pexpect_run.py
 include scripts/HMDC_clean_up.py
+include share/desktop/rcesubmit-reattach-jobs.desktop
 include rceapp/*
 include hmdccondor/*
