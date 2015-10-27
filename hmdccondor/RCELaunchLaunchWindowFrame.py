@@ -6,6 +6,7 @@ import time
 import wx
 from wx.lib.pubsub import setupkwargs
 from wx.lib.pubsub import pub
+import classad
 # begin wxGlade: dependencies
 # end wxGlade
 
@@ -13,6 +14,8 @@ from wx.lib.pubsub import pub
 # end wxGlade
 from ProgressBarThreadGUI import ProgressBarThreadGUI
 from RCEGraphicalDispatcher import RCEGraphicalTaskDispatcher
+from RCEExceptionFrame import RCEExceptionFrame
+from HMDCLog import exception_helper
 
 class RCELaunchLaunchWindowFrame(wx.Frame):
   def __init__(self, *args, **kwds):
@@ -54,19 +57,53 @@ class RCELaunchLaunchWindowFrame(wx.Frame):
     self.RunJobBtn = wx.Button(self, wx.ID_ANY, _("Run"))
     self.RunJobBtn.Bind(wx.EVT_BUTTON, self.OnRunJobBtn)
     pub.subscribe(self.OnSubmitEvent, 'rce_submit.job_submitted')
+    pub.subscribe(self.OnPollEvent, 'rce_submit.job_started')
+    pub.subscribe(self.OnAttachEvent, 'rce_submit.xpra_attached')
     self.__set_properties()
     self.__do_layout()
     # end wxGlade
 
-  def OnException(self, progress_bar_window, excpt):
+  def OnException(self, excpt):
+    self.progress_bar_window.complete_task()
+    self.dispatcher.join()
+    self.Hide()
+   
+    RCEExceptionFrame(NONE, wx.ID_ANY, " ", msg=exception_helper(excpt)).Show()
+ 
     return
-  def OnPollEvent(self, event):
+  def OnPollEvent(self, job_status=None, ad=None, excpt=None):
+    
+    def on_excpt():
+      return OnException(excpt) if excpt is not None else end_current_task()
+    
+    def end_current_task():
+      self.progress_bar_window.complete_task()
+      self.dispatcher.join()
+      return run_next_task()
+
+    def run_next_task(parsed_ad=classad.parseOld(ad)):
+      self.progress_bar_window.start_task("Attaching to job {0}".format(parsed_ad['HMDCApplicationName']))
+      self.dispatcher = RCEGraphicalTaskDispatcher('attach_app', self.rceapps, self.jobid, ad)
+      self.dispatcher.start() 
+
+    return on_excpt()
+ 
+  def OnAttachEvent(self, pid=None, exception=None):
+    print "in event attached!"
+    self.progress_bar_window.complete_task()
+    self.dispatcher.join()
+    self.Destroy()
     return
-  def OnAttachEvent(self, event):
-    return
+
   def OnSubmitEvent(self, jobid = None):
     print "Received event. JobId = {0}".format(jobid)
     self.progress_bar_window.complete_task()
+    self.dispatcher.join()
+    self.progress_bar_window.start_task("Waiting for job to start") 
+    # Run polling
+    self.jobid = jobid
+    self.dispatcher = RCEGraphicalTaskDispatcher('poll_app', self.jobid)
+    self.dispatcher.start()
 
   def OnRunJobBtn(self, event):
     self.Hide()

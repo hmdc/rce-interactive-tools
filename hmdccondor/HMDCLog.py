@@ -4,6 +4,18 @@ import pwd
 import os
 import classad
 
+def exception_helper(excpt):
+  try:
+    return excpt.message()
+  except:
+    return """
+Encountered unknown exception. Please report
+this to support@help.hmdc.harvard.edu with
+the following exception data:
+
+Exception: {0}.format(excpt)
+"""
+
 def rcelog(level, message, our_logger='rce_submit',
     my_username=pwd.getpwuid(os.getuid())[0]):
 

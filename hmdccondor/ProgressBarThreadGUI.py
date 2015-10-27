@@ -46,7 +46,6 @@ class ProgressBarThreadGUI(wx.Frame):
     self.RCECurrentTaskGauge.SetValue(gauge_value)
 
   def __update_gauge__(self, evt):
-    print "{0} {1}".format(self.RCECurrentTaskGauge.GetValue(), self.RCECurrentTaskGauge.GetValue()+1)
     self.RCECurrentTaskGauge.SetValue(self.RCECurrentTaskGauge.GetValue() + 1)
 
   def __set_properties(self):

@@ -126,7 +126,7 @@ class HMDCCondor:
     except RCEJobDidNotStart:
       pool.terminate()
       raise 
-    except:
+    except Exception as e:
       pool.terminate()
       raise RCEJobTookTooLongStartError(jobid)
 
@@ -135,7 +135,7 @@ class HMDCCondor:
     # If attach is being run from submit, then, we don't have to poll.
 
     if ad is None:
-      status, _classad = self.poll(jobid)
+      status, _classad = self.poll(jobid, want_results= [None, CONSTANTS.JOB_STATUS_RUNNING] )
     else:
       status, _classad = classad.parseOld(ad)['JobStatus'], ad
  
