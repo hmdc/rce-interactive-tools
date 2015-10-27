@@ -28,17 +28,17 @@ class RCEGraphicalTaskDispatcher(Thread):
     try:
       job_status, ad = self.rce.poll(jobid, use_local_schedd=True)
       CallAfter(pub.sendMessage, 'rce_submit.job_started',
-          job_status=job_status, ad=ad, excpt=None)
+         job_status=job_status, ad=ad, excpt=None)
     except Exception as e:
-      CallAfter(pub.sendMessage, 'rce_submit.job_started',
-          job_status=None, ad=None, excpt=e)
+      CallAfter(pub.sendMessage, 'rce_submit.job_started', job_status=None,
+        ad=None, excpt=e)
 
   def attach_app(self, rceapps, jobid, ad):
     try:
       CallAfter(pub.sendMessage, 'rce_submit.xpra_attached',
           pid = self.rce.attach(jobid, rceapps, ad=ad),
-          exception = None)
+          excpt = None)
     except Exception as e:
       CallAfter(pub.sendMessage, 'rce_submit.xpra_attached',
           pid = None,
-          exception = e)
+          excpt = e)
