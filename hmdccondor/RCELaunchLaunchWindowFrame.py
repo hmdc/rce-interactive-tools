@@ -66,36 +66,46 @@ class RCELaunchLaunchWindowFrame(wx.Frame):
   def OnException(self, excpt):
     self.progress_bar_window.complete_task()
     self.dispatcher.join()
-    self.Hide()
+    self.progress_bar_window.Hide()
    
-    RCEExceptionFrame(NONE, wx.ID_ANY, " ", msg=exception_helper(excpt)).Show()
+    RCEExceptionFrame(None, wx.ID_ANY, " ", msg=exception_helper(excpt)).Show()
+
+    self.progress_bar_window.Destroy()
+    self.Destroy()
  
     return
   def OnPollEvent(self, job_status=None, ad=None, excpt=None):
-    
+   
+    print "job_status={0},excpt={0}".format(job_status, excpt)
+ 
     def on_excpt():
-      return OnException(excpt) if excpt is not None else end_current_task()
+      return self.OnException(excpt) if excpt is not None else end_current_task()
     
     def end_current_task():
       self.progress_bar_window.complete_task()
       self.dispatcher.join()
       return run_next_task()
 
-    def run_next_task(parsed_ad=classad.parseOld(ad)):
+    def run_next_task():
+      parsed_ad = classad.parseOld(ad)
       self.progress_bar_window.start_task("Attaching to job {0}".format(parsed_ad['HMDCApplicationName']))
       self.dispatcher = RCEGraphicalTaskDispatcher('attach_app', self.rceapps, self.jobid, ad)
       self.dispatcher.start() 
 
     return on_excpt()
  
-  def OnAttachEvent(self, pid=None, exception=None):
-    print "in event attached!"
-    self.progress_bar_window.complete_task()
-    self.dispatcher.join()
-    # Quit application
-    self.progress_bar_window.Destroy()
-    self.Destroy()
-    return
+  def OnAttachEvent(self, pid=None, excpt=None):
+
+    def on_excpt():
+      return OnException(excpt) if excpt is not None else end_current_task()
+
+    def end_current_task():
+      self.progress_bar_window.complete_task()
+      self.dispatcher.join()
+      self.progress_bar_window.Destroy()
+      return self.Destroy()
+
+    return on_excpt()
 
   def OnSubmitEvent(self, jobid = None):
     print "Received event. JobId = {0}".format(jobid)
@@ -117,8 +127,8 @@ class RCELaunchLaunchWindowFrame(wx.Frame):
         self._version,
         self.rceapps.command(self.application, self._version),
         self.rceapps.args(self.application, self._version),
-        self._memory*1024,
-        self._cpu)
+        int(self.JobMemoryTextCtrl.GetValue()) * 1024,
+        int(self.JobCpuTextCtrl.GetValue()))
     self.dispatcher.start()
 
   def __set_properties(self):
