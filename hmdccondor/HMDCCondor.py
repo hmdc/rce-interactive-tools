@@ -160,7 +160,7 @@ class HMDCCondor:
        condor_ssh,
        self.get_sched_ad_for_job(job_id)['ScheddIpAddr'],
        job_id),
-     "ssh:{0}:{1}".format(machine, display)]).pid
+     "ssh:{0}:{1}".format(machine, display)], env=dict(os.environ, SSH_AUTH_SOCK="")).pid
 
   def poll_xpra(self,ad):
     _out = str(ad['Out'].eval())
