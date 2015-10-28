@@ -138,12 +138,16 @@ class HMDCRceSubmitClient:
     return RCEConsoleClient(rceapps).attach_app(jobid)
 
   def run_app(self, rceapps, application, version, memory, cpu, graphical):
+
+    def gb_to_mb(n):
+      return n*1024 if isinstance(n, int) else n
+
     return RCEConsoleClient(rceapps, application, version,
-        memory, cpu).run_app() if graphical is False else RceSubmitLaunch(0,
+        gb_to_mb(memory), cpu).run_app() if graphical is False else RceSubmitLaunch(0,
  		rceapps = rceapps,
 		application = application,
 		version = version,
-		memory = memory,
+		memory = gb_to_mb(memory),
 		cpu = cpu)()
 
   def list_jobs(self):
