@@ -70,7 +70,8 @@ class HMDCRceSubmitClient:
         )
 
     parser.add_argument('-nogui', '--nogui', action='store_true',
-        help='Set this if you want to run the app without a GUI'
+        help='Set this if you want to run the app without a GUI',
+        default=False,
         )
 
     parser.add_argument('-attachall', '--attachall',
@@ -162,7 +163,13 @@ class HMDCRceSubmitClient:
     logging.getLogger('rce_submit').addHandler(handler)
 
 
-    if args.jobs:
+    if args.nogui:
+      print """\
+--nogui is currently unimplemented. Future versions will allow users to submit
+non-graphical interactive jobs.\
+"""
+      exit(0)
+    elif args.jobs:
       self.list_jobs()
       exit(0)
     elif args.list:
