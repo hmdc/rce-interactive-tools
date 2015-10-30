@@ -1,0 +1,357 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>rceapp package &mdash; RCE Cluster Tools 1.6.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="RCE Cluster Tools 1.6.0 documentation" href="../../index.html"/>
+        <link rel="up" title="Modules and Classes Reference" href="../modules.html"/>
+        <link rel="prev" title="hmdccondor package" href="hmdccondor.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> RCE Cluster Tools
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.6.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../gui/using_the_rce_gui_client.html">Using the RCE Submit Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cmd/using_the_rce_cmd_client.html">Using the RCE Submit Command Line Client (For Advanced Users)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../job_lifetime.html">Job lifetime limits in the RCE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../errors.html">Understanding Errors and Warnings</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../developer_documentation.html">Operations/Development Documentation</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../modules.html">Modules and Classes Reference</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="hmdccondor.html">hmdccondor package</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="">rceapp package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#module-rceapp">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">RCE Cluster Tools</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../developer_documentation.html">Operations/Development Documentation</a> &raquo;</li>
+      
+          <li><a href="../modules.html">Modules and Classes Reference</a> &raquo;</li>
+      
+    <li>rceapp package</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/development/modules/rceapp.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="rceapp-package">
+<h1>rceapp package<a class="headerlink" href="#rceapp-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-rceapp">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-rceapp" title="Permalink to this headline">¶</a></h2>
+<dl class="exception">
+<dt id="rceapp.RCEAppDefaultError">
+<em class="property">exception </em><code class="descclassname">rceapp.</code><code class="descname">RCEAppDefaultError</code><span class="sig-paren">(</span><em>cfg</em>, <em>value</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/rceapp.html#RCEAppDefaultError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rceapp.RCEAppDefaultError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></code></p>
+<p>This is a self-defined exception such that I can output a useful error
+message which says that at least one version of an app should have the
+default set to True</p>
+<p>Variables:
+cfg: path to the RCEApp YML configuration
+value: KeyError exception object</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="rceapp.RCEAppGlobalCpuError">
+<em class="property">exception </em><code class="descclassname">rceapp.</code><code class="descname">RCEAppGlobalCpuError</code><span class="sig-paren">(</span><em>cfg</em>, <em>value</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/rceapp.html#RCEAppGlobalCpuError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rceapp.RCEAppGlobalCpuError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></code></p>
+<p>This is a self-defined exception such that I can output a useful error
+message which says that a default stanza in the provided YML is
+missing a default cpu assignment.</p>
+<p>Variables:
+cfg: path to the RCEApp YML configuration
+value: KeyError exception object</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="rceapp.RCEAppGlobalError">
+<em class="property">exception </em><code class="descclassname">rceapp.</code><code class="descname">RCEAppGlobalError</code><span class="sig-paren">(</span><em>cfg</em>, <em>value</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/rceapp.html#RCEAppGlobalError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rceapp.RCEAppGlobalError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></code></p>
+<p>This is a self-defined exception such that I can output a useful error
+message which says that a stanza in the YAML is missing the default
+value heading.</p>
+<p>Variables:
+cfg: path to the RCEApp YML configuration
+value: KeyError exception object</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="rceapp.RCEAppGlobalMemoryError">
+<em class="property">exception </em><code class="descclassname">rceapp.</code><code class="descname">RCEAppGlobalMemoryError</code><span class="sig-paren">(</span><em>cfg</em>, <em>value</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/rceapp.html#RCEAppGlobalMemoryError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rceapp.RCEAppGlobalMemoryError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></code></p>
+<p>This is a self-defined exception such that I can output a useful error
+message which says that a default stanza in the provided YML is
+missing a default memory assignment.</p>
+<p>Variables:
+cfg: path to the RCEApp YML configuration
+value: KeyError exception object</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="rceapp.RCEAppIntError">
+<em class="property">exception </em><code class="descclassname">rceapp.</code><code class="descname">RCEAppIntError</code><span class="sig-paren">(</span><em>cfg</em>, <em>value</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/rceapp.html#RCEAppIntError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rceapp.RCEAppIntError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></code></p>
+<p>This is a self-defined exception such that I can output a useful error
+message which notifies you if you accidentially used non-integer
+characters in the memory field.</p>
+<p>Variables:
+cfg: path to the RCEApp YML configuration
+value: KeyError exception object</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="rceapp.rceapp">
+<em class="property">class </em><code class="descclassname">rceapp.</code><code class="descname">rceapp</code><span class="sig-paren">(</span><em>cfg</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/rceapp.html#rceapp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rceapp.rceapp" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is the rceapp class which manipulates an RCEApp YAML</p>
+<p>Variables:
+cfg = path to RCEApp YML configuration</p>
+<dl class="method">
+<dt id="rceapp.rceapp.app_version_exists">
+<code class="descname">app_version_exists</code><span class="sig-paren">(</span><em>app</em>, <em>version=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/rceapp.html#rceapp.app_version_exists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rceapp.rceapp.app_version_exists" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="rceapp.rceapp.apps">
+<code class="descname">apps</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/rceapp.html#rceapp.apps"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rceapp.rceapp.apps" title="Permalink to this definition">¶</a></dt>
+<dd><p>apps() returns the keys of the data loaded from the yaml</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rceapp.rceapp.args">
+<code class="descname">args</code><span class="sig-paren">(</span><em>app</em>, <em>version=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/rceapp.html#rceapp.args"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rceapp.rceapp.args" title="Permalink to this definition">¶</a></dt>
+<dd><p>args() returns a string of arguments for an given application&#8217;s
+version.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rceapp.rceapp.command">
+<code class="descname">command</code><span class="sig-paren">(</span><em>app</em>, <em>version=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/rceapp.html#rceapp.command"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rceapp.rceapp.command" title="Permalink to this definition">¶</a></dt>
+<dd><p>command() returns the full path of an application given its version and
+application name as arguments.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rceapp.rceapp.cpu">
+<code class="descname">cpu</code><span class="sig-paren">(</span><em>app</em>, <em>version=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/rceapp.html#rceapp.cpu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rceapp.rceapp.cpu" title="Permalink to this definition">¶</a></dt>
+<dd><p>cpu() returns the default CPU count requirement of an application&#8217;s
+specified version. If a cpu default is not specified for that
+particular version, it grabs the default memory from the default
+stanza for that app.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rceapp.rceapp.get_default_version">
+<code class="descname">get_default_version</code><span class="sig-paren">(</span><em>app</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/rceapp.html#rceapp.get_default_version"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rceapp.rceapp.get_default_version" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="rceapp.rceapp.icon">
+<code class="descname">icon</code><span class="sig-paren">(</span><em>app</em>, <em>version=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/rceapp.html#rceapp.icon"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rceapp.rceapp.icon" title="Permalink to this definition">¶</a></dt>
+<dd><p>icon() returns the icon path for an application. If no icon, return
+none.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rceapp.rceapp.is_default">
+<code class="descname">is_default</code><span class="sig-paren">(</span><em>app</em>, <em>version</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/rceapp.html#rceapp.is_default"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rceapp.rceapp.is_default" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if app,version is the default version for the app.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rceapp.rceapp.memory">
+<code class="descname">memory</code><span class="sig-paren">(</span><em>app</em>, <em>version=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/rceapp.html#rceapp.memory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rceapp.rceapp.memory" title="Permalink to this definition">¶</a></dt>
+<dd><p>memory() returns the default memory requirements of an application&#8217;s
+specified version. If a memory default is not specified for that
+particular version, it grabs the default memory from the default
+stanza for that app.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rceapp.rceapp.versions">
+<code class="descname">versions</code><span class="sig-paren">(</span><em>app</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/rceapp.html#rceapp.versions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rceapp.rceapp.versions" title="Permalink to this definition">¶</a></dt>
+<dd><p>versions() returns all the versions listed for an app, specified
+by the app argument, in an array.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="hmdccondor.html" class="btn btn-neutral" title="hmdccondor package" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, Evan Sarmiento.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'1.6.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

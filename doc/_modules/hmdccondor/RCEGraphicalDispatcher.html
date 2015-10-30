@@ -1,0 +1,238 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>hmdccondor.RCEGraphicalDispatcher &mdash; RCE Cluster Tools 1.6.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="RCE Cluster Tools 1.6.0 documentation" href="../../index.html"/>
+        <link rel="up" title="Module code" href="../index.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> RCE Cluster Tools
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.6.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../gui/using_the_rce_gui_client.html">Using the RCE Submit Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cmd/using_the_rce_cmd_client.html">Using the RCE Submit Command Line Client (For Advanced Users)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../job_lifetime.html">Job lifetime limits in the RCE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../errors.html">Understanding Errors and Warnings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer_documentation.html">Operations/Development Documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">RCE Cluster Tools</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+      
+    <li>hmdccondor.RCEGraphicalDispatcher</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for hmdccondor.RCEGraphicalDispatcher</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">wx.lib.pubsub</span> <span class="kn">import</span> <span class="n">setupkwargs</span>
+<span class="kn">from</span> <span class="nn">wx.lib.pubsub</span> <span class="kn">import</span> <span class="n">pub</span>
+<span class="kn">from</span> <span class="nn">wx</span> <span class="kn">import</span> <span class="n">CallAfter</span>
+<span class="kn">from</span> <span class="nn">HMDCCondor</span> <span class="kn">import</span> <span class="n">HMDCCondor</span>
+<span class="kn">from</span> <span class="nn">threading</span> <span class="kn">import</span> <span class="n">Thread</span><span class="p">,</span> <span class="n">Event</span>
+
+<div class="viewcode-block" id="RCEGraphicalTaskDispatcher"><a class="viewcode-back" href="../../development/modules/hmdccondor.html#hmdccondor.RCEGraphicalDispatcher.RCEGraphicalTaskDispatcher">[docs]</a><span class="k">class</span> <span class="nc">RCEGraphicalTaskDispatcher</span><span class="p">(</span><span class="n">Thread</span><span class="p">):</span>
+  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+    <span class="nb">super</span><span class="p">(</span><span class="n">RCEGraphicalTaskDispatcher</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_stop</span> <span class="o">=</span> <span class="n">Event</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">rce</span> <span class="o">=</span> <span class="n">HMDCCondor</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">f</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">args</span> <span class="o">=</span> <span class="n">args</span>
+    <span class="k">return</span>
+
+<div class="viewcode-block" id="RCEGraphicalTaskDispatcher.stop"><a class="viewcode-back" href="../../development/modules/hmdccondor.html#hmdccondor.RCEGraphicalDispatcher.RCEGraphicalTaskDispatcher.stop">[docs]</a>  <span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stop</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="RCEGraphicalTaskDispatcher.run"><a class="viewcode-back" href="../../development/modules/hmdccondor.html#hmdccondor.RCEGraphicalDispatcher.RCEGraphicalTaskDispatcher.run">[docs]</a>  <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="RCEGraphicalTaskDispatcher.run_app"><a class="viewcode-back" href="../../development/modules/hmdccondor.html#hmdccondor.RCEGraphicalDispatcher.RCEGraphicalTaskDispatcher.run_app">[docs]</a>  <span class="k">def</span> <span class="nf">run_app</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">application</span><span class="p">,</span> <span class="n">version</span><span class="p">,</span> <span class="n">command</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">memory</span><span class="p">,</span> <span class="n">cpu</span><span class="p">):</span>
+    <span class="n">job</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rce</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="n">application</span><span class="p">,</span> <span class="n">version</span><span class="p">,</span> <span class="n">command</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">memory</span><span class="p">,</span> <span class="n">cpu</span><span class="p">)</span>
+    <span class="n">CallAfter</span><span class="p">(</span><span class="n">pub</span><span class="o">.</span><span class="n">sendMessage</span><span class="p">,</span> <span class="s">&#39;rce_submit.job_submitted&#39;</span><span class="p">,</span>
+        <span class="n">jobid</span> <span class="o">=</span> <span class="n">job</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="RCEGraphicalTaskDispatcher.poll_app"><a class="viewcode-back" href="../../development/modules/hmdccondor.html#hmdccondor.RCEGraphicalDispatcher.RCEGraphicalTaskDispatcher.poll_app">[docs]</a>  <span class="k">def</span> <span class="nf">poll_app</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">jobid</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+      <span class="n">job_status</span><span class="p">,</span> <span class="n">ad</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rce</span><span class="o">.</span><span class="n">poll</span><span class="p">(</span><span class="n">jobid</span><span class="p">,</span> <span class="n">use_local_schedd</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+      <span class="n">CallAfter</span><span class="p">(</span><span class="n">pub</span><span class="o">.</span><span class="n">sendMessage</span><span class="p">,</span> <span class="s">&#39;rce_submit.job_started&#39;</span><span class="p">,</span>
+         <span class="n">job_status</span><span class="o">=</span><span class="n">job_status</span><span class="p">,</span> <span class="n">ad</span><span class="o">=</span><span class="n">ad</span><span class="p">,</span> <span class="n">excpt</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+      <span class="n">CallAfter</span><span class="p">(</span><span class="n">pub</span><span class="o">.</span><span class="n">sendMessage</span><span class="p">,</span> <span class="s">&#39;rce_submit.job_started&#39;</span><span class="p">,</span> <span class="n">job_status</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+        <span class="n">ad</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">excpt</span><span class="o">=</span><span class="n">e</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="RCEGraphicalTaskDispatcher.attach_app"><a class="viewcode-back" href="../../development/modules/hmdccondor.html#hmdccondor.RCEGraphicalDispatcher.RCEGraphicalTaskDispatcher.attach_app">[docs]</a>  <span class="k">def</span> <span class="nf">attach_app</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rceapps</span><span class="p">,</span> <span class="n">jobid</span><span class="p">,</span> <span class="n">ad</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+      <span class="n">CallAfter</span><span class="p">(</span><span class="n">pub</span><span class="o">.</span><span class="n">sendMessage</span><span class="p">,</span> <span class="s">&#39;rce_submit.xpra_attached&#39;</span><span class="p">,</span>
+          <span class="n">pid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rce</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="n">jobid</span><span class="p">,</span> <span class="n">rceapps</span><span class="p">,</span> <span class="n">ad</span><span class="o">=</span><span class="n">ad</span><span class="p">),</span>
+          <span class="n">excpt</span> <span class="o">=</span> <span class="bp">None</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+      <span class="n">CallAfter</span><span class="p">(</span><span class="n">pub</span><span class="o">.</span><span class="n">sendMessage</span><span class="p">,</span> <span class="s">&#39;rce_submit.xpra_attached&#39;</span><span class="p">,</span>
+          <span class="n">pid</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span>
+          <span class="n">excpt</span> <span class="o">=</span> <span class="n">e</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, Evan Sarmiento.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'1.6.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
