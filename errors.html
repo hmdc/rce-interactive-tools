@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>RCE Cluster Tools &mdash; RCE Cluster Tools 1.6.0 documentation</title>
+  <title>Understanding Errors and Warnings &mdash; RCE Cluster Tools 1.6.0 documentation</title>
   
 
   
@@ -30,8 +30,9 @@
   
 
   
-    <link rel="top" title="RCE Cluster Tools 1.6.0 documentation" href="#"/>
-        <link rel="next" title="Using the RCE Submit Client" href="gui/using_the_rce_gui_client.html"/> 
+    <link rel="top" title="RCE Cluster Tools 1.6.0 documentation" href="index.html"/>
+        <link rel="next" title="Operations/Development Documentation" href="developer_documentation.html"/>
+        <link rel="prev" title="Job lifetime limits in the RCE" href="job_lifetime.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -49,7 +50,7 @@
           
 
           
-            <a href="#" class="icon icon-home"> RCE Cluster Tools
+            <a href="index.html" class="icon icon-home"> RCE Cluster Tools
           
 
           
@@ -80,11 +81,11 @@
           
             
             
-                <ul>
+                <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="gui/using_the_rce_gui_client.html">Using the RCE Submit Client</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cmd/using_the_rce_cmd_client.html">Using the RCE Submit Command Line Client (For Advanced Users)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="job_lifetime.html">Job lifetime limits in the RCE</a></li>
-<li class="toctree-l1"><a class="reference internal" href="errors.html">Understanding Errors and Warnings</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Understanding Errors and Warnings</a></li>
 <li class="toctree-l1"><a class="reference internal" href="developer_documentation.html">Operations/Development Documentation</a></li>
 </ul>
 
@@ -99,7 +100,7 @@
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
         <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="#">RCE Cluster Tools</a>
+        <a href="index.html">RCE Cluster Tools</a>
       </nav>
 
 
@@ -114,13 +115,13 @@
 
 <div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
-    <li><a href="#">Docs</a> &raquo;</li>
+    <li><a href="index.html">Docs</a> &raquo;</li>
       
-    <li>RCE Cluster Tools</li>
+    <li>Understanding Errors and Warnings</li>
       <li class="wy-breadcrumbs-aside">
         
           
-            <a href="_sources/index.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/errors.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -130,37 +131,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="rce-cluster-tools">
-<h1>RCE Cluster Tools<a class="headerlink" href="#rce-cluster-tools" title="Permalink to this headline">¶</a></h1>
-<p>The Research Computing Environment (RCE) cluster tools package,
-installed on every RCE login node accessible via NoMachine NX4, allows
-you to submit interactive jobs to HMDC&#8217;s local HTCondor pool.</p>
-<p>RCE cluster tools replaces <strong>condorInteractiveSubmit</strong>, an
-interactive job submission utility executed whenever you ran an RCE
-Powered job.</p>
-<p>While RCE cluster tools is new, the user interface is not substantially
-different from <strong>condorInteractiveSubmit</strong>. You can submit RCE powered jobs exactly as
-you have before. However, under the hood, RCE cluster tools allows you
-to:</p>
-<ul class="simple">
-<li><strong>Submit persistent interactive jobs</strong>: Even when the RCE login nodes are
-rebooted or undergo maintenance, interactive jobs submitted via RCE
-cluster tools will continue to run and can be re-attached to any RCE
-desktop.</li>
-<li><strong>Forget about renewing job leases</strong>: You can now run RCE powered
-applications for as long as you want without requesting extensions,
-provided your job does not remain idle for more than two days.</li>
-</ul>
-<p>This manual will teach you how to perform the following tasks:</p>
-<ul class="simple">
-<li>Submit an RCE interactive job</li>
-<li>Re-attach an RCE interactive job</li>
-<li>Understand idle-time based job management</li>
-</ul>
-<p>For a more general overview of the technology behind RCE cluster tools,
-read <a class="reference external" href="http://projects.iq.harvard.edu/rce/blog/always-persistent-interactive-jobs-rce">*Always On: Persistent Interactive Jobs on the RCE*</a></p>
-<div class="toctree-wrapper compound">
-</div>
+  <div class="section" id="understanding-errors-and-warnings">
+<h1>Understanding Errors and Warnings<a class="headerlink" href="#understanding-errors-and-warnings" title="Permalink to this headline">¶</a></h1>
 </div>
 
 
@@ -170,8 +142,10 @@ read <a class="reference external" href="http://projects.iq.harvard.edu/rce/blog
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="gui/using_the_rce_gui_client.html" class="btn btn-neutral float-right" title="Using the RCE Submit Client" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="developer_documentation.html" class="btn btn-neutral float-right" title="Operations/Development Documentation" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
+      
+        <a href="job_lifetime.html" class="btn btn-neutral" title="Job lifetime limits in the RCE" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
