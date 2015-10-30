@@ -68,7 +68,8 @@ def check_if_preempt(condor,
 
   def __can_be_preempt__(time_to_preempt):
     return __do_notice__() if idletime >= \
-        time_to_preempt else __log_is_not_preempt__(__remove_notice_lock_file__())
+        time_to_preempt and __is_an_xpra_job__() else \
+        __log_is_not_preempt__(__remove_notice_lock_file__())
 
   def __sanitize_email__(mail,
       mail_regex=re.compile("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$")):
@@ -124,7 +125,9 @@ RCE Development and Support Team
 
       log.info('Sending e-mail notice to {0}'.format(ad['Email']))
 
-      print notice.as_string()
+      # Un-necessary logging, but you can uncomment this if you want to
+      # see the actual email in syslog
+      # print notice.as_string()
 
       s = smtplib.SMTP('localhost')
       s.sendmail(
@@ -145,6 +148,12 @@ RCE Development and Support Team
         str(ad['ProcId'])),
         False)
       return 1 if not __notice_lock_file_exists__() else __remove_notice_lock_file__()
+
+  def __is_an_xpra_job__():
+    try:
+      return ad['HMDCUseXpra']
+    except:
+      return False
 
   def __do_notice__():
     log.info("Job {0} can be preempted: Job[{0}][JobCpuIdleTime] > {1}".
