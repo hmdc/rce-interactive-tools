@@ -1,3 +1,13 @@
+"""
+HMDCCondor module provides most-commonly-used functions for interacting with
+HTCondor clusters: polling for job status, acquiring schedd objects, and
+submitting jobs according to the HMDC ClassAd schema. This replaces
+Condor.pm in the hmdc-admin repository.
+"""
+
+__author__ = "Evan Sarmiento"
+__email__ = "esarmien@g.harvard.edu"
+
 import os
 import pwd
 import simpleldap
@@ -20,7 +30,25 @@ from hmdccondor import RCEJobNotFoundError, \
 from hmdccondor.HMDCLog import rcelog
 
 def poll_thread(id,return_status,use_local_schedd):
+  """poll_thread is a function which when provided as an argument to apply_async()
+     is executed in an independent thread. poll_thread creates a new HMDCPoller
+     which runs until the job represented by **id** has a JobStatus equal to any
+     number in the **return_status** array.
+     
+     :param id: HTCondor Job Id to poll for
+     :type id: int
+     :param return_status: An array of JobStatus values to look for.
+     :type return_status: list
+     :param use_local_schedd: If set to true, uses the schedd of the executing host. If false, finds the schedd whcih submitted the HTCondor job represented by **id**.
+     :type use_local_schedd: boolean
+     :returns: (JobStatus,ClassAd) or (None,None) if no such job exists.
+     :rtype: tuple
 
+     :Example:
+     >>> import hmdccondor
+     >>> from hmdccondor.HMDCCondor import poll_thread 
+     >>> poll_thread(10, [1,2,3,4,5], True)
+  """
 
   if use_local_schedd:
     return hmdccondor.HMDCPoller(id, return_status, HMDCCondor()._schedd).run()
@@ -31,6 +59,22 @@ def poll_thread(id,return_status,use_local_schedd):
       return (None,None)
 
 def poll_xpra_thread(out_txt):
+  """poll_xpra_thread is a function when provided as an argument to apply_async()
+     is executed in an independent thread. poll_xpra_thread continues to read
+     **out_txt**, which is the location of the Xpra startup log file, to determine
+     if xpra has started within a job.
+
+     :param out_txt: Fully qualified path of Xpra startup log file
+     :type out_txt: str
+     :returns: Xpra display number
+     :rtype: int
+     
+     :Example:
+     >>> from hmdccondor import poll_xpra_thread
+     >>> poll_xpra_thread('/nfs/home/E/esarmien/.HMDC/jobs/interactive/xstata-mp_14.0_174_201510271445990519/out.txt')
+
+  """
+
   while 1:
     try:
       with open(out_txt, 'r') as out:
