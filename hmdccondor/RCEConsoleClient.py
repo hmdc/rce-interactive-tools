@@ -41,6 +41,27 @@ class RCEConsoleClient:
           """.format(e)
           return 1
 
+    def munge_requested_resources(self, label, version):
+
+      def __resource_none_or_not_adjustable__():
+        if getattr(self, label) is None:
+          return True
+
+        if self.rceapps.supports_adjustable(self.application, label):
+          return False
+        else:
+          print "** {0} unable to use {1} greater than default".format(
+              self.application, label)
+          print "** Using default {0} value for {1}".format(
+              label, self.application)
+          return True
+
+        return False
+
+      return (getattr(self.rceapps, label))(self.application, 
+          version) if __resource_none_or_not_adjustable__() else \
+              getattr(self, label)
+
     def run_app(self):
         _version = self.version if self.version else \
                 self.rceapps.get_default_version(self.application)
@@ -52,11 +73,14 @@ class RCEConsoleClient:
 
         rce = HMDCCondor()
 
-        _cpu = self.rceapps.cpu(self.application, _version) if \
-                self.cpu is None else self.cpu
+        _cpu = self.munge_requested_resources('cpu', _version)
+        _memory = self.munge_requested_resources('memory', _version)
 
-        _memory = self.rceapps.memory(self.application,_version) if \
-                self.memory is None else self.memory
+        # _cpu = self.rceapps.cpu(self.application, _version) if \
+        #        self.cpu is None else self.cpu
+
+        # _memory = self.rceapps.memory(self.application,_version) if \
+        #        self.memory is None else self.memory
 
 
         job_submit_bar = ProgressBarThreadCli('* Submitting job')

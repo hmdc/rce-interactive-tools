@@ -34,23 +34,23 @@ class RCELaunchLaunchWindowFrame(wx.Frame):
                self.rceapps.get_default_version(self.application)
 
     self._cpu = self.rceapps.cpu(self.application, self._version) if \
-                self.cpu is None else self.cpu
+                self.cpu is None or self.rceapps.supports_cpu_adjustable(self.application) is False else self.cpu
 
     self._memory = (self.rceapps.memory(self.application,self._version) if \
-                self.memory is None else self.memory) // 1024
+                self.memory is None or self.rceapps.supports_memory_adjustable(self.application) is False else self.memory) // 1024
 
     _app_name = "{0} {1}".format(self.application, self._version)
 
     self.RCEApplicationIcon = wx.StaticBitmap(self, wx.ID_ANY, wx.Bitmap(self.rceapps.icon(self.application), wx.BITMAP_TYPE_ANY))
     self.HMDCApplicationNameVersion = wx.StaticText(self, wx.ID_ANY, _(_app_name))
     self.JobMemorySizeLabel = wx.StaticText(self, wx.ID_ANY, _("Memory (GB)"))
-    self.JobMemoryTextCtrl = wx.TextCtrl(self, wx.ID_ANY, str(self._memory))
+    self.JobMemoryTextCtrl = wx.TextCtrl(self, wx.ID_ANY, str(self._memory), style = self.__adjustable_resource_field__('memory', self.application))
     # No node in the cluster currently has > 999GiB memory to reserve
     self.JobMemoryTextCtrl.SetMaxLength(3)
     # Make sure that only integers can be typed into this field
     self.JobMemoryTextCtrl.Bind(wx.EVT_CHAR, self.__validate_mem_cpu_entry)
     self.JobCpuRequestLabel = wx.StaticText(self, wx.ID_ANY, _("Cpu"))
-    self.JobCpuTextCtrl = wx.TextCtrl(self, wx.ID_ANY, str(self._cpu))
+    self.JobCpuTextCtrl = wx.TextCtrl(self, wx.ID_ANY, str(self._cpu), style = self.__adjustable_resource_field__('cpu', self.application))
     # Make sure that only integers can be teyped into this field
     self.JobCpuTextCtrl.Bind(wx.EVT_CHAR, self.__validate_mem_cpu_entry)
     # No one should try to acquire interactive job slots > 999 CPU(s)
@@ -65,6 +65,10 @@ class RCELaunchLaunchWindowFrame(wx.Frame):
     self.__set_properties()
     self.__do_layout()
     # end wxGlade
+
+  def __adjustable_resource_field__(self, label, application):
+    return long(0) if self.rceapps.supports_adjustable(application,
+      label) else wx.TE_READONLY
 
   def OnHelp(self, event):
     return webbrowser.open(

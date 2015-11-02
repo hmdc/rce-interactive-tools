@@ -203,6 +203,21 @@ class rceapp:
     else:
       return (True if app in self.apps() else False)
 
+  def supports_cpu_adjustable(self, app):
+    return self.supports_adjustable(app, 'cpu')
+
+  def supports_memory_adjustable(self, app):
+    return self.supports_adjustable(app, 'memory')
+
+  def supports_adjustable(self, app, label):
+    assert label in ['memory', 'cpu']
+
+    try:
+      return self.data[app]['global']["supports_{0}_adjustable".
+          format(label)]
+    except:
+      return True
+
   def command(self,app,version=None):
     """
     command() returns the full path of an application given its version and
