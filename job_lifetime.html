@@ -84,7 +84,11 @@
                 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="gui/using_the_rce_gui_client.html">Using the RCE Submit Client</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cmd/using_the_rce_cmd_client.html">Using the RCE Submit Command Line Client (For Advanced Users)</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="">Job lifetime limits in the RCE</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Job lifetime limits in the RCE</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#what-does-pre-emptible-mean">What does pre-emptible mean?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#how-is-idle-time-calculated">How is idle time calculated?</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="errors.html">Understanding Errors and Warnings</a></li>
 <li class="toctree-l1"><a class="reference internal" href="developer_documentation.html">Operations/Development Documentation</a></li>
 </ul>
@@ -133,6 +137,36 @@
             
   <div class="section" id="job-lifetime-limits-in-the-rce">
 <h1>Job lifetime limits in the RCE<a class="headerlink" href="#job-lifetime-limits-in-the-rce" title="Permalink to this headline">¶</a></h1>
+<p>Have you received an email like this?</p>
+<a class="reference internal image-reference" href="_images/job-is-idle-email.png"><img alt="_images/job-is-idle-email.png" src="_images/job-is-idle-email.png" style="width: 400px;" /></a>
+<p>Instead of requesting that you extend your job, you can now run your job
+for as long as it&#8217;s <strong>active.</strong> An active job is a job which is
+performing a computation or currently being used interactively through
+its graphical user interface.</p>
+<p>If you have a job which you haven&#8217;t touched for two days, you will
+receive a warning that your job will become pre-emptible if remaining
+idle for three days.</p>
+<div class="section" id="what-does-pre-emptible-mean">
+<h2>What does pre-emptible mean?<a class="headerlink" href="#what-does-pre-emptible-mean" title="Permalink to this headline">¶</a></h2>
+<p>When the RCE is saturated, meaning that all resources have been claimed
+by users, some jobs can be placed back into the queue by new jobs. If
+your job has been idle for three or more days, it is possible that,
+under these conditions, your job could be placed back into the queue.
+Graphical jobs that are placed back into the queue are essentially
+terminated. You will lose your work, unless you save it.</p>
+<p><strong>Basic rule of thumb</strong>: If you&#8217;re not actively using your job, terminate
+it. Otherwise, your job will continue to idle and could <strong>potentially</strong>
+live forever, unless it is pre-empted by a new job under conditions of
+RCE cluster saturation.</p>
+</div>
+<div class="section" id="how-is-idle-time-calculated">
+<h2>How is idle time calculated?<a class="headerlink" href="#how-is-idle-time-calculated" title="Permalink to this headline">¶</a></h2>
+<p>Every five minutes, the RCE calculates the idle time of your job by
+examining the amount of cpu usage of your job. This ratio is <strong>so
+low</strong> that even clicking on a menu or typing text into your application
+is enough to reset your idle counter to <strong>zero.</strong> Idle time is only
+evaluated on jobs which are literally <strong>doing nothing.</strong></p>
+</div>
 </div>
 
 

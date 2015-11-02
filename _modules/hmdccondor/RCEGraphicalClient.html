@@ -81,10 +81,10 @@
             
             
                 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../gui/using_the_rce_gui_client.html">Using the RCE Submit Client</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../cmd/using_the_rce_cmd_client.html">Using the RCE Submit Command Line Client (For Advanced Users)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gui/using_the_rce_gui_client.html">Using the RCE submit client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cmd/using_the_rce_cmd_client.html">Using the RCE submit command line client (for advanced users)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../job_lifetime.html">Job lifetime limits in the RCE</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../errors.html">Understanding Errors and Warnings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../errors.html">Diagnosing errors and warnings</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../developer_documentation.html">Operations/Development Documentation</a></li>
 </ul>
 
@@ -145,7 +145,7 @@
 <span class="kn">from</span> <span class="nn">RCELaunchLaunchWindowFrame</span> <span class="kn">import</span> <span class="n">RCELaunchLaunchWindowFrame</span>
 
 <div class="viewcode-block" id="RceSubmitLaunch"><a class="viewcode-back" href="../../development/modules/hmdccondor.html#hmdccondor.RCEGraphicalClient.RceSubmitLaunch">[docs]</a><span class="k">class</span> <span class="nc">RceSubmitLaunch</span><span class="p">(</span><span class="n">wx</span><span class="o">.</span><span class="n">App</span><span class="p">):</span>
-  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="RceSubmitLaunch.__init__"><a class="viewcode-back" href="../../development/modules/hmdccondor.html#hmdccondor.RCEGraphicalClient.RceSubmitLaunch.__init__">[docs]</a>  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">rceapps</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;rceapps&#39;</span><span class="p">]</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">application</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;application&#39;</span><span class="p">]</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">version</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;version&#39;</span><span class="p">]</span>
@@ -153,7 +153,7 @@
     <span class="bp">self</span><span class="o">.</span><span class="n">cpu</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;cpu&#39;</span><span class="p">]</span>
     <span class="nb">super</span><span class="p">(</span><span class="n">RceSubmitLaunch</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
     <span class="k">return</span>
-
+</div>
 <div class="viewcode-block" id="RceSubmitLaunch.OnInit"><a class="viewcode-back" href="../../development/modules/hmdccondor.html#hmdccondor.RCEGraphicalClient.RceSubmitLaunch.OnInit">[docs]</a>  <span class="k">def</span> <span class="nf">OnInit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
     <span class="n">gettext</span><span class="o">.</span><span class="n">install</span><span class="p">(</span><span class="s">&quot;RceGraphicalClient&quot;</span><span class="p">)</span>
     <span class="n">wx</span><span class="o">.</span><span class="n">InitAllImageHandlers</span><span class="p">()</span>
@@ -167,9 +167,9 @@
     <span class="n">LaunchWindow</span><span class="o">.</span><span class="n">Show</span><span class="p">()</span>
     <span class="k">return</span> <span class="mi">1</span>
 </div>
-  <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="RceSubmitLaunch.__call__"><a class="viewcode-back" href="../../development/modules/hmdccondor.html#hmdccondor.RCEGraphicalClient.RceSubmitLaunch.__call__">[docs]</a>  <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
     <span class="n">gettext</span><span class="o">.</span><span class="n">install</span><span class="p">(</span><span class="s">&quot;RceSubmit&quot;</span><span class="p">)</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">MainLoop</span><span class="p">()</span></div>
+    <span class="bp">self</span><span class="o">.</span><span class="n">MainLoop</span><span class="p">()</span></div></div>
 </pre></div>
 
            </div>

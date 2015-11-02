@@ -81,10 +81,10 @@
             
             
                 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../gui/using_the_rce_gui_client.html">Using the RCE Submit Client</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../cmd/using_the_rce_cmd_client.html">Using the RCE Submit Command Line Client (For Advanced Users)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gui/using_the_rce_gui_client.html">Using the RCE submit client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cmd/using_the_rce_cmd_client.html">Using the RCE submit command line client (for advanced users)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../job_lifetime.html">Job lifetime limits in the RCE</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../errors.html">Understanding Errors and Warnings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../errors.html">Diagnosing errors and warnings</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../developer_documentation.html">Operations/Development Documentation</a></li>
 </ul>
 
@@ -146,14 +146,14 @@
 
 
 <div class="viewcode-block" id="RCEConsoleClient"><a class="viewcode-back" href="../../development/modules/hmdccondor.html#hmdccondor.RCEConsoleClient.RCEConsoleClient">[docs]</a><span class="k">class</span> <span class="nc">RCEConsoleClient</span><span class="p">:</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rceapps</span><span class="p">,</span> <span class="n">application</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">memory</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">cpu</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="RCEConsoleClient.__init__"><a class="viewcode-back" href="../../development/modules/hmdccondor.html#hmdccondor.RCEConsoleClient.RCEConsoleClient.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rceapps</span><span class="p">,</span> <span class="n">application</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">memory</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">cpu</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rceapps</span> <span class="o">=</span> <span class="n">rceapps</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">application</span> <span class="o">=</span> <span class="n">application</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">version</span> <span class="o">=</span> <span class="n">version</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">memory</span> <span class="o">=</span> <span class="n">memory</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cpu</span> <span class="o">=</span> <span class="n">cpu</span>
         <span class="k">return</span>
-
+</div>
 <div class="viewcode-block" id="RCEConsoleClient.attach_all"><a class="viewcode-back" href="../../development/modules/hmdccondor.html#hmdccondor.RCEConsoleClient.RCEConsoleClient.attach_all">[docs]</a>    <span class="k">def</span> <span class="nf">attach_all</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">ad</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">attach_app</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">ad</span><span class="p">[</span><span class="s">&#39;ClusterId&#39;</span><span class="p">])),</span> <span class="n">HMDCCondor</span><span class="p">()</span><span class="o">.</span><span class="n">get_my_jobs</span><span class="p">())</span>
 </div>

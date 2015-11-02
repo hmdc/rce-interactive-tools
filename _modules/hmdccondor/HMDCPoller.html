@@ -81,10 +81,10 @@
             
             
                 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../gui/using_the_rce_gui_client.html">Using the RCE Submit Client</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../cmd/using_the_rce_cmd_client.html">Using the RCE Submit Command Line Client (For Advanced Users)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gui/using_the_rce_gui_client.html">Using the RCE submit client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cmd/using_the_rce_cmd_client.html">Using the RCE submit command line client (for advanced users)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../job_lifetime.html">Job lifetime limits in the RCE</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../errors.html">Understanding Errors and Warnings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../errors.html">Diagnosing errors and warnings</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../developer_documentation.html">Operations/Development Documentation</a></li>
 </ul>
 
@@ -131,13 +131,32 @@
            <div itemprop="articleBody">
             
   <h1>Source code for hmdccondor.HMDCPoller</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;A module containing the ``HMDCPoller`` class which facilitates polling</span>
+<span class="sd">for job statuses&quot;&quot;&quot;</span>
+
 <span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">import</span> <span class="nn">classad</span>
 <span class="kn">import</span> <span class="nn">htcondor</span>
 <span class="kn">from</span> <span class="nn">hmdccondor.HMDCLog</span> <span class="kn">import</span> <span class="n">rcelog</span>
 
 <div class="viewcode-block" id="HMDCPoller"><a class="viewcode-back" href="../../development/modules/hmdccondor.html#hmdccondor.HMDCPoller.HMDCPoller">[docs]</a><span class="k">class</span> <span class="nc">HMDCPoller</span><span class="p">:</span>
-  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="nb">id</span><span class="p">,</span><span class="n">return_status</span><span class="p">,</span><span class="n">schedd</span><span class="p">):</span>
+<div class="viewcode-block" id="HMDCPoller.__init__"><a class="viewcode-back" href="../../development/modules/hmdccondor.html#hmdccondor.HMDCPoller.HMDCPoller.__init__">[docs]</a>  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="nb">id</span><span class="p">,</span><span class="n">return_status</span><span class="p">,</span><span class="n">schedd</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Sets schedd, desired list of JobStatus values, and job id for class.</span>
+
+<span class="sd">    :arg id: job id</span>
+<span class="sd">    :type id: ``int``</span>
+<span class="sd">    :arg return_status: array of accepted JobStatus values</span>
+<span class="sd">    :type return_status: ``list``</span>
+<span class="sd">    :arg schedd: HTCondor Schedd object</span>
+<span class="sd">    :type schedd: `htcondor.Schedd`</span>
+
+<span class="sd">    :Example:</span>
+
+<span class="sd">    &gt;&gt;&gt; from htcondor import Schedd</span>
+<span class="sd">    &gt;&gt;&gt; from hmdccondor import HMDCPoller</span>
+<span class="sd">    &gt;&gt;&gt; poller = HMDCPoller(73,[0,1,2],Schedd())</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
     <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">return_status</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span>
@@ -146,14 +165,30 @@
     <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="nb">id</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">return_status</span> <span class="o">=</span> <span class="n">return_status</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">schedd</span> <span class="o">=</span> <span class="n">schedd</span>
-
+</div>
 <div class="viewcode-block" id="HMDCPoller.find_job_and_job_status"><a class="viewcode-back" href="../../development/modules/hmdccondor.html#hmdccondor.HMDCPoller.HMDCPoller.find_job_and_job_status">[docs]</a>  <span class="k">def</span> <span class="nf">find_job_and_job_status</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Attempts to find job specified by ``self.id`` either in</span>
+<span class="sd">    ``self.schedd`` queue or ``self.schedd`` job history.</span>
+
+<span class="sd">    :returns: ``(JobStatus, ClassAd)``</span>
+<span class="sd">    :returns: ``(None, None)``</span>
+<span class="sd">    :rtype: ``tuple``</span>
+<span class="sd">    :rtype: ``None``</span>
+
+<span class="sd">    :Example:</span>
+
+<span class="sd">    &gt;&gt;&gt; from htcondor import Schedd</span>
+<span class="sd">    &gt;&gt;&gt; from hmdccondor import HMDCPoller</span>
+<span class="sd">    &gt;&gt;&gt; HMDCPoller(73, [0,1,2], Schedd()).</span>
+<span class="sd">     find_job_and_job_status()</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">find_job_and_job_status_log_history</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
       <span class="n">rcelog</span><span class="p">(</span><span class="s">&#39;critical&#39;</span><span class="p">,</span> <span class="s">&quot;find_job_and_status(): Found job {0} in history. Terminated in error.&quot;</span><span class="o">.</span>
         <span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
       <span class="k">return</span> <span class="n">f</span>
-      
+
     <span class="k">try</span><span class="p">:</span>
       <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get_job_status_from_queue__</span><span class="p">()</span>
     <span class="k">except</span><span class="p">:</span>
@@ -165,6 +200,22 @@
       <span class="k">return</span> <span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="HMDCPoller.run"><a class="viewcode-back" href="../../development/modules/hmdccondor.html#hmdccondor.HMDCPoller.HMDCPoller.run">[docs]</a>  <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="nb">id</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;loops until either job with appropriate job status is found or</span>
+<span class="sd">    returns None. Note this function infinitely loops until result is</span>
+<span class="sd">    returned. This is best used with a function that tracks time and</span>
+<span class="sd">    timesout.</span>
+
+<span class="sd">    :returns: ``(JobStatus, ClassAd)``</span>
+<span class="sd">    :returns: ``(None, None)``</span>
+<span class="sd">    :rtype: tuple</span>
+
+<span class="sd">    :Example:</span>
+<span class="sd">    </span>
+<span class="sd">    &gt;&gt;&gt; from htcondor import Schedd</span>
+<span class="sd">    &gt;&gt;&gt; from hmdccondor import HMDCPoller</span>
+<span class="sd">    &gt;&gt;&gt; HMDCPoller(73, [0,1,2], Schedd()).run()</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="c"># loop until the process is running or halted.</span>
     <span class="k">while</span> <span class="mi">1</span><span class="p">:</span>
 
@@ -180,17 +231,51 @@
       <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
       <span class="k">continue</span>
 </div>
-  <span class="k">def</span> <span class="nf">__get_job_status_from_queue__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="HMDCPoller.__get_job_status_from_queue__"><a class="viewcode-back" href="../../development/modules/hmdccondor.html#hmdccondor.HMDCPoller.HMDCPoller.__get_job_status_from_queue__">[docs]</a>  <span class="k">def</span> <span class="nf">__get_job_status_from_queue__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;returns job status from ``self.schedd`` job queue. raises index</span>
+<span class="sd">    error if job wasn&#39;t found in the queue.</span>
+
+<span class="sd">    :returns: ``(JobStatus, ClassAd)``</span>
+<span class="sd">    :rtype: ``tuple``</span>
+<span class="sd">    :raises: ``IndexError``</span>
+
+<span class="sd">    :Example:</span>
+
+<span class="sd">    &gt;&gt;&gt; from htcondor import Schedd</span>
+<span class="sd">    &gt;&gt;&gt; from hmdccondor import HMDCPoller</span>
+<span class="sd">    &gt;&gt;&gt; HMDCPoller(73, [0,1,2], Schedd()).</span>
+<span class="sd">      __get_job_status_from_queue__()</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">return</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">job</span><span class="p">:</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">job</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s">&#39;JobStatus&#39;</span><span class="p">]),</span>
       <span class="n">job</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))(</span><span class="bp">self</span><span class="o">.</span><span class="n">schedd</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s">&quot;ClusterId =?= {0}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">)))</span>
+</div>
+<div class="viewcode-block" id="HMDCPoller.__get_job_status_from_history__"><a class="viewcode-back" href="../../development/modules/hmdccondor.html#hmdccondor.HMDCPoller.HMDCPoller.__get_job_status_from_history__">[docs]</a>  <span class="k">def</span> <span class="nf">__get_job_status_from_history__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;returns job status from ``self.schedd`` job history. raises index</span>
+<span class="sd">    error if job wasn&#39;t found in the queue. ``self.schedd.history()``</span>
+<span class="sd">    returns an interator, unlike query, so we transform it into a</span>
+<span class="sd">    two-dimensional array using ``map()``</span>
 
-  <span class="k">def</span> <span class="nf">__get_job_status_from_history__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="sd">    :returns: ``(JobStatus, ClassAd)``</span>
+<span class="sd">    :rtype: ``tuple``</span>
+<span class="sd">    :raises: ``IndexError``</span>
+
+<span class="sd">    :Example:</span>
+
+<span class="sd">    &gt;&gt;&gt; from htcondor import Schedd</span>
+<span class="sd">    &gt;&gt;&gt; from hmdccondor import HMDCPoller</span>
+<span class="sd">    &gt;&gt;&gt; HMDCPoller(73, [0,1,2], Schedd()).</span>
+<span class="sd">      __get_job_status_from_history__()</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="c"># History returns an iterator, unlike query, so we have to turn it</span>
     <span class="c"># into an array of arrays, which is what the map does.</span>
 
     <span class="k">return</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">job</span><span class="p">:</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">job</span><span class="p">[</span><span class="s">&#39;JobStatus&#39;</span><span class="p">]),</span> <span class="n">job</span><span class="p">))(</span>
         <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">schedd</span><span class="o">.</span><span class="n">history</span><span class="p">(</span><span class="s">&quot;ClusterId =?= {0}&quot;</span><span class="o">.</span>
-          <span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">),</span> <span class="p">[</span><span class="s">&#39;&#39;</span><span class="p">],</span> <span class="mi">1</span><span class="p">))[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span></div>
+          <span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">),</span> <span class="p">[</span><span class="s">&#39;&#39;</span><span class="p">],</span> <span class="mi">1</span><span class="p">))[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span></div></div>
 </pre></div>
 
            </div>

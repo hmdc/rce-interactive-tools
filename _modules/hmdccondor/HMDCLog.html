@@ -81,10 +81,10 @@
             
             
                 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../gui/using_the_rce_gui_client.html">Using the RCE Submit Client</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../cmd/using_the_rce_cmd_client.html">Using the RCE Submit Command Line Client (For Advanced Users)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gui/using_the_rce_gui_client.html">Using the RCE submit client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cmd/using_the_rce_cmd_client.html">Using the RCE submit command line client (for advanced users)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../job_lifetime.html">Job lifetime limits in the RCE</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../errors.html">Understanding Errors and Warnings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../errors.html">Diagnosing errors and warnings</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../developer_documentation.html">Operations/Development Documentation</a></li>
 </ul>
 
@@ -131,6 +131,10 @@
            <div itemprop="articleBody">
             
   <h1>Source code for hmdccondor.HMDCLog</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Provides a series of functions which wrap logging functionality.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
 <span class="kn">import</span> <span class="nn">logging.handlers</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">pwd</span>
@@ -138,6 +142,19 @@
 <span class="kn">import</span> <span class="nn">classad</span>
 
 <div class="viewcode-block" id="exception_helper"><a class="viewcode-back" href="../../development/modules/hmdccondor.html#hmdccondor.HMDCLog.exception_helper">[docs]</a><span class="k">def</span> <span class="nf">exception_helper</span><span class="p">(</span><span class="n">excpt</span><span class="p">):</span>
+  <span class="sd">&quot;&quot;&quot;a wrapper for an HMDC defined exception. All HMDC defined</span>
+<span class="sd">  exceptions in this project contain the message() class method, whereas</span>
+<span class="sd">  all other exceptions do not. Passing an exception to this function</span>
+<span class="sd">  will either return the value of the message() class method or return a</span>
+<span class="sd">  string which says that that the application has encountered an unknown</span>
+<span class="sd">  exception and to contact support.</span>
+
+<span class="sd">  :param excpt: exception</span>
+<span class="sd">  :type excpt: Exception</span>
+<span class="sd">  :returns: explanatory text wrt. exception</span>
+<span class="sd">  :rtype: str</span>
+
+<span class="sd">  &quot;&quot;&quot;</span>
   <span class="k">try</span><span class="p">:</span>
     <span class="k">return</span> <span class="n">excpt</span><span class="o">.</span><span class="n">message</span><span class="p">()</span>
   <span class="k">except</span><span class="p">:</span>
@@ -151,6 +168,21 @@
 </div>
 <div class="viewcode-block" id="rcelog"><a class="viewcode-back" href="../../development/modules/hmdccondor.html#hmdccondor.HMDCLog.rcelog">[docs]</a><span class="k">def</span> <span class="nf">rcelog</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">our_logger</span><span class="o">=</span><span class="s">&#39;rce_submit&#39;</span><span class="p">,</span>
     <span class="n">my_username</span><span class="o">=</span><span class="n">pwd</span><span class="o">.</span><span class="n">getpwuid</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getuid</span><span class="p">())[</span><span class="mi">0</span><span class="p">]):</span>
+  <span class="sd">&quot;&quot;&quot;this function wraps the logger class methods. Its primary feature</span>
+<span class="sd">  is to add the username of the executing user to the syslog message for</span>
+<span class="sd">  debugging purpose.</span>
+
+<span class="sd">  :param level: debugging level for log message</span>
+<span class="sd">  :type level: str</span>
+<span class="sd">  :param message: message to log</span>
+<span class="sd">  :type message: str</span>
+<span class="sd">  :param our_logger: name of logger</span>
+<span class="sd">  :type our_logger: str</span>
+<span class="sd">  :param my_username: username to append to log message, defaults to</span>
+<span class="sd">    executing user.</span>
+<span class="sd">  :type my_username: str</span>
+
+<span class="sd">  &quot;&quot;&quot;</span>
 
   <span class="k">def</span> <span class="nf">__rcelog__</span><span class="p">():</span>
     <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">our_logger</span><span class="p">),</span> <span class="n">level</span><span class="p">)</span>

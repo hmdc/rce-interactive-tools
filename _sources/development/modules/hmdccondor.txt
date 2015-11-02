@@ -11,6 +11,8 @@ hmdccondor.HMDCCondor module
     :members:
     :undoc-members:
     :show-inheritance:
+    :special-members:
+    :private-members:
 
 hmdccondor.HMDCConstants module
 -------------------------------
@@ -27,6 +29,8 @@ hmdccondor.HMDCExceptions module
     :members:
     :undoc-members:
     :show-inheritance:
+    :special-members:
+    :private-members:
 
 hmdccondor.HMDCLog module
 -------------------------
@@ -35,6 +39,8 @@ hmdccondor.HMDCLog module
     :members:
     :undoc-members:
     :show-inheritance:
+    :special-members:
+    :private-members:
 
 hmdccondor.HMDCPoller module
 ----------------------------
@@ -43,6 +49,8 @@ hmdccondor.HMDCPoller module
     :members:
     :undoc-members:
     :show-inheritance:
+    :special-members:
+    :private-members:
 
 hmdccondor.HMDCRceSubmitClient module
 -------------------------------------
@@ -51,6 +59,8 @@ hmdccondor.HMDCRceSubmitClient module
     :members:
     :undoc-members:
     :show-inheritance:
+    :special-members:
+    :private-members:
 
 hmdccondor.HMDCWrapper module
 -----------------------------
@@ -59,6 +69,8 @@ hmdccondor.HMDCWrapper module
     :members:
     :undoc-members:
     :show-inheritance:
+    :special-members:
+    :private-members:
 
 hmdccondor.ProgressBarThreadCli module
 --------------------------------------
@@ -67,6 +79,8 @@ hmdccondor.ProgressBarThreadCli module
     :members:
     :undoc-members:
     :show-inheritance:
+    :special-members:
+    :private-members:
 
 hmdccondor.ProgressBarThreadGUI module
 --------------------------------------
@@ -75,6 +89,8 @@ hmdccondor.ProgressBarThreadGUI module
     :members:
     :undoc-members:
     :show-inheritance:
+    :special-members:
+    :private-members:
 
 hmdccondor.RCEConsoleClient module
 ----------------------------------
@@ -83,6 +99,8 @@ hmdccondor.RCEConsoleClient module
     :members:
     :undoc-members:
     :show-inheritance:
+    :special-members:
+    :private-members:
 
 hmdccondor.RCEExceptionFrame module
 -----------------------------------
@@ -91,6 +109,8 @@ hmdccondor.RCEExceptionFrame module
     :members:
     :undoc-members:
     :show-inheritance:
+    :special-members:
+    :private-members:
 
 hmdccondor.RCEGraphicalClient module
 ------------------------------------
@@ -99,6 +119,8 @@ hmdccondor.RCEGraphicalClient module
     :members:
     :undoc-members:
     :show-inheritance:
+    :special-members:
+    :private-members:
 
 hmdccondor.RCEGraphicalDispatcher module
 ----------------------------------------
@@ -107,6 +129,8 @@ hmdccondor.RCEGraphicalDispatcher module
     :members:
     :undoc-members:
     :show-inheritance:
+    :special-members:
+    :private-members:
 
 hmdccondor.RCELaunchLaunchWindowFrame module
 --------------------------------------------
@@ -115,6 +139,8 @@ hmdccondor.RCELaunchLaunchWindowFrame module
     :members:
     :undoc-members:
     :show-inheritance:
+    :special-members:
+    :private-members:
 
 
 Module contents
@@ -124,3 +150,5 @@ Module contents
     :members:
     :undoc-members:
     :show-inheritance:
+    :special-members:
+    :private-members:

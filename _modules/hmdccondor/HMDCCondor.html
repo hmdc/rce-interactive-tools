@@ -81,10 +81,10 @@
             
             
                 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../gui/using_the_rce_gui_client.html">Using the RCE Submit Client</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../cmd/using_the_rce_cmd_client.html">Using the RCE Submit Command Line Client (For Advanced Users)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gui/using_the_rce_gui_client.html">Using the RCE submit client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cmd/using_the_rce_cmd_client.html">Using the RCE submit command line client (for advanced users)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../job_lifetime.html">Job lifetime limits in the RCE</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../errors.html">Understanding Errors and Warnings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../errors.html">Diagnosing errors and warnings</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../developer_documentation.html">Operations/Development Documentation</a></li>
 </ul>
 
@@ -163,24 +163,29 @@
 <span class="kn">from</span> <span class="nn">hmdccondor.HMDCLog</span> <span class="kn">import</span> <span class="n">rcelog</span>
 
 <div class="viewcode-block" id="poll_thread"><a class="viewcode-back" href="../../development/modules/hmdccondor.html#hmdccondor.HMDCCondor.poll_thread">[docs]</a><span class="k">def</span> <span class="nf">poll_thread</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span><span class="n">return_status</span><span class="p">,</span><span class="n">use_local_schedd</span><span class="p">):</span>
-  <span class="sd">&quot;&quot;&quot;poll_thread is a function which when provided as an argument to apply_async()</span>
-<span class="sd">     is executed in an independent thread. poll_thread creates a new HMDCPoller</span>
-<span class="sd">     which runs until the job represented by **id** has a JobStatus equal to any</span>
-<span class="sd">     number in the **return_status** array.</span>
-<span class="sd">     </span>
+  <span class="sd">&quot;&quot;&quot;poll_thread is a function which when provided as an argument to</span>
+<span class="sd">     `apply_async()</span>
+<span class="sd">     &lt;https://docs.python.org/2/library/multiprocessing.html&gt;`_</span>
+<span class="sd">     is executed in an independent thread.</span>
+<span class="sd">     ``poll_thread`` creates a new ``HMDCPoller`` which runs until the</span>
+<span class="sd">     job represented by ``id`` has a ``JobStatus`` equal to any number in</span>
+<span class="sd">     the ``return_status`` array.</span>
+
 <span class="sd">     :param id: HTCondor Job Id to poll for</span>
-<span class="sd">     :type id: int</span>
+<span class="sd">     :type id: ``int``</span>
 <span class="sd">     :param return_status: An array of JobStatus values to look for.</span>
-<span class="sd">     :type return_status: list</span>
+<span class="sd">     :type return_status: ``list``</span>
 <span class="sd">     :param use_local_schedd: If set to true, uses the schedd of the executing host. If false, finds the schedd whcih submitted the HTCondor job represented by **id**.</span>
-<span class="sd">     :type use_local_schedd: boolean</span>
-<span class="sd">     :returns: (JobStatus,ClassAd) or (None,None) if no such job exists.</span>
-<span class="sd">     :rtype: tuple</span>
+<span class="sd">     :type use_local_schedd: ``boolean``</span>
+<span class="sd">     :returns: ``(JobStatus, ClassAd)`` or ``(None,None)`` if no such job exists.</span>
+<span class="sd">     :rtype: ``tuple``</span>
 
 <span class="sd">     :Example:</span>
+
 <span class="sd">     &gt;&gt;&gt; import hmdccondor</span>
-<span class="sd">     &gt;&gt;&gt; from hmdccondor.HMDCCondor import poll_thread </span>
+<span class="sd">     &gt;&gt;&gt; from hmdccondor.HMDCCondor import poll_thread</span>
 <span class="sd">     &gt;&gt;&gt; poll_thread(10, [1,2,3,4,5], True)</span>
+
 <span class="sd">  &quot;&quot;&quot;</span>
 
   <span class="k">if</span> <span class="n">use_local_schedd</span><span class="p">:</span>
@@ -192,17 +197,20 @@
       <span class="k">return</span> <span class="p">(</span><span class="bp">None</span><span class="p">,</span><span class="bp">None</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="poll_xpra_thread"><a class="viewcode-back" href="../../development/modules/hmdccondor.html#hmdccondor.HMDCCondor.poll_xpra_thread">[docs]</a><span class="k">def</span> <span class="nf">poll_xpra_thread</span><span class="p">(</span><span class="n">out_txt</span><span class="p">):</span>
-  <span class="sd">&quot;&quot;&quot;poll_xpra_thread is a function when provided as an argument to apply_async()</span>
-<span class="sd">     is executed in an independent thread. poll_xpra_thread continues to read</span>
-<span class="sd">     **out_txt**, which is the location of the Xpra startup log file, to determine</span>
+  <span class="sd">&quot;&quot;&quot;``poll_xpra_thread`` is a function when provided as an argument to</span>
+<span class="sd">     `apply_async()</span>
+<span class="sd">     &lt;https://docs.python.org/2/library/multiprocessing.html&gt;`_</span>
+<span class="sd">     is executed in an independent thread. ``poll_xpra_thread`` continues to read</span>
+<span class="sd">     ``out_txt``, which is the location of the Xpra startup log file, to determine</span>
 <span class="sd">     if xpra has started within a job.</span>
 
 <span class="sd">     :param out_txt: Fully qualified path of Xpra startup log file</span>
-<span class="sd">     :type out_txt: str</span>
+<span class="sd">     :type out_txt: ``str``</span>
 <span class="sd">     :returns: Xpra display number</span>
-<span class="sd">     :rtype: int</span>
-<span class="sd">     </span>
+<span class="sd">     :rtype: ``int``</span>
+
 <span class="sd">     :Example:</span>
+
 <span class="sd">     &gt;&gt;&gt; from hmdccondor import poll_xpra_thread</span>
 <span class="sd">     &gt;&gt;&gt; poll_xpra_thread(&#39;/nfs/home/E/esarmien/.HMDC/jobs/interactive/xstata-mp_14.0_174_201510271445990519/out.txt&#39;)</span>
 
@@ -218,8 +226,20 @@
       <span class="k">continue</span>
 </div>
 <div class="viewcode-block" id="HMDCCondor"><a class="viewcode-back" href="../../development/modules/hmdccondor.html#hmdccondor.HMDCCondor.HMDCCondor">[docs]</a><span class="k">class</span> <span class="nc">HMDCCondor</span><span class="p">:</span>
-  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+  <span class="sd">&quot;&quot;&quot;HMDCCondor provides an interface to a local HTCondor cluster. It</span>
+<span class="sd">  instantiates a local HTCondor schedd object for all operations. The</span>
+<span class="sd">  initialization method for the HMDCCondor class acquires a local</span>
+<span class="sd">  HTCondor schedd object, sets the polling timeout, and local LDAP</span>
+<span class="sd">  server.</span>
 
+<span class="sd">  .. note::</span>
+
+<span class="sd">    self.ldap_server and self.ldap_base_dn should be acquired via</span>
+<span class="sd">    rceapp.yml rather than statically defined in __init__()</span>
+
+<span class="sd">  &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="HMDCCondor.__init__"><a class="viewcode-back" href="../../development/modules/hmdccondor.html#hmdccondor.HMDCCondor.HMDCCondor.__init__">[docs]</a>  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_collector</span> <span class="o">=</span> <span class="n">htcondor</span><span class="o">.</span><span class="n">Collector</span><span class="p">(</span><span class="n">CONSTANTS</span><span class="o">.</span><span class="n">CONDOR_HOST</span><span class="p">)</span>
     <span class="k">try</span><span class="p">:</span>
       <span class="bp">self</span><span class="o">.</span><span class="n">_schedd</span> <span class="o">=</span> <span class="n">htcondor</span><span class="o">.</span><span class="n">Schedd</span><span class="p">()</span>
@@ -237,8 +257,20 @@
 
     <span class="bp">self</span><span class="o">.</span><span class="n">ldap_server</span> <span class="o">=</span> <span class="s">&#39;ldap.hmdc.harvard.edu&#39;</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">ldap_base_dn</span> <span class="o">=</span> <span class="s">&#39;dc=login,dc=hmdc,dc=harvard,dc=edu&#39;</span>
-
+</div>
 <div class="viewcode-block" id="HMDCCondor.get_my_jobs"><a class="viewcode-back" href="../../development/modules/hmdccondor.html#hmdccondor.HMDCCondor.HMDCCondor.get_my_jobs">[docs]</a>  <span class="k">def</span> <span class="nf">get_my_jobs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;``get_my_jobs()`` returns an array of jobs your username is currently</span>
+<span class="sd">    running and has a ``JobStatus =?= 2``.</span>
+
+<span class="sd">    :returns: list of jobs you&#39;re running</span>
+<span class="sd">    :rtype: ``list``</span>
+
+<span class="sd">    :Example:</span>
+
+<span class="sd">    &gt;&gt;&gt; from hmdccondor import HMDCCondor</span>
+<span class="sd">    &gt;&gt;&gt; HMDCCondor().get_my_jobs()</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">my_username</span> <span class="o">=</span> <span class="n">pwd</span><span class="o">.</span><span class="n">getpwuid</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getuid</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
 
     <span class="c"># pwd.getpwuid() should return a string.</span>
@@ -252,6 +284,20 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_collector</span><span class="o">.</span><span class="n">locateAll</span><span class="p">(</span><span class="n">htcondor</span><span class="o">.</span><span class="n">DaemonTypes</span><span class="o">.</span><span class="n">Schedd</span><span class="p">))))</span>
 </div>
 <div class="viewcode-block" id="HMDCCondor.get_sched_ad_for_job"><a class="viewcode-back" href="../../development/modules/hmdccondor.html#hmdccondor.HMDCCondor.HMDCCondor.get_sched_ad_for_job">[docs]</a>  <span class="k">def</span> <span class="nf">get_sched_ad_for_job</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">jobid</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;get_sched_ad_for_job() returns the classad for the schedd</span>
+<span class="sd">    currently running a job with id ``jobid``</span>
+
+<span class="sd">    :param jobid: job id</span>
+<span class="sd">    :type jobid: ``int``</span>
+<span class="sd">    :returns: classad of schedd</span>
+<span class="sd">    :rtype: ``classad.ClassAd``</span>
+
+<span class="sd">    :Example:</span>
+
+<span class="sd">    &gt;&gt;&gt; from hmdccondor import HMDCCondor</span>
+<span class="sd">    &gt;&gt;&gt; HMDCCondor().get_sched_ad_for_job(73)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">try</span><span class="p">:</span>
       <span class="k">return</span> <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span>
@@ -262,6 +308,20 @@
       <span class="k">raise</span>
 </div>
 <div class="viewcode-block" id="HMDCCondor.get_sched_for_job"><a class="viewcode-back" href="../../development/modules/hmdccondor.html#hmdccondor.HMDCCondor.HMDCCondor.get_sched_for_job">[docs]</a>  <span class="k">def</span> <span class="nf">get_sched_for_job</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">jobid</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;get_sched_for_job() returns an htcondor.Schedd object for the</span>
+<span class="sd">    schedd currently running a job with id ``jobid``</span>
+
+<span class="sd">    :param jobid: job id</span>
+<span class="sd">    :type jobid: ``int``</span>
+<span class="sd">    :returns: htcondor Schedd object</span>
+<span class="sd">    :rtype: ``htcondor.Schedd``</span>
+
+<span class="sd">    :Example:</span>
+
+<span class="sd">    &gt;&gt;&gt; from hmdccondor import HMDCCondor</span>
+<span class="sd">    &gt;&gt;&gt; HMDCCondor().get_sched_for_job(73)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">return</span> <span class="nb">reduce</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">:</span> <span class="n">x</span><span class="o">+</span><span class="n">y</span><span class="p">,</span>
         <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span>
@@ -270,6 +330,31 @@
               <span class="bp">self</span><span class="o">.</span><span class="n">_collector</span><span class="o">.</span><span class="n">locateAll</span><span class="p">(</span><span class="n">htcondor</span><span class="o">.</span><span class="n">DaemonTypes</span><span class="o">.</span><span class="n">Schedd</span><span class="p">)))))</span>
 </div>
 <div class="viewcode-block" id="HMDCCondor.submit"><a class="viewcode-back" href="../../development/modules/hmdccondor.html#hmdccondor.HMDCCondor.HMDCCondor.submit">[docs]</a>  <span class="k">def</span> <span class="nf">submit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">app_name</span><span class="p">,</span> <span class="n">app_version</span><span class="p">,</span> <span class="n">cmd</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">memory</span><span class="p">,</span> <span class="n">cpu</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;submit() submits a job to the HTCondor cluster using the</span>
+<span class="sd">    specified arguments.</span>
+
+<span class="sd">    :param app_name: application name</span>
+<span class="sd">    :type app_name: ``str``</span>
+<span class="sd">    :param app_version: application version</span>
+<span class="sd">    :type app_version: ``str``</span>
+<span class="sd">    :param cmd: command to run on htcondor cluster</span>
+<span class="sd">    :type cmd: ``str``</span>
+<span class="sd">    :param args: arguments to command</span>
+<span class="sd">    :type args: ``list``</span>
+<span class="sd">    :param memory: amount of memory required for job</span>
+<span class="sd">    :type memory: ``int``</span>
+<span class="sd">    :param cpu: amount of cpus required for job</span>
+<span class="sd">    :type cpu: ``int``</span>
+<span class="sd">    :returns: jobid of submitted job</span>
+<span class="sd">    :rtype: ``int``</span>
+
+<span class="sd">    :Example:</span>
+
+<span class="sd">    &gt;&gt;&gt; from hmdccondor import HMDCCondor</span>
+<span class="sd">    &gt;&gt;&gt; HMDCCondor().submit(&#39;Shell, &#39;2.31.3&#39;, &#39;/usr/bin/gnome-terminal&#39;,</span>
+<span class="sd">        [], 2048, 1)</span>
+
+<span class="sd">  &quot;&quot;&quot;</span>
 
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_schedd</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_create_classad</span><span class="p">(</span>
       <span class="n">app_name</span><span class="p">,</span>
@@ -280,6 +365,38 @@
       <span class="n">memory</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="HMDCCondor.poll"><a class="viewcode-back" href="../../development/modules/hmdccondor.html#hmdccondor.HMDCCondor.HMDCCondor.poll">[docs]</a>  <span class="k">def</span> <span class="nf">poll</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">jobid</span><span class="p">,</span> <span class="n">return_status</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">use_local_schedd</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">want_results</span><span class="o">=</span><span class="p">[</span><span class="n">CONSTANTS</span><span class="o">.</span><span class="n">JOB_STATUS_RUNNING</span><span class="p">]):</span>
+    <span class="sd">&quot;&quot;&quot;poll() takes a job id and returns a ``(JobStatus,ClassAd)`` tuple if,</span>
+<span class="sd">    before the polling timeout window exceeds, a job has a ``JobStatus``</span>
+<span class="sd">    classad element which matches an integer in the ``return_status`` array.</span>
+<span class="sd">    It then compares this ``JobStatus`` to the ``want_results`` array. If the</span>
+<span class="sd">    job polled has a ``JobStatus`` which is also in the ``want_results`` array,</span>
+<span class="sd">    poll succeeds, otherwise, raises an exception.</span>
+
+<span class="sd">    :param jobid: job id</span>
+<span class="sd">    :type jobid: ``int``</span>
+<span class="sd">    :param return_status: an array of JobStatus&#39;s from which polling</span>
+<span class="sd">      should return.</span>
+<span class="sd">    :type return_status: ``list``</span>
+<span class="sd">    :param use_local_schedd: If true, uses local schedd, otherwise finds</span>
+<span class="sd">      schedd for jobid.</span>
+<span class="sd">    :type use_local_schedd: ``bool``</span>
+<span class="sd">    :param want_results: An array of JobStatus values that are compared</span>
+<span class="sd">      to the JobStatus of the successfully returned job.</span>
+<span class="sd">    :type want_results: ``list``</span>
+<span class="sd">    :returns: ``(JobStatus, ClassAd)`` of polled job</span>
+<span class="sd">    :rtype: ``tuple``</span>
+<span class="sd">    :raises:</span>
+<span class="sd">      :py:exc:`hmdccondor.HMDCExceptions.RCEJobDidNotStart`</span>
+<span class="sd">    :raises:</span>
+<span class="sd">      :py:exc:`hmdccondor.HMDCExceptions.RCEJobTookTooLongStartError`</span>
+
+<span class="sd">    :Example:</span>
+
+<span class="sd">    &gt;&gt;&gt; from hmdccondor import HMDCCondor, CONSTANTS</span>
+<span class="sd">    &gt;&gt;&gt; HMDCCondor().poll(73, return_status=[2], use_local_schedd=True,</span>
+<span class="sd">      want_results = [ CONSTANTS.JOB_STATUS_RUNNING ])</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">want_results</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span>
     <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">use_local_schedd</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span>
@@ -289,7 +406,7 @@
         <span class="k">return</span> <span class="n">result</span>
       <span class="k">else</span><span class="p">:</span>
         <span class="k">raise</span> <span class="n">RCEJobDidNotStart</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
-      
+
     <span class="n">_return_status</span> <span class="o">=</span> <span class="n">return_status</span> <span class="k">if</span> <span class="n">return_status</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_return_status</span>
 
     <span class="c"># start a thread so we can timeout on polling.</span>
@@ -302,20 +419,43 @@
       <span class="k">return</span> <span class="n">check_result</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">POLL_TIMEOUT</span><span class="p">))</span>
     <span class="k">except</span> <span class="n">RCEJobDidNotStart</span><span class="p">:</span>
       <span class="n">pool</span><span class="o">.</span><span class="n">terminate</span><span class="p">()</span>
-      <span class="k">raise</span> 
+      <span class="k">raise</span>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
       <span class="n">pool</span><span class="o">.</span><span class="n">terminate</span><span class="p">()</span>
       <span class="k">raise</span> <span class="n">RCEJobTookTooLongStartError</span><span class="p">(</span><span class="n">jobid</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="HMDCCondor.attach"><a class="viewcode-back" href="../../development/modules/hmdccondor.html#hmdccondor.HMDCCondor.HMDCCondor.attach">[docs]</a>  <span class="k">def</span> <span class="nf">attach</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">jobid</span><span class="p">,</span><span class="n">rceapps</span><span class="p">,</span><span class="n">ad</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    attach() executes the xpra client to connect to an xpra server</span>
+<span class="sd">    running as job ``jobid`` on the htcondor cluster.</span>
 
+<span class="sd">    :param jobid: job id</span>
+<span class="sd">    :type jobid: ``int``</span>
+<span class="sd">    :param rceapps: rceapps object</span>
+<span class="sd">    :type rceapps: rceapp.rceapp</span>
+<span class="sd">    :param ad: ClassAd for job, specified by jobid. If present, attach()</span>
+<span class="sd">      does not poll for job classad, since it&#39;s provided. This ClassAd</span>
+<span class="sd">      should be unformatted str.</span>
+<span class="sd">    :type ad: ``str``</span>
+<span class="sd">    :returns: pid of executed xpra client</span>
+<span class="sd">    :rtype: ``int``</span>
+<span class="sd">    :raises:</span>
+<span class="sd">      :py:exc:`hmdccondor.HMDCExceptions.RCEJobNotFoundError`</span>
+
+<span class="sd">    :Example:</span>
+
+<span class="sd">    &gt;&gt;&gt; from rceapp import rceapp</span>
+<span class="sd">    &gt;&gt;&gt; from hmdccondor import HMDCCondor</span>
+<span class="sd">    &gt;&gt;&gt; HMDCCondor().attach(75, rceapp(&#39;/etc/rceapp.yml&#39;))</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="c"># If attach is being run from submit, then, we don&#39;t have to poll.</span>
 
     <span class="k">if</span> <span class="n">ad</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
       <span class="n">status</span><span class="p">,</span> <span class="n">_classad</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">poll</span><span class="p">(</span><span class="n">jobid</span><span class="p">,</span> <span class="n">want_results</span><span class="o">=</span> <span class="p">[</span><span class="bp">None</span><span class="p">,</span> <span class="n">CONSTANTS</span><span class="o">.</span><span class="n">JOB_STATUS_RUNNING</span><span class="p">]</span> <span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
       <span class="n">status</span><span class="p">,</span> <span class="n">_classad</span> <span class="o">=</span> <span class="n">classad</span><span class="o">.</span><span class="n">parseOld</span><span class="p">(</span><span class="n">ad</span><span class="p">)[</span><span class="s">&#39;JobStatus&#39;</span><span class="p">],</span> <span class="n">ad</span>
- 
+
     <span class="k">if</span> <span class="n">status</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">_classad</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
       <span class="k">raise</span> <span class="n">RCEJobNotFoundError</span><span class="p">(</span><span class="n">jobid</span><span class="p">)</span>
 
@@ -323,12 +463,36 @@
       <span class="bp">self</span><span class="o">.</span><span class="n">poll_xpra</span><span class="p">(</span><span class="n">ad</span><span class="p">)))(</span><span class="n">classad</span><span class="o">.</span><span class="n">parseOld</span><span class="p">(</span><span class="n">_classad</span><span class="p">))</span>
 </div>
 <div class="viewcode-block" id="HMDCCondor.attach_xpra"><a class="viewcode-back" href="../../development/modules/hmdccondor.html#hmdccondor.HMDCCondor.HMDCCondor.attach_xpra">[docs]</a>  <span class="k">def</span> <span class="nf">attach_xpra</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_classad</span><span class="p">,</span> <span class="n">rceapps</span><span class="p">,</span> <span class="n">display</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    attach_xpra() executes the xpra client to connect to an xpra server</span>
+<span class="sd">    running under the job specified by _classad on the display specified</span>
+<span class="sd">    by **display**. This should probably not be used on its own, and</span>
+<span class="sd">    instead, the higher order function attach() should be called.</span>
+
+<span class="sd">    :param _classad: classad for job</span>
+<span class="sd">    :type _classad: ``classad.ClassAd``</span>
+<span class="sd">    :param rceapps: rceapps object</span>
+<span class="sd">    :type rceapps: rceapp.rceapp</span>
+<span class="sd">    :param display: display id for xpra server</span>
+<span class="sd">    :type display: ``int``</span>
+<span class="sd">    :returns: pid of executed xpra client</span>
+<span class="sd">    :rtype: ``int``</span>
+
+<span class="sd">    :Example:</span>
+
+<span class="sd">    &gt;&gt;&gt; from rceapp import rceapp</span>
+<span class="sd">    &gt;&gt;&gt; from hmdccondor import HMDCCondor</span>
+<span class="sd">    &gt;&gt;&gt; HMDCCondor().attach_xpra((HMDCCondor().poll(75))[1],</span>
+<span class="sd">      rceapp(&#39;/etc/rceapp.yml&#39;), 3)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">condor_ssh</span> <span class="o">=</span> <span class="s">&#39;/usr/bin/condor_ssh_to_job&#39;</span>
     <span class="n">xpra</span> <span class="o">=</span> <span class="s">&#39;/usr/bin/xpra&#39;</span>
 
     <span class="n">job_id</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">_classad</span><span class="p">[</span><span class="s">&#39;ClusterId&#39;</span><span class="p">])</span>
     <span class="n">machine</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">_classad</span><span class="p">[</span><span class="s">&#39;RemoteHost&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;@&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-    
+
     <span class="k">return</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">([</span><span class="n">xpra</span><span class="p">,</span>
      <span class="s">&quot;attach&quot;</span><span class="p">,</span>
      <span class="s">&quot;--socket-dir=$TEMP&quot;</span><span class="p">,</span>
@@ -340,6 +504,17 @@
      <span class="s">&quot;ssh:{0}:{1}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="n">display</span><span class="p">)],</span> <span class="n">env</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">,</span> <span class="n">SSH_AUTH_SOCK</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">pid</span>
 </div>
 <div class="viewcode-block" id="HMDCCondor.poll_xpra"><a class="viewcode-back" href="../../development/modules/hmdccondor.html#hmdccondor.HMDCCondor.HMDCCondor.poll_xpra">[docs]</a>  <span class="k">def</span> <span class="nf">poll_xpra</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">ad</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;poll_xpra() creates a thread which polls the xpra server log to</span>
+<span class="sd">    determine if the xpra server has been started.</span>
+
+<span class="sd">    :param ad: classad of the xpra-enabled job to poll</span>
+<span class="sd">    :type ad: ``classad.ClassAd``</span>
+<span class="sd">    :returns: display number of xpra server</span>
+<span class="sd">    :rtype: ``int``</span>
+<span class="sd">    :raises:</span>
+<span class="sd">      :py:exc:`hmdccondor.HMDCExceptions.RCEXpraTookTooLongStartError`</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">_out</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">ad</span><span class="p">[</span><span class="s">&#39;Out&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">eval</span><span class="p">())</span>
 
     <span class="n">pool</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">Pool</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
@@ -352,7 +527,30 @@
       <span class="n">pool</span><span class="o">.</span><span class="n">terminate</span><span class="p">()</span>
       <span class="k">raise</span> <span class="n">RCEXpraTookTooLongStartError</span><span class="p">(</span><span class="n">ad</span><span class="p">)</span>
 </div>
-  <span class="k">def</span> <span class="nf">_create_classad</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">app_name</span><span class="p">,</span> <span class="n">app_version</span><span class="p">,</span> <span class="n">cmd</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">cpu</span><span class="p">,</span> <span class="n">memory</span><span class="p">):</span>
+<div class="viewcode-block" id="HMDCCondor._create_classad"><a class="viewcode-back" href="../../development/modules/hmdccondor.html#hmdccondor.HMDCCondor.HMDCCondor._create_classad">[docs]</a>  <span class="k">def</span> <span class="nf">_create_classad</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">app_name</span><span class="p">,</span> <span class="n">app_version</span><span class="p">,</span> <span class="n">cmd</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">cpu</span><span class="p">,</span> <span class="n">memory</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;_create_classad() creates a classad for submission to the</span>
+<span class="sd">    htcondor cluster, utilizing HMDC custom ClassAds.</span>
+
+<span class="sd">    :param app_name: application name</span>
+<span class="sd">    :type app_name: ``str``</span>
+<span class="sd">    :param app_version: application version</span>
+<span class="sd">    :type app_version: ``str``</span>
+<span class="sd">    :param cmd: command to run</span>
+<span class="sd">    :type cmd: ``str``</span>
+<span class="sd">    :param args: args to pass to cmd</span>
+<span class="sd">    :type args: ``list``</span>
+<span class="sd">    :param memory: memory to reserve for job</span>
+<span class="sd">    :type memory: ``int``</span>
+<span class="sd">    :returns: classad object</span>
+<span class="sd">    :rtype: ``classad.ClassAd``</span>
+
+<span class="sd">    :Example:</span>
+
+<span class="sd">    &gt;&gt;&gt; from hmdccondor import HMDCCondor</span>
+<span class="sd">    &gt;&gt;&gt; HMDCCondor()._create_classad(&#39;shell&#39;, &#39;2.1.32&#39;,</span>
+<span class="sd">      &#39;/usr/bin/gnome-terminal&#39;, [], 1, 2048)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">dt</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">&quot;%Y%m</span><span class="si">%d%s</span><span class="s">&quot;</span><span class="p">)</span>
 
     <span class="n">_out</span> <span class="o">=</span> <span class="s">&quot;{0}_{1}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">app_name</span><span class="p">,</span> <span class="n">app_version</span><span class="p">)</span>
@@ -396,8 +594,22 @@
     <span class="n">rcelog</span><span class="p">(</span><span class="s">&#39;info&#39;</span><span class="p">,</span> <span class="n">_classad</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">_classad</span>
+</div>
+<div class="viewcode-block" id="HMDCCondor._get_entitlements"><a class="viewcode-back" href="../../development/modules/hmdccondor.html#hmdccondor.HMDCCondor.HMDCCondor._get_entitlements">[docs]</a>  <span class="k">def</span> <span class="nf">_get_entitlements</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;_get_entitlements() returns a space-separated list of ldap</span>
+<span class="sd">    entitlements.</span>
 
-  <span class="k">def</span> <span class="nf">_get_entitlements</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="sd">    :returns: space-separated list of ldap entitlements, or</span>
+<span class="sd">      ``classad.Value.Undefined`` if ldap server is unreachable</span>
+<span class="sd">    :rtype: ``str``</span>
+<span class="sd">    :rtype: ``classad.Value.Undefined``</span>
+
+<span class="sd">    :Example:</span>
+
+<span class="sd">    &gt;&gt;&gt; from hmdccondor import HMDCCondor</span>
+<span class="sd">    &gt;&gt;&gt; HMDCCondor()._get_entitlements()</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="c"># FIXME: Figure out a way to read basedn and uri from openldap</span>
     <span class="c"># configuration, natively.</span>
     <span class="n">_my_username</span> <span class="o">=</span> <span class="n">pwd</span><span class="o">.</span><span class="n">getpwuid</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getuid</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
@@ -413,11 +625,39 @@
       <span class="c"># DEBUG HERE: Unable to contact LDAP server</span>
       <span class="n">rcelog</span><span class="p">(</span><span class="s">&#39;critical&#39;</span><span class="p">,</span> <span class="s">&quot;_get_entitlements(): Unable to contact ldap server {0}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ldap_server</span><span class="p">))</span>
       <span class="k">return</span> <span class="n">classad</span><span class="o">.</span><span class="n">Value</span><span class="o">.</span><span class="n">Undefined</span>
+</div>
+<div class="viewcode-block" id="HMDCCondor._get_email_for_classad"><a class="viewcode-back" href="../../development/modules/hmdccondor.html#hmdccondor.HMDCCondor.HMDCCondor._get_email_for_classad">[docs]</a>  <span class="k">def</span> <span class="nf">_get_email_for_classad</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;_get_email_for_classad() is used to set the Email field in a</span>
+<span class="sd">    classad. This wraps _get_email(). If _get_email() cannot find an</span>
+<span class="sd">    email address in the users&#39; ldap field, it returns</span>
+<span class="sd">    classad.Value.Undefined.</span>
 
-  <span class="k">def</span> <span class="nf">_get_email_for_classad</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="sd">    :returns: e-mail address or classad.Value.Undefined</span>
+<span class="sd">    :rtype: ``str``</span>
+<span class="sd">    :rtype: ``classad.Value.Undefined``</span>
+
+<span class="sd">    :Example:</span>
+
+<span class="sd">    &gt;&gt;&gt; from hmdccondor import HMDCCondor</span>
+<span class="sd">    &gt;&gt;&gt; HMDCCondor()._get_email_for_classad()</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">email</span><span class="p">:</span> <span class="n">classad</span><span class="o">.</span><span class="n">Value</span><span class="o">.</span><span class="n">Undefined</span> <span class="k">if</span> <span class="n">email</span> <span class="ow">is</span> <span class="bp">None</span> <span class="k">else</span> <span class="n">email</span><span class="p">)(</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_email</span><span class="p">())</span>
+</div>
+<div class="viewcode-block" id="HMDCCondor._get_email"><a class="viewcode-back" href="../../development/modules/hmdccondor.html#hmdccondor.HMDCCondor.HMDCCondor._get_email">[docs]</a>  <span class="k">def</span> <span class="nf">_get_email</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;get_email() attempts to find users&#39; email in gecos field or mail</span>
+<span class="sd">    ldap field. If unable to find in either, returns None.</span>
 
-  <span class="k">def</span> <span class="nf">_get_email</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="sd">    :returns: e-mail address or None</span>
+<span class="sd">    :rtype: ``str``</span>
+<span class="sd">    :rtype: ``None``</span>
+
+<span class="sd">    :Example:</span>
+
+<span class="sd">    &gt;&gt;&gt; from hmdccondor import HMDCCondor</span>
+<span class="sd">    &gt;&gt;&gt; HMDCCondor()._get_email()</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">_my_username</span> <span class="o">=</span> <span class="n">pwd</span><span class="o">.</span><span class="n">getpwuid</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getuid</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">_email_regex</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
         <span class="s">&quot;^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$&quot;</span><span class="p">)</span>
@@ -459,9 +699,23 @@
     <span class="c"># Print unable to find any email at all</span>
     <span class="n">rcelog</span><span class="p">(</span><span class="s">&#39;critical&#39;</span><span class="p">,</span> <span class="s">&quot;_get_email(): Unable to find email in either gecos or mail field. Investigate.&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="bp">None</span>
+</div>
+<div class="viewcode-block" id="HMDCCondor._get_environment"><a class="viewcode-back" href="../../development/modules/hmdccondor.html#hmdccondor.HMDCCondor.HMDCCondor._get_environment">[docs]</a>  <span class="k">def</span> <span class="nf">_get_environment</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;_get_environment() returns a space-separated list of user</span>
+<span class="sd">    environment variables as key,value pairs for use in a classad.</span>
 
-  <span class="k">def</span> <span class="nf">_get_environment</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="k">return</span> <span class="s">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">pair</span><span class="p">:</span> <span class="ow">not</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s">&quot;^DBUS|^GNOME&quot;</span><span class="p">,</span> <span class="n">pair</span><span class="p">),</span> <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">):</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s">=&#39;</span><span class="si">%s</span><span class="s">&#39;&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">),</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">iteritems</span><span class="p">())))</span></div>
+<span class="sd">    :returns: string of environment variables, values separated by</span>
+<span class="sd">      spaces</span>
+<span class="sd">    :rtype: ``str``</span>
+
+<span class="sd">    :Example:</span>
+
+<span class="sd">    &gt;&gt;&gt; from hmdccondor import HMDCCondor</span>
+<span class="sd">    &gt;&gt;&gt; HMDCCondor()._get_environment</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="s">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">pair</span><span class="p">:</span> <span class="ow">not</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s">&quot;^DBUS|^GNOME&quot;</span><span class="p">,</span> <span class="n">pair</span><span class="p">),</span> <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">):</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s">=&#39;</span><span class="si">%s</span><span class="s">&#39;&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">),</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">iteritems</span><span class="p">())))</span></div></div>
 </pre></div>
 
            </div>

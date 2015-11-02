@@ -81,10 +81,10 @@
             
             
                 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../gui/using_the_rce_gui_client.html">Using the RCE Submit Client</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../cmd/using_the_rce_cmd_client.html">Using the RCE Submit Command Line Client (For Advanced Users)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gui/using_the_rce_gui_client.html">Using the RCE submit client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cmd/using_the_rce_cmd_client.html">Using the RCE submit command line client (for advanced users)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../job_lifetime.html">Job lifetime limits in the RCE</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../errors.html">Understanding Errors and Warnings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../errors.html">Diagnosing errors and warnings</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../developer_documentation.html">Operations/Development Documentation</a></li>
 </ul>
 
@@ -134,12 +134,22 @@
 <span class="kn">import</span> <span class="nn">classad</span>
 
 <div class="viewcode-block" id="RCEJobNotFoundError"><a class="viewcode-back" href="../../development/modules/hmdccondor.html#hmdccondor.HMDCExceptions.RCEJobNotFoundError">[docs]</a><span class="k">class</span> <span class="nc">RCEJobNotFoundError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
-  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">jobid</span><span class="p">):</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">jobid</span> <span class="o">=</span> <span class="n">jobid</span>
-  <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+  <span class="sd">&quot;&quot;&quot;RCEJobNotFoundError is thrown when a user attempts to attach a job</span>
+<span class="sd">  with a jobid that does not exist.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="RCEJobNotFoundError.__init__"><a class="viewcode-back" href="../../development/modules/hmdccondor.html#hmdccondor.HMDCExceptions.RCEJobNotFoundError.__init__">[docs]</a>  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">jobid</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">jobid</span> <span class="o">=</span> <span class="n">jobid</span></div>
+<div class="viewcode-block" id="RCEJobNotFoundError.__str__"><a class="viewcode-back" href="../../development/modules/hmdccondor.html#hmdccondor.HMDCExceptions.RCEJobNotFoundError.__str__">[docs]</a>  <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
     <span class="k">return</span> <span class="nb">repr</span><span class="p">(</span><span class="s">&#39;No job running, held, or terminated with jobid {0}&#39;</span><span class="o">.</span>
-        <span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">jobid</span><span class="p">))</span>
+        <span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">jobid</span><span class="p">))</span></div>
 <div class="viewcode-block" id="RCEJobNotFoundError.message"><a class="viewcode-back" href="../../development/modules/hmdccondor.html#hmdccondor.HMDCExceptions.RCEJobNotFoundError.message">[docs]</a>  <span class="k">def</span> <span class="nf">message</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;message returns the explanatory text for RCEJobNotFoundError.</span>
+
+<span class="sd">    :returns: text</span>
+<span class="sd">    :rtype: str</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">return</span> <span class="s">&quot;&quot;&quot;</span><span class="se">\</span>
 <span class="s">Job {0} could not be attached. This job could not be found on the</span>
 <span class="s">RCE. Are you sure this is the correct job id? Run the following</span>
@@ -149,13 +159,23 @@
 <span class="s">&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">jobid</span><span class="p">)</span>
 </div></div>
 <div class="viewcode-block" id="RCEJobDidNotStart"><a class="viewcode-back" href="../../development/modules/hmdccondor.html#hmdccondor.HMDCExceptions.RCEJobDidNotStart">[docs]</a><span class="k">class</span> <span class="nc">RCEJobDidNotStart</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
-  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">result</span><span class="p">):</span>
+  <span class="sd">&quot;&quot;&quot;RCEJobDidNotStart is thrown when a user submits a job but it fails</span>
+<span class="sd">  to start.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="RCEJobDidNotStart.__init__"><a class="viewcode-back" href="../../development/modules/hmdccondor.html#hmdccondor.HMDCExceptions.RCEJobDidNotStart.__init__">[docs]</a>  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">result</span><span class="p">):</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">ad</span> <span class="o">=</span> <span class="n">classad</span><span class="o">.</span><span class="n">parseOld</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-  <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">ad</span> <span class="o">=</span> <span class="n">classad</span><span class="o">.</span><span class="n">parseOld</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span></div>
+<div class="viewcode-block" id="RCEJobDidNotStart.__str__"><a class="viewcode-back" href="../../development/modules/hmdccondor.html#hmdccondor.HMDCExceptions.RCEJobDidNotStart.__str__">[docs]</a>  <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
     <span class="k">return</span> <span class="nb">repr</span><span class="p">(</span><span class="s">&#39;Job {0} did not start properly. Return status: {1}&#39;</span><span class="o">.</span>
-      <span class="n">format</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ad</span><span class="p">[</span><span class="s">&#39;ClusterId&#39;</span><span class="p">]),</span> <span class="bp">self</span><span class="o">.</span><span class="n">ad</span><span class="p">[</span><span class="s">&#39;JobStatus&#39;</span><span class="p">]))</span>
-  <span class="k">def</span> <span class="nf">__determine_cause__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="n">format</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ad</span><span class="p">[</span><span class="s">&#39;ClusterId&#39;</span><span class="p">]),</span> <span class="bp">self</span><span class="o">.</span><span class="n">ad</span><span class="p">[</span><span class="s">&#39;JobStatus&#39;</span><span class="p">]))</span></div>
+<div class="viewcode-block" id="RCEJobDidNotStart.__determine_cause__"><a class="viewcode-back" href="../../development/modules/hmdccondor.html#hmdccondor.HMDCExceptions.RCEJobDidNotStart.__determine_cause__">[docs]</a>  <span class="k">def</span> <span class="nf">__determine_cause__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;__determine_cause__() returns the reason why the job did not</span>
+<span class="sd">    start, which is embedded in the ClassAd held by the exception.</span>
+
+<span class="sd">    :returns: reason for job start failure</span>
+<span class="sd">    :rtype: str</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
       <span class="k">return</span> <span class="s">&quot;HoldReason={0}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ad</span><span class="p">[</span><span class="s">&#39;HoldReason&#39;</span><span class="p">])</span>
     <span class="k">except</span><span class="p">:</span>
@@ -169,8 +189,15 @@
     <span class="k">try</span><span class="p">:</span>
       <span class="k">return</span> <span class="s">&quot;Job completed prematurely: {0}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ad</span><span class="p">[</span><span class="s">&#39;CompletionDate&#39;</span><span class="p">])</span>
     <span class="k">except</span><span class="p">:</span>
-      <span class="k">return</span> <span class="s">&quot;Unknown reason&quot;</span>
+      <span class="k">return</span> <span class="s">&quot;Unknown reason&quot;</span></div>
 <div class="viewcode-block" id="RCEJobDidNotStart.message"><a class="viewcode-back" href="../../development/modules/hmdccondor.html#hmdccondor.HMDCExceptions.RCEJobDidNotStart.message">[docs]</a>  <span class="k">def</span> <span class="nf">message</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;returns explanatory text as to why job did not start.</span>
+
+<span class="sd">    :returns: text</span>
+<span class="sd">    :rtype: str</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">return</span> <span class="s">&quot;&quot;&quot;</span><span class="se">\</span>
 <span class="s">Your job {0} exited before launching {1}. This indicates that one</span>
 <span class="s">of the following conditions are present:</span>
@@ -192,12 +219,22 @@
 <span class="s">&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ad</span><span class="p">[</span><span class="s">&#39;ClusterId&#39;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">ad</span><span class="p">[</span><span class="s">&#39;HMDCApplicationName&#39;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">__determine_cause__</span><span class="p">())</span>
 </div></div>
 <div class="viewcode-block" id="RCEJobTookTooLongStartError"><a class="viewcode-back" href="../../development/modules/hmdccondor.html#hmdccondor.HMDCExceptions.RCEJobTookTooLongStartError">[docs]</a><span class="k">class</span> <span class="nc">RCEJobTookTooLongStartError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
-  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">jobid</span><span class="p">):</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">jobid</span> <span class="o">=</span> <span class="n">jobid</span>
-  <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+  <span class="sd">&quot;&quot;&quot;RCEJobTookTooLongStartError is thrown when a user submits a job but</span>
+<span class="sd">  it takes too long to start.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="RCEJobTookTooLongStartError.__init__"><a class="viewcode-back" href="../../development/modules/hmdccondor.html#hmdccondor.HMDCExceptions.RCEJobTookTooLongStartError.__init__">[docs]</a>  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">jobid</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">jobid</span> <span class="o">=</span> <span class="n">jobid</span></div>
+<div class="viewcode-block" id="RCEJobTookTooLongStartError.__str__"><a class="viewcode-back" href="../../development/modules/hmdccondor.html#hmdccondor.HMDCExceptions.RCEJobTookTooLongStartError.__str__">[docs]</a>  <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
     <span class="k">return</span> <span class="nb">repr</span><span class="p">(</span><span class="s">&#39;Job {0} took too long to start&#39;</span><span class="o">.</span>
-        <span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">jobid</span><span class="p">))</span>
+        <span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">jobid</span><span class="p">))</span></div>
 <div class="viewcode-block" id="RCEJobTookTooLongStartError.message"><a class="viewcode-back" href="../../development/modules/hmdccondor.html#hmdccondor.HMDCExceptions.RCEJobTookTooLongStartError.message">[docs]</a>  <span class="k">def</span> <span class="nf">message</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;returns explanatory text to user.</span>
+
+<span class="sd">    :returns: text</span>
+<span class="sd">    :rtype: str</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">return</span> <span class="s">&quot;&quot;&quot;</span><span class="se">\</span>
 <span class="s">Your job {0} took too long to start. Typically, an RCE job should</span>
 <span class="s">take between thirty seconds and one minute to start, unless the</span>
@@ -220,20 +257,39 @@
 <span class="s">&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">jobid</span><span class="p">)</span>
 </div></div>
 <div class="viewcode-block" id="RCEXpraTookTooLongStartError"><a class="viewcode-back" href="../../development/modules/hmdccondor.html#hmdccondor.HMDCExceptions.RCEXpraTookTooLongStartError">[docs]</a><span class="k">class</span> <span class="nc">RCEXpraTookTooLongStartError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
-  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ad</span><span class="p">):</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">ad</span> <span class="o">=</span> <span class="n">ad</span>
+  <span class="sd">&quot;&quot;&quot;RCEXpraTookTooLongStartError is thrown if the xpra server, running</span>
+<span class="sd">  on an HTCondor worker node, takes too long to start under the</span>
+<span class="sd">  submitted job&#39;s slot.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="RCEXpraTookTooLongStartError.__init__"><a class="viewcode-back" href="../../development/modules/hmdccondor.html#hmdccondor.HMDCExceptions.RCEXpraTookTooLongStartError.__init__">[docs]</a>  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ad</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">ad</span> <span class="o">=</span> <span class="n">ad</span></div>
 <div class="viewcode-block" id="RCEXpraTookTooLongStartError.get_ad"><a class="viewcode-back" href="../../development/modules/hmdccondor.html#hmdccondor.HMDCExceptions.RCEXpraTookTooLongStartError.get_ad">[docs]</a>  <span class="k">def</span> <span class="nf">get_ad</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A getter that returns the ClassAd of the failed job stored in the</span>
+<span class="sd">    exception.</span>
+
+<span class="sd">    :returns: classad of failed job</span>
+<span class="sd">    :rtype: classad.ClassAd</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ad</span></div>
-  <span class="k">def</span> <span class="nf">__get_err__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">ad</span><span class="p">[</span><span class="s">&#39;Err&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
-  <span class="k">def</span> <span class="nf">__get_application_name__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">ad</span><span class="p">[</span><span class="s">&#39;HMDCApplicationName&#39;</span><span class="p">]</span>
-  <span class="k">def</span> <span class="nf">__get_application_version__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">ad</span><span class="p">[</span><span class="s">&#39;HMDCApplicationVersion&#39;</span><span class="p">]</span>
-  <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="RCEXpraTookTooLongStartError.__get_err__"><a class="viewcode-back" href="../../development/modules/hmdccondor.html#hmdccondor.HMDCExceptions.RCEXpraTookTooLongStartError.__get_err__">[docs]</a>  <span class="k">def</span> <span class="nf">__get_err__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">ad</span><span class="p">[</span><span class="s">&#39;Err&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span></div>
+<div class="viewcode-block" id="RCEXpraTookTooLongStartError.__get_application_name__"><a class="viewcode-back" href="../../development/modules/hmdccondor.html#hmdccondor.HMDCExceptions.RCEXpraTookTooLongStartError.__get_application_name__">[docs]</a>  <span class="k">def</span> <span class="nf">__get_application_name__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">ad</span><span class="p">[</span><span class="s">&#39;HMDCApplicationName&#39;</span><span class="p">]</span></div>
+<div class="viewcode-block" id="RCEXpraTookTooLongStartError.__get_application_version__"><a class="viewcode-back" href="../../development/modules/hmdccondor.html#hmdccondor.HMDCExceptions.RCEXpraTookTooLongStartError.__get_application_version__">[docs]</a>  <span class="k">def</span> <span class="nf">__get_application_version__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">ad</span><span class="p">[</span><span class="s">&#39;HMDCApplicationVersion&#39;</span><span class="p">]</span></div>
+<div class="viewcode-block" id="RCEXpraTookTooLongStartError.__str__"><a class="viewcode-back" href="../../development/modules/hmdccondor.html#hmdccondor.HMDCExceptions.RCEXpraTookTooLongStartError.__str__">[docs]</a>  <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
     <span class="k">return</span> <span class="nb">repr</span><span class="p">(</span><span class="s">&#39;Job {0}, xpra server took too long to start&#39;</span><span class="o">.</span>
-        <span class="n">format</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">ad</span><span class="p">[</span><span class="s">&#39;ClusterId&#39;</span><span class="p">])))</span>
+        <span class="n">format</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">ad</span><span class="p">[</span><span class="s">&#39;ClusterId&#39;</span><span class="p">])))</span></div>
 <div class="viewcode-block" id="RCEXpraTookTooLongStartError.message"><a class="viewcode-back" href="../../development/modules/hmdccondor.html#hmdccondor.HMDCExceptions.RCEXpraTookTooLongStartError.message">[docs]</a>  <span class="k">def</span> <span class="nf">message</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;returns explanatory text wrt. xpra taking too long to start,</span>
+<span class="sd">    advises contacting support as this is a critical error.</span>
+
+<span class="sd">    :returns: text</span>
+<span class="sd">    :rtype: str</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="s">&quot;&quot;&quot;</span><span class="se">\</span>
 <span class="s">Job {0}, {1} {2}, was unable to start Xpra. This is a critical</span>
 <span class="s">error. Please send an email to support@help.hmdc.harvard.edu and</span>

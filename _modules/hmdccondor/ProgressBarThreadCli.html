@@ -81,10 +81,10 @@
             
             
                 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../gui/using_the_rce_gui_client.html">Using the RCE Submit Client</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../cmd/using_the_rce_cmd_client.html">Using the RCE Submit Command Line Client (For Advanced Users)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gui/using_the_rce_gui_client.html">Using the RCE submit client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cmd/using_the_rce_cmd_client.html">Using the RCE submit command line client (for advanced users)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../job_lifetime.html">Job lifetime limits in the RCE</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../errors.html">Understanding Errors and Warnings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../errors.html">Diagnosing errors and warnings</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../developer_documentation.html">Operations/Development Documentation</a></li>
 </ul>
 
@@ -136,7 +136,7 @@
 <span class="kn">from</span> <span class="nn">progressbar</span> <span class="kn">import</span> <span class="n">ProgressBar</span><span class="p">,</span> <span class="n">RotatingMarker</span>
 
 <div class="viewcode-block" id="ProgressBarThreadCli"><a class="viewcode-back" href="../../development/modules/hmdccondor.html#hmdccondor.ProgressBarThreadCli.ProgressBarThreadCli">[docs]</a><span class="k">class</span> <span class="nc">ProgressBarThreadCli</span><span class="p">(</span><span class="n">Thread</span><span class="p">):</span>
-  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">heading</span><span class="p">,</span> <span class="n">maxval</span><span class="o">=</span><span class="mi">140</span><span class="p">):</span>
+<div class="viewcode-block" id="ProgressBarThreadCli.__init__"><a class="viewcode-back" href="../../development/modules/hmdccondor.html#hmdccondor.ProgressBarThreadCli.ProgressBarThreadCli.__init__">[docs]</a>  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">heading</span><span class="p">,</span> <span class="n">maxval</span><span class="o">=</span><span class="mi">140</span><span class="p">):</span>
     <span class="c"># Heading can only be a str</span>
     <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">heading</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
 
@@ -146,7 +146,7 @@
     <span class="bp">self</span><span class="o">.</span><span class="n">maxval</span> <span class="o">=</span> <span class="n">maxval</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">widgets</span> <span class="o">=</span> <span class="p">[</span> <span class="s">&#39;{0}: &#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">heading</span><span class="p">),</span>
       <span class="n">RotatingMarker</span><span class="p">()</span> <span class="p">]</span>
-
+</div>
 <div class="viewcode-block" id="ProgressBarThreadCli.stop"><a class="viewcode-back" href="../../development/modules/hmdccondor.html#hmdccondor.ProgressBarThreadCli.ProgressBarThreadCli.stop">[docs]</a>  <span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stop</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
 </div>

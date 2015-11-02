@@ -175,70 +175,440 @@ Condor.pm in the hmdc-admin repository.</p>
 <dl class="class">
 <dt id="hmdccondor.HMDCCondor.HMDCCondor">
 <em class="property">class </em><code class="descclassname">hmdccondor.HMDCCondor.</code><code class="descname">HMDCCondor</code><a class="reference internal" href="../../_modules/hmdccondor/HMDCCondor.html#HMDCCondor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hmdccondor.HMDCCondor.HMDCCondor" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="method">
+<dd><p>HMDCCondor provides an interface to a local HTCondor cluster. It
+instantiates a local HTCondor schedd object for all operations. The
+initialization method for the HMDCCondor class acquires a local
+HTCondor schedd object, sets the polling timeout, and local LDAP
+server.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">self.ldap_server and self.ldap_base_dn should be acquired via
+rceapp.yml rather than statically defined in __init__()</p>
+</div>
+<dl class="method">
+<dt id="hmdccondor.HMDCCondor.HMDCCondor.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hmdccondor/HMDCCondor.html#HMDCCondor.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hmdccondor.HMDCCondor.HMDCCondor.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hmdccondor.HMDCCondor.HMDCCondor.__module__">
+<code class="descname">__module__</code><em class="property"> = 'hmdccondor.HMDCCondor'</em><a class="headerlink" href="#hmdccondor.HMDCCondor.HMDCCondor.__module__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hmdccondor.HMDCCondor.HMDCCondor._create_classad">
+<code class="descname">_create_classad</code><span class="sig-paren">(</span><em>app_name</em>, <em>app_version</em>, <em>cmd</em>, <em>args</em>, <em>cpu</em>, <em>memory</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hmdccondor/HMDCCondor.html#HMDCCondor._create_classad"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hmdccondor.HMDCCondor.HMDCCondor._create_classad" title="Permalink to this definition">¶</a></dt>
+<dd><p>_create_classad() creates a classad for submission to the
+htcondor cluster, utilizing HMDC custom ClassAds.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>app_name</strong> (<code class="docutils literal"><span class="pre">str</span></code>) &#8211; application name</li>
+<li><strong>app_version</strong> (<code class="docutils literal"><span class="pre">str</span></code>) &#8211; application version</li>
+<li><strong>cmd</strong> (<code class="docutils literal"><span class="pre">str</span></code>) &#8211; command to run</li>
+<li><strong>args</strong> (<code class="docutils literal"><span class="pre">list</span></code>) &#8211; args to pass to cmd</li>
+<li><strong>memory</strong> (<code class="docutils literal"><span class="pre">int</span></code>) &#8211; memory to reserve for job</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">classad object</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><code class="docutils literal"><span class="pre">classad.ClassAd</span></code></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">hmdccondor</span> <span class="kn">import</span> <span class="n">HMDCCondor</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">HMDCCondor</span><span class="p">()</span><span class="o">.</span><span class="n">_create_classad</span><span class="p">(</span><span class="s">&#39;shell&#39;</span><span class="p">,</span> <span class="s">&#39;2.1.32&#39;</span><span class="p">,</span>
+<span class="go">  &#39;/usr/bin/gnome-terminal&#39;, [], 1, 2048)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="hmdccondor.HMDCCondor.HMDCCondor._get_email">
+<code class="descname">_get_email</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hmdccondor/HMDCCondor.html#HMDCCondor._get_email"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hmdccondor.HMDCCondor.HMDCCondor._get_email" title="Permalink to this definition">¶</a></dt>
+<dd><p>get_email() attempts to find users&#8217; email in gecos field or mail
+ldap field. If unable to find in either, returns None.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">e-mail address or None</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="docutils literal"><span class="pre">str</span></code></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="docutils literal"><span class="pre">None</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">hmdccondor</span> <span class="kn">import</span> <span class="n">HMDCCondor</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">HMDCCondor</span><span class="p">()</span><span class="o">.</span><span class="n">_get_email</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="hmdccondor.HMDCCondor.HMDCCondor._get_email_for_classad">
+<code class="descname">_get_email_for_classad</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hmdccondor/HMDCCondor.html#HMDCCondor._get_email_for_classad"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hmdccondor.HMDCCondor.HMDCCondor._get_email_for_classad" title="Permalink to this definition">¶</a></dt>
+<dd><p>_get_email_for_classad() is used to set the Email field in a
+classad. This wraps _get_email(). If _get_email() cannot find an
+email address in the users&#8217; ldap field, it returns
+classad.Value.Undefined.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">e-mail address or classad.Value.Undefined</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="docutils literal"><span class="pre">str</span></code></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="docutils literal"><span class="pre">classad.Value.Undefined</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">hmdccondor</span> <span class="kn">import</span> <span class="n">HMDCCondor</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">HMDCCondor</span><span class="p">()</span><span class="o">.</span><span class="n">_get_email_for_classad</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="hmdccondor.HMDCCondor.HMDCCondor._get_entitlements">
+<code class="descname">_get_entitlements</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hmdccondor/HMDCCondor.html#HMDCCondor._get_entitlements"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hmdccondor.HMDCCondor.HMDCCondor._get_entitlements" title="Permalink to this definition">¶</a></dt>
+<dd><p>_get_entitlements() returns a space-separated list of ldap
+entitlements.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">space-separated list of ldap entitlements, or
+<code class="docutils literal"><span class="pre">classad.Value.Undefined</span></code> if ldap server is unreachable</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="docutils literal"><span class="pre">str</span></code></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="docutils literal"><span class="pre">classad.Value.Undefined</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">hmdccondor</span> <span class="kn">import</span> <span class="n">HMDCCondor</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">HMDCCondor</span><span class="p">()</span><span class="o">.</span><span class="n">_get_entitlements</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="hmdccondor.HMDCCondor.HMDCCondor._get_environment">
+<code class="descname">_get_environment</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hmdccondor/HMDCCondor.html#HMDCCondor._get_environment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hmdccondor.HMDCCondor.HMDCCondor._get_environment" title="Permalink to this definition">¶</a></dt>
+<dd><p>_get_environment() returns a space-separated list of user
+environment variables as key,value pairs for use in a classad.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">string of environment variables, values separated by
+spaces</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="docutils literal"><span class="pre">str</span></code></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">hmdccondor</span> <span class="kn">import</span> <span class="n">HMDCCondor</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">HMDCCondor</span><span class="p">()</span><span class="o">.</span><span class="n">_get_environment</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
 <dt id="hmdccondor.HMDCCondor.HMDCCondor.attach">
 <code class="descname">attach</code><span class="sig-paren">(</span><em>jobid</em>, <em>rceapps</em>, <em>ad=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hmdccondor/HMDCCondor.html#HMDCCondor.attach"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hmdccondor.HMDCCondor.HMDCCondor.attach" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>attach() executes the xpra client to connect to an xpra server
+running as job <code class="docutils literal"><span class="pre">jobid</span></code> on the htcondor cluster.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>jobid</strong> (<code class="docutils literal"><span class="pre">int</span></code>) &#8211; job id</li>
+<li><strong>rceapps</strong> (<a class="reference internal" href="rceapp.html#rceapp.rceapp" title="rceapp.rceapp"><em>rceapp.rceapp</em></a>) &#8211; rceapps object</li>
+<li><strong>ad</strong> (<code class="docutils literal"><span class="pre">str</span></code>) &#8211; ClassAd for job, specified by jobid. If present, attach()
+does not poll for job classad, since it&#8217;s provided. This ClassAd
+should be unformatted str.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">pid of executed xpra client</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><code class="docutils literal"><span class="pre">int</span></code></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first"><a class="reference internal" href="#hmdccondor.HMDCExceptions.RCEJobNotFoundError" title="hmdccondor.HMDCExceptions.RCEJobNotFoundError"><code class="xref py py-exc docutils literal"><span class="pre">hmdccondor.HMDCExceptions.RCEJobNotFoundError</span></code></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">rceapp</span> <span class="kn">import</span> <span class="n">rceapp</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">hmdccondor</span> <span class="kn">import</span> <span class="n">HMDCCondor</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">HMDCCondor</span><span class="p">()</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="mi">75</span><span class="p">,</span> <span class="n">rceapp</span><span class="p">(</span><span class="s">&#39;/etc/rceapp.yml&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+</dd></dl>
 
 <dl class="method">
 <dt id="hmdccondor.HMDCCondor.HMDCCondor.attach_xpra">
 <code class="descname">attach_xpra</code><span class="sig-paren">(</span><em>_classad</em>, <em>rceapps</em>, <em>display</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hmdccondor/HMDCCondor.html#HMDCCondor.attach_xpra"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hmdccondor.HMDCCondor.HMDCCondor.attach_xpra" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>attach_xpra() executes the xpra client to connect to an xpra server
+running under the job specified by _classad on the display specified
+by <strong>display</strong>. This should probably not be used on its own, and
+instead, the higher order function attach() should be called.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>_classad</strong> (<code class="docutils literal"><span class="pre">classad.ClassAd</span></code>) &#8211; classad for job</li>
+<li><strong>rceapps</strong> (<a class="reference internal" href="rceapp.html#rceapp.rceapp" title="rceapp.rceapp"><em>rceapp.rceapp</em></a>) &#8211; rceapps object</li>
+<li><strong>display</strong> (<code class="docutils literal"><span class="pre">int</span></code>) &#8211; display id for xpra server</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">pid of executed xpra client</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><code class="docutils literal"><span class="pre">int</span></code></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">rceapp</span> <span class="kn">import</span> <span class="n">rceapp</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">hmdccondor</span> <span class="kn">import</span> <span class="n">HMDCCondor</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">HMDCCondor</span><span class="p">()</span><span class="o">.</span><span class="n">attach_xpra</span><span class="p">((</span><span class="n">HMDCCondor</span><span class="p">()</span><span class="o">.</span><span class="n">poll</span><span class="p">(</span><span class="mi">75</span><span class="p">))[</span><span class="mi">1</span><span class="p">],</span>
+<span class="go">  rceapp(&#39;/etc/rceapp.yml&#39;), 3)</span>
+</pre></div>
+</div>
+</dd></dl>
 
 <dl class="method">
 <dt id="hmdccondor.HMDCCondor.HMDCCondor.get_my_jobs">
 <code class="descname">get_my_jobs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hmdccondor/HMDCCondor.html#HMDCCondor.get_my_jobs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hmdccondor.HMDCCondor.HMDCCondor.get_my_jobs" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p><code class="docutils literal"><span class="pre">get_my_jobs()</span></code> returns an array of jobs your username is currently
+running and has a <code class="docutils literal"><span class="pre">JobStatus</span> <span class="pre">=?=</span> <span class="pre">2</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">list of jobs you&#8217;re running</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="docutils literal"><span class="pre">list</span></code></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">hmdccondor</span> <span class="kn">import</span> <span class="n">HMDCCondor</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">HMDCCondor</span><span class="p">()</span><span class="o">.</span><span class="n">get_my_jobs</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
 
 <dl class="method">
 <dt id="hmdccondor.HMDCCondor.HMDCCondor.get_sched_ad_for_job">
 <code class="descname">get_sched_ad_for_job</code><span class="sig-paren">(</span><em>jobid</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hmdccondor/HMDCCondor.html#HMDCCondor.get_sched_ad_for_job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hmdccondor.HMDCCondor.HMDCCondor.get_sched_ad_for_job" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>get_sched_ad_for_job() returns the classad for the schedd
+currently running a job with id <code class="docutils literal"><span class="pre">jobid</span></code></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>jobid</strong> (<code class="docutils literal"><span class="pre">int</span></code>) &#8211; job id</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">classad of schedd</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="docutils literal"><span class="pre">classad.ClassAd</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">hmdccondor</span> <span class="kn">import</span> <span class="n">HMDCCondor</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">HMDCCondor</span><span class="p">()</span><span class="o">.</span><span class="n">get_sched_ad_for_job</span><span class="p">(</span><span class="mi">73</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
 
 <dl class="method">
 <dt id="hmdccondor.HMDCCondor.HMDCCondor.get_sched_for_job">
 <code class="descname">get_sched_for_job</code><span class="sig-paren">(</span><em>jobid</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hmdccondor/HMDCCondor.html#HMDCCondor.get_sched_for_job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hmdccondor.HMDCCondor.HMDCCondor.get_sched_for_job" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>get_sched_for_job() returns an htcondor.Schedd object for the
+schedd currently running a job with id <code class="docutils literal"><span class="pre">jobid</span></code></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>jobid</strong> (<code class="docutils literal"><span class="pre">int</span></code>) &#8211; job id</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">htcondor Schedd object</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="docutils literal"><span class="pre">htcondor.Schedd</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">hmdccondor</span> <span class="kn">import</span> <span class="n">HMDCCondor</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">HMDCCondor</span><span class="p">()</span><span class="o">.</span><span class="n">get_sched_for_job</span><span class="p">(</span><span class="mi">73</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
 
 <dl class="method">
 <dt id="hmdccondor.HMDCCondor.HMDCCondor.poll">
 <code class="descname">poll</code><span class="sig-paren">(</span><em>jobid, return_status=None, use_local_schedd=False, want_results=[2]</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hmdccondor/HMDCCondor.html#HMDCCondor.poll"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hmdccondor.HMDCCondor.HMDCCondor.poll" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>poll() takes a job id and returns a <code class="docutils literal"><span class="pre">(JobStatus,ClassAd)</span></code> tuple if,
+before the polling timeout window exceeds, a job has a <code class="docutils literal"><span class="pre">JobStatus</span></code>
+classad element which matches an integer in the <code class="docutils literal"><span class="pre">return_status</span></code> array.
+It then compares this <code class="docutils literal"><span class="pre">JobStatus</span></code> to the <code class="docutils literal"><span class="pre">want_results</span></code> array. If the
+job polled has a <code class="docutils literal"><span class="pre">JobStatus</span></code> which is also in the <code class="docutils literal"><span class="pre">want_results</span></code> array,
+poll succeeds, otherwise, raises an exception.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>jobid</strong> (<code class="docutils literal"><span class="pre">int</span></code>) &#8211; job id</li>
+<li><strong>return_status</strong> (<code class="docutils literal"><span class="pre">list</span></code>) &#8211; an array of JobStatus&#8217;s from which polling
+should return.</li>
+<li><strong>use_local_schedd</strong> (<code class="docutils literal"><span class="pre">bool</span></code>) &#8211; If true, uses local schedd, otherwise finds
+schedd for jobid.</li>
+<li><strong>want_results</strong> (<code class="docutils literal"><span class="pre">list</span></code>) &#8211; An array of JobStatus values that are compared
+to the JobStatus of the successfully returned job.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><code class="docutils literal"><span class="pre">(JobStatus,</span> <span class="pre">ClassAd)</span></code> of polled job</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><code class="docutils literal"><span class="pre">tuple</span></code></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first"><a class="reference internal" href="#hmdccondor.HMDCExceptions.RCEJobDidNotStart" title="hmdccondor.HMDCExceptions.RCEJobDidNotStart"><code class="xref py py-exc docutils literal"><span class="pre">hmdccondor.HMDCExceptions.RCEJobDidNotStart</span></code></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><p class="first"><a class="reference internal" href="#hmdccondor.HMDCExceptions.RCEJobTookTooLongStartError" title="hmdccondor.HMDCExceptions.RCEJobTookTooLongStartError"><code class="xref py py-exc docutils literal"><span class="pre">hmdccondor.HMDCExceptions.RCEJobTookTooLongStartError</span></code></a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">hmdccondor</span> <span class="kn">import</span> <span class="n">HMDCCondor</span><span class="p">,</span> <span class="n">CONSTANTS</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">HMDCCondor</span><span class="p">()</span><span class="o">.</span><span class="n">poll</span><span class="p">(</span><span class="mi">73</span><span class="p">,</span> <span class="n">return_status</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">use_local_schedd</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+<span class="go">  want_results = [ CONSTANTS.JOB_STATUS_RUNNING ])</span>
+</pre></div>
+</div>
+</dd></dl>
 
 <dl class="method">
 <dt id="hmdccondor.HMDCCondor.HMDCCondor.poll_xpra">
 <code class="descname">poll_xpra</code><span class="sig-paren">(</span><em>ad</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hmdccondor/HMDCCondor.html#HMDCCondor.poll_xpra"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hmdccondor.HMDCCondor.HMDCCondor.poll_xpra" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>poll_xpra() creates a thread which polls the xpra server log to
+determine if the xpra server has been started.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>ad</strong> (<code class="docutils literal"><span class="pre">classad.ClassAd</span></code>) &#8211; classad of the xpra-enabled job to poll</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">display number of xpra server</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="docutils literal"><span class="pre">int</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference internal" href="#hmdccondor.HMDCExceptions.RCEXpraTookTooLongStartError" title="hmdccondor.HMDCExceptions.RCEXpraTookTooLongStartError"><code class="xref py py-exc docutils literal"><span class="pre">hmdccondor.HMDCExceptions.RCEXpraTookTooLongStartError</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
 <dt id="hmdccondor.HMDCCondor.HMDCCondor.submit">
 <code class="descname">submit</code><span class="sig-paren">(</span><em>app_name</em>, <em>app_version</em>, <em>cmd</em>, <em>args</em>, <em>memory</em>, <em>cpu</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hmdccondor/HMDCCondor.html#HMDCCondor.submit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hmdccondor.HMDCCondor.HMDCCondor.submit" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>submit() submits a job to the HTCondor cluster using the
+specified arguments.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>app_name</strong> (<code class="docutils literal"><span class="pre">str</span></code>) &#8211; application name</li>
+<li><strong>app_version</strong> (<code class="docutils literal"><span class="pre">str</span></code>) &#8211; application version</li>
+<li><strong>cmd</strong> (<code class="docutils literal"><span class="pre">str</span></code>) &#8211; command to run on htcondor cluster</li>
+<li><strong>args</strong> (<code class="docutils literal"><span class="pre">list</span></code>) &#8211; arguments to command</li>
+<li><strong>memory</strong> (<code class="docutils literal"><span class="pre">int</span></code>) &#8211; amount of memory required for job</li>
+<li><strong>cpu</strong> (<code class="docutils literal"><span class="pre">int</span></code>) &#8211; amount of cpus required for job</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">jobid of submitted job</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><code class="docutils literal"><span class="pre">int</span></code></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">hmdccondor</span> <span class="kn">import</span> <span class="n">HMDCCondor</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">HMDCCondor</span><span class="p">()</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="s">&#39;Shell, &#39;</span><span class="mf">2.31</span><span class="o">.</span><span class="mi">3</span><span class="s">&#39;, &#39;</span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">gnome</span><span class="o">-</span><span class="n">terminal</span><span class="s">&#39;,</span>
+<span class="go">    [], 2048, 1)</span>
+</pre></div>
+</div>
+</dd></dl>
 
 </dd></dl>
 
 <dl class="function">
 <dt id="hmdccondor.HMDCCondor.poll_thread">
 <code class="descclassname">hmdccondor.HMDCCondor.</code><code class="descname">poll_thread</code><span class="sig-paren">(</span><em>id</em>, <em>return_status</em>, <em>use_local_schedd</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hmdccondor/HMDCCondor.html#poll_thread"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hmdccondor.HMDCCondor.poll_thread" title="Permalink to this definition">¶</a></dt>
-<dd><p>poll_thread is a function which when provided as an argument to apply_async()
-is executed in an independent thread. poll_thread creates a new HMDCPoller
-which runs until the job represented by <strong>id</strong> has a JobStatus equal to any
-number in the <strong>return_status</strong> array.</p>
+<dd><p>poll_thread is a function which when provided as an argument to
+<a class="reference external" href="https://docs.python.org/2/library/multiprocessing.html">apply_async()</a>
+is executed in an independent thread.
+<code class="docutils literal"><span class="pre">poll_thread</span></code> creates a new <code class="docutils literal"><span class="pre">HMDCPoller</span></code> which runs until the
+job represented by <code class="docutils literal"><span class="pre">id</span></code> has a <code class="docutils literal"><span class="pre">JobStatus</span></code> equal to any number in
+the <code class="docutils literal"><span class="pre">return_status</span></code> array.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>id</strong> (<em>int</em>) &#8211; HTCondor Job Id to poll for</li>
-<li><strong>return_status</strong> (<em>list</em>) &#8211; An array of JobStatus values to look for.</li>
-<li><strong>use_local_schedd</strong> (<em>boolean</em>) &#8211; If set to true, uses the schedd of the executing host. If false, finds the schedd whcih submitted the HTCondor job represented by <strong>id</strong>.</li>
+<li><strong>id</strong> (<code class="docutils literal"><span class="pre">int</span></code>) &#8211; HTCondor Job Id to poll for</li>
+<li><strong>return_status</strong> (<code class="docutils literal"><span class="pre">list</span></code>) &#8211; An array of JobStatus values to look for.</li>
+<li><strong>use_local_schedd</strong> (<code class="docutils literal"><span class="pre">boolean</span></code>) &#8211; If set to true, uses the schedd of the executing host. If false, finds the schedd whcih submitted the HTCondor job represented by <strong>id</strong>.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">(JobStatus,ClassAd) or (None,None) if no such job exists.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><code class="docutils literal"><span class="pre">(JobStatus,</span> <span class="pre">ClassAd)</span></code> or <code class="docutils literal"><span class="pre">(None,None)</span></code> if no such job exists.</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">tuple</p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><code class="docutils literal"><span class="pre">tuple</span></code></p>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Example:</th><td class="field-body"></td>
@@ -246,7 +616,7 @@ number in the <strong>return_status</strong> array.</p>
 </tbody>
 </table>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hmdccondor</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">hmdccondor.HMDCCondor</span> <span class="kn">import</span> <span class="n">poll_thread</span> 
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">hmdccondor.HMDCCondor</span> <span class="kn">import</span> <span class="n">poll_thread</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">poll_thread</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">],</span> <span class="bp">True</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -255,19 +625,20 @@ number in the <strong>return_status</strong> array.</p>
 <dl class="function">
 <dt id="hmdccondor.HMDCCondor.poll_xpra_thread">
 <code class="descclassname">hmdccondor.HMDCCondor.</code><code class="descname">poll_xpra_thread</code><span class="sig-paren">(</span><em>out_txt</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hmdccondor/HMDCCondor.html#poll_xpra_thread"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hmdccondor.HMDCCondor.poll_xpra_thread" title="Permalink to this definition">¶</a></dt>
-<dd><p>poll_xpra_thread is a function when provided as an argument to apply_async()
-is executed in an independent thread. poll_xpra_thread continues to read
-<strong>out_txt</strong>, which is the location of the Xpra startup log file, to determine
+<dd><p><code class="docutils literal"><span class="pre">poll_xpra_thread</span></code> is a function when provided as an argument to
+<a class="reference external" href="https://docs.python.org/2/library/multiprocessing.html">apply_async()</a>
+is executed in an independent thread. <code class="docutils literal"><span class="pre">poll_xpra_thread</span></code> continues to read
+<code class="docutils literal"><span class="pre">out_txt</span></code>, which is the location of the Xpra startup log file, to determine
 if xpra has started within a job.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>out_txt</strong> (<em>str</em>) &#8211; Fully qualified path of Xpra startup log file</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>out_txt</strong> (<code class="docutils literal"><span class="pre">str</span></code>) &#8211; Fully qualified path of Xpra startup log file</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Xpra display number</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="docutils literal"><span class="pre">int</span></code></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Example:</th><td class="field-body"></td>
 </tr>
@@ -282,6 +653,7 @@ if xpra has started within a job.</p>
 </div>
 <div class="section" id="module-hmdccondor.HMDCConstants">
 <span id="hmdccondor-hmdcconstants-module"></span><h2>hmdccondor.HMDCConstants module<a class="headerlink" href="#module-hmdccondor.HMDCConstants" title="Permalink to this headline">¶</a></h2>
+<p>Useful constants for HTCondor.</p>
 </div>
 <div class="section" id="module-hmdccondor.HMDCExceptions">
 <span id="hmdccondor-hmdcexceptions-module"></span><h2>hmdccondor.HMDCExceptions module<a class="headerlink" href="#module-hmdccondor.HMDCExceptions" title="Permalink to this headline">¶</a></h2>
@@ -289,10 +661,61 @@ if xpra has started within a job.</p>
 <dt id="hmdccondor.HMDCExceptions.RCEJobDidNotStart">
 <em class="property">exception </em><code class="descclassname">hmdccondor.HMDCExceptions.</code><code class="descname">RCEJobDidNotStart</code><span class="sig-paren">(</span><em>result</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hmdccondor/HMDCExceptions.html#RCEJobDidNotStart"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hmdccondor.HMDCExceptions.RCEJobDidNotStart" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></code></p>
+<p>RCEJobDidNotStart is thrown when a user submits a job but it fails
+to start.</p>
+<dl class="method">
+<dt id="hmdccondor.HMDCExceptions.RCEJobDidNotStart.__determine_cause__">
+<code class="descname">__determine_cause__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hmdccondor/HMDCExceptions.html#RCEJobDidNotStart.__determine_cause__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hmdccondor.HMDCExceptions.RCEJobDidNotStart.__determine_cause__" title="Permalink to this definition">¶</a></dt>
+<dd><p>__determine_cause__() returns the reason why the job did not
+start, which is embedded in the ClassAd held by the exception.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">reason for job start failure</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="hmdccondor.HMDCExceptions.RCEJobDidNotStart.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>result</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hmdccondor/HMDCExceptions.html#RCEJobDidNotStart.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hmdccondor.HMDCExceptions.RCEJobDidNotStart.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hmdccondor.HMDCExceptions.RCEJobDidNotStart.__module__">
+<code class="descname">__module__</code><em class="property"> = 'hmdccondor.HMDCExceptions'</em><a class="headerlink" href="#hmdccondor.HMDCExceptions.RCEJobDidNotStart.__module__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hmdccondor.HMDCExceptions.RCEJobDidNotStart.__str__">
+<code class="descname">__str__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hmdccondor/HMDCExceptions.html#RCEJobDidNotStart.__str__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hmdccondor.HMDCExceptions.RCEJobDidNotStart.__str__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hmdccondor.HMDCExceptions.RCEJobDidNotStart.__weakref__">
+<code class="descname">__weakref__</code><a class="headerlink" href="#hmdccondor.HMDCExceptions.RCEJobDidNotStart.__weakref__" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="hmdccondor.HMDCExceptions.RCEJobDidNotStart.message">
 <code class="descname">message</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hmdccondor/HMDCExceptions.html#RCEJobDidNotStart.message"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hmdccondor.HMDCExceptions.RCEJobDidNotStart.message" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>returns explanatory text as to why job did not start.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">text</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 </dd></dl>
 
@@ -300,10 +723,44 @@ if xpra has started within a job.</p>
 <dt id="hmdccondor.HMDCExceptions.RCEJobNotFoundError">
 <em class="property">exception </em><code class="descclassname">hmdccondor.HMDCExceptions.</code><code class="descname">RCEJobNotFoundError</code><span class="sig-paren">(</span><em>jobid</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hmdccondor/HMDCExceptions.html#RCEJobNotFoundError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hmdccondor.HMDCExceptions.RCEJobNotFoundError" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></code></p>
+<p>RCEJobNotFoundError is thrown when a user attempts to attach a job
+with a jobid that does not exist.</p>
+<dl class="method">
+<dt id="hmdccondor.HMDCExceptions.RCEJobNotFoundError.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>jobid</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hmdccondor/HMDCExceptions.html#RCEJobNotFoundError.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hmdccondor.HMDCExceptions.RCEJobNotFoundError.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hmdccondor.HMDCExceptions.RCEJobNotFoundError.__module__">
+<code class="descname">__module__</code><em class="property"> = 'hmdccondor.HMDCExceptions'</em><a class="headerlink" href="#hmdccondor.HMDCExceptions.RCEJobNotFoundError.__module__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hmdccondor.HMDCExceptions.RCEJobNotFoundError.__str__">
+<code class="descname">__str__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hmdccondor/HMDCExceptions.html#RCEJobNotFoundError.__str__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hmdccondor.HMDCExceptions.RCEJobNotFoundError.__str__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hmdccondor.HMDCExceptions.RCEJobNotFoundError.__weakref__">
+<code class="descname">__weakref__</code><a class="headerlink" href="#hmdccondor.HMDCExceptions.RCEJobNotFoundError.__weakref__" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="hmdccondor.HMDCExceptions.RCEJobNotFoundError.message">
 <code class="descname">message</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hmdccondor/HMDCExceptions.html#RCEJobNotFoundError.message"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hmdccondor.HMDCExceptions.RCEJobNotFoundError.message" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>message returns the explanatory text for RCEJobNotFoundError.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">text</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 </dd></dl>
 
@@ -311,10 +768,44 @@ if xpra has started within a job.</p>
 <dt id="hmdccondor.HMDCExceptions.RCEJobTookTooLongStartError">
 <em class="property">exception </em><code class="descclassname">hmdccondor.HMDCExceptions.</code><code class="descname">RCEJobTookTooLongStartError</code><span class="sig-paren">(</span><em>jobid</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hmdccondor/HMDCExceptions.html#RCEJobTookTooLongStartError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hmdccondor.HMDCExceptions.RCEJobTookTooLongStartError" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></code></p>
+<p>RCEJobTookTooLongStartError is thrown when a user submits a job but
+it takes too long to start.</p>
+<dl class="method">
+<dt id="hmdccondor.HMDCExceptions.RCEJobTookTooLongStartError.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>jobid</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hmdccondor/HMDCExceptions.html#RCEJobTookTooLongStartError.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hmdccondor.HMDCExceptions.RCEJobTookTooLongStartError.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hmdccondor.HMDCExceptions.RCEJobTookTooLongStartError.__module__">
+<code class="descname">__module__</code><em class="property"> = 'hmdccondor.HMDCExceptions'</em><a class="headerlink" href="#hmdccondor.HMDCExceptions.RCEJobTookTooLongStartError.__module__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hmdccondor.HMDCExceptions.RCEJobTookTooLongStartError.__str__">
+<code class="descname">__str__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hmdccondor/HMDCExceptions.html#RCEJobTookTooLongStartError.__str__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hmdccondor.HMDCExceptions.RCEJobTookTooLongStartError.__str__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hmdccondor.HMDCExceptions.RCEJobTookTooLongStartError.__weakref__">
+<code class="descname">__weakref__</code><a class="headerlink" href="#hmdccondor.HMDCExceptions.RCEJobTookTooLongStartError.__weakref__" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="hmdccondor.HMDCExceptions.RCEJobTookTooLongStartError.message">
 <code class="descname">message</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hmdccondor/HMDCExceptions.html#RCEJobTookTooLongStartError.message"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hmdccondor.HMDCExceptions.RCEJobTookTooLongStartError.message" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>returns explanatory text to user.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">text</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 </dd></dl>
 
@@ -322,97 +813,506 @@ if xpra has started within a job.</p>
 <dt id="hmdccondor.HMDCExceptions.RCEXpraTookTooLongStartError">
 <em class="property">exception </em><code class="descclassname">hmdccondor.HMDCExceptions.</code><code class="descname">RCEXpraTookTooLongStartError</code><span class="sig-paren">(</span><em>ad</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hmdccondor/HMDCExceptions.html#RCEXpraTookTooLongStartError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hmdccondor.HMDCExceptions.RCEXpraTookTooLongStartError" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></code></p>
+<p>RCEXpraTookTooLongStartError is thrown if the xpra server, running
+on an HTCondor worker node, takes too long to start under the
+submitted job&#8217;s slot.</p>
+<dl class="method">
+<dt id="hmdccondor.HMDCExceptions.RCEXpraTookTooLongStartError.__get_application_name__">
+<code class="descname">__get_application_name__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hmdccondor/HMDCExceptions.html#RCEXpraTookTooLongStartError.__get_application_name__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hmdccondor.HMDCExceptions.RCEXpraTookTooLongStartError.__get_application_name__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hmdccondor.HMDCExceptions.RCEXpraTookTooLongStartError.__get_application_version__">
+<code class="descname">__get_application_version__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hmdccondor/HMDCExceptions.html#RCEXpraTookTooLongStartError.__get_application_version__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hmdccondor.HMDCExceptions.RCEXpraTookTooLongStartError.__get_application_version__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hmdccondor.HMDCExceptions.RCEXpraTookTooLongStartError.__get_err__">
+<code class="descname">__get_err__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hmdccondor/HMDCExceptions.html#RCEXpraTookTooLongStartError.__get_err__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hmdccondor.HMDCExceptions.RCEXpraTookTooLongStartError.__get_err__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hmdccondor.HMDCExceptions.RCEXpraTookTooLongStartError.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>ad</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hmdccondor/HMDCExceptions.html#RCEXpraTookTooLongStartError.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hmdccondor.HMDCExceptions.RCEXpraTookTooLongStartError.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hmdccondor.HMDCExceptions.RCEXpraTookTooLongStartError.__module__">
+<code class="descname">__module__</code><em class="property"> = 'hmdccondor.HMDCExceptions'</em><a class="headerlink" href="#hmdccondor.HMDCExceptions.RCEXpraTookTooLongStartError.__module__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hmdccondor.HMDCExceptions.RCEXpraTookTooLongStartError.__str__">
+<code class="descname">__str__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hmdccondor/HMDCExceptions.html#RCEXpraTookTooLongStartError.__str__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hmdccondor.HMDCExceptions.RCEXpraTookTooLongStartError.__str__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hmdccondor.HMDCExceptions.RCEXpraTookTooLongStartError.__weakref__">
+<code class="descname">__weakref__</code><a class="headerlink" href="#hmdccondor.HMDCExceptions.RCEXpraTookTooLongStartError.__weakref__" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="hmdccondor.HMDCExceptions.RCEXpraTookTooLongStartError.get_ad">
 <code class="descname">get_ad</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hmdccondor/HMDCExceptions.html#RCEXpraTookTooLongStartError.get_ad"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hmdccondor.HMDCExceptions.RCEXpraTookTooLongStartError.get_ad" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>A getter that returns the ClassAd of the failed job stored in the
+exception.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">classad of failed job</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">classad.ClassAd</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
 <dt id="hmdccondor.HMDCExceptions.RCEXpraTookTooLongStartError.message">
 <code class="descname">message</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hmdccondor/HMDCExceptions.html#RCEXpraTookTooLongStartError.message"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hmdccondor.HMDCExceptions.RCEXpraTookTooLongStartError.message" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>returns explanatory text wrt. xpra taking too long to start,
+advises contacting support as this is a critical error.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">text</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 </dd></dl>
 
 </div>
 <div class="section" id="module-hmdccondor.HMDCLog">
 <span id="hmdccondor-hmdclog-module"></span><h2>hmdccondor.HMDCLog module<a class="headerlink" href="#module-hmdccondor.HMDCLog" title="Permalink to this headline">¶</a></h2>
+<p>Provides a series of functions which wrap logging functionality.</p>
 <dl class="function">
 <dt id="hmdccondor.HMDCLog.exception_helper">
 <code class="descclassname">hmdccondor.HMDCLog.</code><code class="descname">exception_helper</code><span class="sig-paren">(</span><em>excpt</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hmdccondor/HMDCLog.html#exception_helper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hmdccondor.HMDCLog.exception_helper" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>a wrapper for an HMDC defined exception. All HMDC defined
+exceptions in this project contain the message() class method, whereas
+all other exceptions do not. Passing an exception to this function
+will either return the value of the message() class method or return a
+string which says that that the application has encountered an unknown
+exception and to contact support.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>excpt</strong> (<em>Exception</em>) &#8211; exception</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">explanatory text wrt. exception</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="function">
 <dt id="hmdccondor.HMDCLog.rcelog">
 <code class="descclassname">hmdccondor.HMDCLog.</code><code class="descname">rcelog</code><span class="sig-paren">(</span><em>level</em>, <em>message</em>, <em>our_logger='rce_submit'</em>, <em>my_username='esarmien'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hmdccondor/HMDCLog.html#rcelog"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hmdccondor.HMDCLog.rcelog" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>this function wraps the logger class methods. Its primary feature
+is to add the username of the executing user to the syslog message for
+debugging purpose.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>level</strong> (<em>str</em>) &#8211; debugging level for log message</li>
+<li><strong>message</strong> (<em>str</em>) &#8211; message to log</li>
+<li><strong>our_logger</strong> (<em>str</em>) &#8211; name of logger</li>
+<li><strong>my_username</strong> (<em>str</em>) &#8211; username to append to log message, defaults to
+executing user.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 </div>
 <div class="section" id="module-hmdccondor.HMDCPoller">
 <span id="hmdccondor-hmdcpoller-module"></span><h2>hmdccondor.HMDCPoller module<a class="headerlink" href="#module-hmdccondor.HMDCPoller" title="Permalink to this headline">¶</a></h2>
+<p>A module containing the <code class="docutils literal"><span class="pre">HMDCPoller</span></code> class which facilitates polling
+for job statuses</p>
 <dl class="class">
 <dt id="hmdccondor.HMDCPoller.HMDCPoller">
 <em class="property">class </em><code class="descclassname">hmdccondor.HMDCPoller.</code><code class="descname">HMDCPoller</code><span class="sig-paren">(</span><em>id</em>, <em>return_status</em>, <em>schedd</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hmdccondor/HMDCPoller.html#HMDCPoller"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hmdccondor.HMDCPoller.HMDCPoller" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="method">
+<dt id="hmdccondor.HMDCPoller.HMDCPoller.__get_job_status_from_history__">
+<code class="descname">__get_job_status_from_history__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hmdccondor/HMDCPoller.html#HMDCPoller.__get_job_status_from_history__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hmdccondor.HMDCPoller.HMDCPoller.__get_job_status_from_history__" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns job status from <code class="docutils literal"><span class="pre">self.schedd</span></code> job history. raises index
+error if job wasn&#8217;t found in the queue. <code class="docutils literal"><span class="pre">self.schedd.history()</span></code>
+returns an interator, unlike query, so we transform it into a
+two-dimensional array using <code class="docutils literal"><span class="pre">map()</span></code></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><code class="docutils literal"><span class="pre">(JobStatus,</span> <span class="pre">ClassAd)</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="docutils literal"><span class="pre">tuple</span></code></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><code class="docutils literal"><span class="pre">IndexError</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">htcondor</span> <span class="kn">import</span> <span class="n">Schedd</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">hmdccondor</span> <span class="kn">import</span> <span class="n">HMDCPoller</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">HMDCPoller</span><span class="p">(</span><span class="mi">73</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> <span class="n">Schedd</span><span class="p">())</span><span class="o">.</span>
+<span class="go">  __get_job_status_from_history__()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="hmdccondor.HMDCPoller.HMDCPoller.__get_job_status_from_queue__">
+<code class="descname">__get_job_status_from_queue__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hmdccondor/HMDCPoller.html#HMDCPoller.__get_job_status_from_queue__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hmdccondor.HMDCPoller.HMDCPoller.__get_job_status_from_queue__" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns job status from <code class="docutils literal"><span class="pre">self.schedd</span></code> job queue. raises index
+error if job wasn&#8217;t found in the queue.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><code class="docutils literal"><span class="pre">(JobStatus,</span> <span class="pre">ClassAd)</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="docutils literal"><span class="pre">tuple</span></code></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><code class="docutils literal"><span class="pre">IndexError</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">htcondor</span> <span class="kn">import</span> <span class="n">Schedd</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">hmdccondor</span> <span class="kn">import</span> <span class="n">HMDCPoller</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">HMDCPoller</span><span class="p">(</span><span class="mi">73</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> <span class="n">Schedd</span><span class="p">())</span><span class="o">.</span>
+<span class="go">  __get_job_status_from_queue__()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="hmdccondor.HMDCPoller.HMDCPoller.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>id</em>, <em>return_status</em>, <em>schedd</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hmdccondor/HMDCPoller.html#HMDCPoller.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hmdccondor.HMDCPoller.HMDCPoller.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets schedd, desired list of JobStatus values, and job id for class.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>id</strong> (<code class="docutils literal"><span class="pre">int</span></code>) &#8211; job id</li>
+<li><strong>return_status</strong> (<code class="docutils literal"><span class="pre">list</span></code>) &#8211; array of accepted JobStatus values</li>
+<li><strong>schedd</strong> (<cite>htcondor.Schedd</cite>) &#8211; HTCondor Schedd object</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">htcondor</span> <span class="kn">import</span> <span class="n">Schedd</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">hmdccondor</span> <span class="kn">import</span> <span class="n">HMDCPoller</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">poller</span> <span class="o">=</span> <span class="n">HMDCPoller</span><span class="p">(</span><span class="mi">73</span><span class="p">,[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span><span class="n">Schedd</span><span class="p">())</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="hmdccondor.HMDCPoller.HMDCPoller.__module__">
+<code class="descname">__module__</code><em class="property"> = 'hmdccondor.HMDCPoller'</em><a class="headerlink" href="#hmdccondor.HMDCPoller.HMDCPoller.__module__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="hmdccondor.HMDCPoller.HMDCPoller.find_job_and_job_status">
 <code class="descname">find_job_and_job_status</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hmdccondor/HMDCPoller.html#HMDCPoller.find_job_and_job_status"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hmdccondor.HMDCPoller.HMDCPoller.find_job_and_job_status" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Attempts to find job specified by <code class="docutils literal"><span class="pre">self.id</span></code> either in
+<code class="docutils literal"><span class="pre">self.schedd</span></code> queue or <code class="docutils literal"><span class="pre">self.schedd</span></code> job history.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><code class="docutils literal"><span class="pre">(JobStatus,</span> <span class="pre">ClassAd)</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><code class="docutils literal"><span class="pre">(None,</span> <span class="pre">None)</span></code></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="docutils literal"><span class="pre">tuple</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="docutils literal"><span class="pre">None</span></code></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">htcondor</span> <span class="kn">import</span> <span class="n">Schedd</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">hmdccondor</span> <span class="kn">import</span> <span class="n">HMDCPoller</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">HMDCPoller</span><span class="p">(</span><span class="mi">73</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> <span class="n">Schedd</span><span class="p">())</span><span class="o">.</span>
+<span class="go"> find_job_and_job_status()</span>
+</pre></div>
+</div>
+</dd></dl>
 
 <dl class="method">
 <dt id="hmdccondor.HMDCPoller.HMDCPoller.run">
 <code class="descname">run</code><span class="sig-paren">(</span><em>id=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hmdccondor/HMDCPoller.html#HMDCPoller.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hmdccondor.HMDCPoller.HMDCPoller.run" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>loops until either job with appropriate job status is found or
+returns None. Note this function infinitely loops until result is
+returned. This is best used with a function that tracks time and
+timesout.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><code class="docutils literal"><span class="pre">(JobStatus,</span> <span class="pre">ClassAd)</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><code class="docutils literal"><span class="pre">(None,</span> <span class="pre">None)</span></code></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">tuple</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">htcondor</span> <span class="kn">import</span> <span class="n">Schedd</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">hmdccondor</span> <span class="kn">import</span> <span class="n">HMDCPoller</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">HMDCPoller</span><span class="p">(</span><span class="mi">73</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> <span class="n">Schedd</span><span class="p">())</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
 
 </dd></dl>
 
 </div>
 <div class="section" id="module-hmdccondor.HMDCRceSubmitClient">
 <span id="hmdccondor-hmdcrcesubmitclient-module"></span><h2>hmdccondor.HMDCRceSubmitClient module<a class="headerlink" href="#module-hmdccondor.HMDCRceSubmitClient" title="Permalink to this headline">¶</a></h2>
+<p>Command line client for RCE Cluster Tools</p>
 <dl class="class">
 <dt id="hmdccondor.HMDCRceSubmitClient.HMDCRceSubmitClient">
 <em class="property">class </em><code class="descclassname">hmdccondor.HMDCRceSubmitClient.</code><code class="descname">HMDCRceSubmitClient</code><a class="reference internal" href="../../_modules/hmdccondor/HMDCRceSubmitClient.html#HMDCRceSubmitClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hmdccondor.HMDCRceSubmitClient.HMDCRceSubmitClient" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="method">
+<dt id="hmdccondor.HMDCRceSubmitClient.HMDCRceSubmitClient._HMDCRceSubmitClient__list_apps">
+<code class="descname">_HMDCRceSubmitClient__list_apps</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hmdccondor.HMDCRceSubmitClient.HMDCRceSubmitClient._HMDCRceSubmitClient__list_apps" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns a table of applications listed in the RceApp
+configuration file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">list of application</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="docutils literal"><span class="pre">list</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="hmdccondor.HMDCRceSubmitClient.HMDCRceSubmitClient._HMDCRceSubmitClient__list_jobs">
+<code class="descname">_HMDCRceSubmitClient__list_jobs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hmdccondor.HMDCRceSubmitClient.HMDCRceSubmitClient._HMDCRceSubmitClient__list_jobs" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns a table of jobs currently running by user.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">list of jobs</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="docutils literal"><span class="pre">list</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="hmdccondor.HMDCRceSubmitClient.HMDCRceSubmitClient._HMDCRceSubmitClient__parse_args">
+<code class="descname">_HMDCRceSubmitClient__parse_args</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hmdccondor.HMDCRceSubmitClient.HMDCRceSubmitClient._HMDCRceSubmitClient__parse_args" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets up command line argument parsing and returns parsed
+arguments.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="hmdccondor.HMDCRceSubmitClient.HMDCRceSubmitClient._HMDCRceSubmitClient__version_string">
+<code class="descname">_HMDCRceSubmitClient__version_string</code><span class="sig-paren">(</span><em>app</em>, <em>version</em><span class="sig-paren">)</span><a class="headerlink" href="#hmdccondor.HMDCRceSubmitClient.HMDCRceSubmitClient._HMDCRceSubmitClient__version_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns the version of the application specified, affixes two
+asterisks if version returned is the default version.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>app</strong> (<code class="docutils literal"><span class="pre">str</span></code>) &#8211; application name</li>
+<li><strong>version</strong> (<code class="docutils literal"><span class="pre">str</span></code>) &#8211; application version</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">version string</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><code class="docutils literal"><span class="pre">str</span></code></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="hmdccondor.HMDCRceSubmitClient.HMDCRceSubmitClient.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hmdccondor/HMDCRceSubmitClient.html#HMDCRceSubmitClient.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hmdccondor.HMDCRceSubmitClient.HMDCRceSubmitClient.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hmdccondor.HMDCRceSubmitClient.HMDCRceSubmitClient.__module__">
+<code class="descname">__module__</code><em class="property"> = 'hmdccondor.HMDCRceSubmitClient'</em><a class="headerlink" href="#hmdccondor.HMDCRceSubmitClient.HMDCRceSubmitClient.__module__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="hmdccondor.HMDCRceSubmitClient.HMDCRceSubmitClient.attach_all">
 <code class="descname">attach_all</code><span class="sig-paren">(</span><em>rceapps</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hmdccondor/HMDCRceSubmitClient.html#HMDCRceSubmitClient.attach_all"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hmdccondor.HMDCRceSubmitClient.HMDCRceSubmitClient.attach_all" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>attaches all currently running jobs.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>rceapps</strong> (<a class="reference internal" href="rceapp.html#rceapp.rceapp" title="rceapp.rceapp"><em>rceapp.rceapp</em></a>) &#8211; <code class="docutils literal"><span class="pre">rceapp</span></code> object</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">pids of xpra clients</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="docutils literal"><span class="pre">list</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
 <dt id="hmdccondor.HMDCRceSubmitClient.HMDCRceSubmitClient.attach_app">
 <code class="descname">attach_app</code><span class="sig-paren">(</span><em>rceapps</em>, <em>jobid</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hmdccondor/HMDCRceSubmitClient.html#HMDCRceSubmitClient.attach_app"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hmdccondor.HMDCRceSubmitClient.HMDCRceSubmitClient.attach_app" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>attaches a job specified by a <code class="docutils literal"><span class="pre">jobid</span></code></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>rceapps</strong> (<a class="reference internal" href="rceapp.html#rceapp.rceapp" title="rceapp.rceapp"><em>rceapp.rceapp</em></a>) &#8211; <code class="docutils literal"><span class="pre">rceapp</span></code> object</li>
+<li><strong>jobid</strong> (<code class="docutils literal"><span class="pre">int</span></code>) &#8211; htcondor job id</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">pid of xpra client</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><code class="docutils literal"><span class="pre">list</span></code></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
 <dt id="hmdccondor.HMDCRceSubmitClient.HMDCRceSubmitClient.list_apps">
 <code class="descname">list_apps</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hmdccondor/HMDCRceSubmitClient.html#HMDCRceSubmitClient.list_apps"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hmdccondor.HMDCRceSubmitClient.HMDCRceSubmitClient.list_apps" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>prints a list of available applications/versions to stdout.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="hmdccondor.HMDCRceSubmitClient.HMDCRceSubmitClient.list_jobs">
 <code class="descname">list_jobs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hmdccondor/HMDCRceSubmitClient.html#HMDCRceSubmitClient.list_jobs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hmdccondor.HMDCRceSubmitClient.HMDCRceSubmitClient.list_jobs" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>prints a list of currently running jobs to stdout.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="hmdccondor.HMDCRceSubmitClient.HMDCRceSubmitClient.run">
 <code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hmdccondor/HMDCRceSubmitClient.html#HMDCRceSubmitClient.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hmdccondor.HMDCRceSubmitClient.HMDCRceSubmitClient.run" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>main function of class. parses command line arguments and routes
+appropriately.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="hmdccondor.HMDCRceSubmitClient.HMDCRceSubmitClient.run_app">
 <code class="descname">run_app</code><span class="sig-paren">(</span><em>rceapps</em>, <em>application</em>, <em>version</em>, <em>memory</em>, <em>cpu</em>, <em>graphical</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hmdccondor/HMDCRceSubmitClient.html#HMDCRceSubmitClient.run_app"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hmdccondor.HMDCRceSubmitClient.HMDCRceSubmitClient.run_app" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>runs an application on the HTCondor cluster.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>rceapps</strong> (<a class="reference internal" href="rceapp.html#rceapp.rceapp" title="rceapp.rceapp"><em>rceapp.rceapp</em></a>) &#8211; <code class="docutils literal"><span class="pre">rceapp</span></code> object</li>
+<li><strong>application</strong> (<code class="docutils literal"><span class="pre">str</span></code>) &#8211; application name</li>
+<li><strong>version</strong> (<code class="docutils literal"><span class="pre">str</span></code>) &#8211; application version</li>
+<li><strong>memory</strong> (<code class="docutils literal"><span class="pre">int</span></code>) &#8211; requested memory for job</li>
+<li><strong>cpu</strong> (<code class="docutils literal"><span class="pre">int</span></code>) &#8211; requested cpu(s) for job</li>
+<li><strong>graphical</strong> (<code class="docutils literal"><span class="pre">bool</span></code>) &#8211; whether to run app using CLI or GUI interface</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 </dd></dl>
 
 </div>
 <div class="section" id="module-hmdccondor.HMDCWrapper">
 <span id="hmdccondor-hmdcwrapper-module"></span><h2>hmdccondor.HMDCWrapper module<a class="headerlink" href="#module-hmdccondor.HMDCWrapper" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">HMDCWrapper</span></code> class is responsible for setting the resource limits of a
+job and executing the job&#8217;s command as specified in the job&#8217;s ClassAd in
+the Cmd field. HMDCWrapper reads the <code class="docutils literal"><span class="pre">_CONDOR_JOB_AD</span></code> and
+<code class="docutils literal"><span class="pre">_CONDOR_MACHINE_AD</span></code> environment variables which are present in any
+application executing within a HTCondor job slot to read in the
+appropriate classads and execute the application. Note that wrappers in
+HTCondor must always end with an exec system call.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>According to <a class="reference external" href="http://research.cs.wisc.edu/htcondor/manual/v8.2/3_12Setting_Up.html#42050">HTCondor documentation</a>:</p>
+<div class="last highlight-python"><div class="highlight"><pre>The following variables are set in the environment of the the
+USER_JOB_WRAPPER script by the condor_starter daemon, when the
+USER_JOB_WRAPPER is defined.
+
+_CONDOR_MACHINE_AD
+The full path and file name of the file containing the machine
+ClassAd.
+_CONDOR_JOB_AD
+The full path and file name of the file containing the job ClassAd.
+_CONDOR_WRAPPER_ERROR_FILE
+The full path and file name of the file that the USER_JOB_WRAPPER
+script should create, if there is an error. The text in this file
+will be included in any HTCondor failure messages.
+</pre></div>
+</div>
+</div>
 <dl class="class">
 <dt id="hmdccondor.HMDCWrapper.HMDCWrapper">
 <em class="property">class </em><code class="descclassname">hmdccondor.HMDCWrapper.</code><code class="descname">HMDCWrapper</code><span class="sig-paren">(</span><em>argv</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hmdccondor/HMDCWrapper.html#HMDCWrapper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hmdccondor.HMDCWrapper.HMDCWrapper" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="method">
+<dt id="hmdccondor.HMDCWrapper.HMDCWrapper.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>argv</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hmdccondor/HMDCWrapper.html#HMDCWrapper.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hmdccondor.HMDCWrapper.HMDCWrapper.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hmdccondor.HMDCWrapper.HMDCWrapper.__module__">
+<code class="descname">__module__</code><em class="property"> = 'hmdccondor.HMDCWrapper'</em><a class="headerlink" href="#hmdccondor.HMDCWrapper.HMDCWrapper.__module__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hmdccondor.HMDCWrapper.HMDCWrapper.__set_limits__">
+<code class="descname">__set_limits__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hmdccondor/HMDCWrapper.html#HMDCWrapper.__set_limits__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hmdccondor.HMDCWrapper.HMDCWrapper.__set_limits__" title="Permalink to this definition">¶</a></dt>
+<dd><p>sets ulimits on application running within job slot according to
+memory and cpu allocated to slot.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="hmdccondor.HMDCWrapper.HMDCWrapper.run">
 <code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hmdccondor/HMDCWrapper.html#HMDCWrapper.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hmdccondor.HMDCWrapper.HMDCWrapper.run" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>runs application in job splot specified in the Cmd field in classad</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="hmdccondor.HMDCWrapper.HMDCWrapper.run_screen">
@@ -422,7 +1322,11 @@ if xpra has started within a job.</p>
 <dl class="method">
 <dt id="hmdccondor.HMDCWrapper.HMDCWrapper.run_sshd">
 <code class="descname">run_sshd</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hmdccondor/HMDCWrapper.html#HMDCWrapper.run_sshd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hmdccondor.HMDCWrapper.HMDCWrapper.run_sshd" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>When running condor_ssh_to_job, condor_ssh_to_job submits a ClassAd
+directly to the host on which the requested job is running with the
+value of Cmd being sshd. If this is the case, must run sshd, not the
+original Cmd.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="hmdccondor.HMDCWrapper.HMDCWrapper.run_xpra">
@@ -438,6 +1342,16 @@ if xpra has started within a job.</p>
 <dt id="hmdccondor.ProgressBarThreadCli.ProgressBarThreadCli">
 <em class="property">class </em><code class="descclassname">hmdccondor.ProgressBarThreadCli.</code><code class="descname">ProgressBarThreadCli</code><span class="sig-paren">(</span><em>heading</em>, <em>maxval=140</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hmdccondor/ProgressBarThreadCli.html#ProgressBarThreadCli"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hmdccondor.ProgressBarThreadCli.ProgressBarThreadCli" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">threading.Thread</span></code></p>
+<dl class="method">
+<dt id="hmdccondor.ProgressBarThreadCli.ProgressBarThreadCli.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>heading</em>, <em>maxval=140</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hmdccondor/ProgressBarThreadCli.html#ProgressBarThreadCli.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hmdccondor.ProgressBarThreadCli.ProgressBarThreadCli.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hmdccondor.ProgressBarThreadCli.ProgressBarThreadCli.__module__">
+<code class="descname">__module__</code><em class="property"> = 'hmdccondor.ProgressBarThreadCli'</em><a class="headerlink" href="#hmdccondor.ProgressBarThreadCli.ProgressBarThreadCli.__module__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="hmdccondor.ProgressBarThreadCli.ProgressBarThreadCli.run">
 <code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hmdccondor/ProgressBarThreadCli.html#ProgressBarThreadCli.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hmdccondor.ProgressBarThreadCli.ProgressBarThreadCli.run" title="Permalink to this definition">¶</a></dt>
@@ -457,6 +1371,31 @@ if xpra has started within a job.</p>
 <dt id="hmdccondor.ProgressBarThreadGUI.ProgressBarThreadGUI">
 <em class="property">class </em><code class="descclassname">hmdccondor.ProgressBarThreadGUI.</code><code class="descname">ProgressBarThreadGUI</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hmdccondor/ProgressBarThreadGUI.html#ProgressBarThreadGUI"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hmdccondor.ProgressBarThreadGUI.ProgressBarThreadGUI" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">wx._windows.Frame</span></code></p>
+<dl class="method">
+<dt id="hmdccondor.ProgressBarThreadGUI.ProgressBarThreadGUI._ProgressBarThreadGUI__do_layout">
+<code class="descname">_ProgressBarThreadGUI__do_layout</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hmdccondor.ProgressBarThreadGUI.ProgressBarThreadGUI._ProgressBarThreadGUI__do_layout" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hmdccondor.ProgressBarThreadGUI.ProgressBarThreadGUI._ProgressBarThreadGUI__set_properties">
+<code class="descname">_ProgressBarThreadGUI__set_properties</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hmdccondor.ProgressBarThreadGUI.ProgressBarThreadGUI._ProgressBarThreadGUI__set_properties" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hmdccondor.ProgressBarThreadGUI.ProgressBarThreadGUI.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hmdccondor/ProgressBarThreadGUI.html#ProgressBarThreadGUI.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hmdccondor.ProgressBarThreadGUI.ProgressBarThreadGUI.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hmdccondor.ProgressBarThreadGUI.ProgressBarThreadGUI.__module__">
+<code class="descname">__module__</code><em class="property"> = 'hmdccondor.ProgressBarThreadGUI'</em><a class="headerlink" href="#hmdccondor.ProgressBarThreadGUI.ProgressBarThreadGUI.__module__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hmdccondor.ProgressBarThreadGUI.ProgressBarThreadGUI.__update_gauge__">
+<code class="descname">__update_gauge__</code><span class="sig-paren">(</span><em>evt</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hmdccondor/ProgressBarThreadGUI.html#ProgressBarThreadGUI.__update_gauge__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hmdccondor.ProgressBarThreadGUI.ProgressBarThreadGUI.__update_gauge__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="hmdccondor.ProgressBarThreadGUI.ProgressBarThreadGUI.complete_task">
 <code class="descname">complete_task</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hmdccondor/ProgressBarThreadGUI.html#ProgressBarThreadGUI.complete_task"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hmdccondor.ProgressBarThreadGUI.ProgressBarThreadGUI.complete_task" title="Permalink to this definition">¶</a></dt>
@@ -481,6 +1420,16 @@ if xpra has started within a job.</p>
 <dt id="hmdccondor.RCEConsoleClient.RCEConsoleClient">
 <em class="property">class </em><code class="descclassname">hmdccondor.RCEConsoleClient.</code><code class="descname">RCEConsoleClient</code><span class="sig-paren">(</span><em>rceapps</em>, <em>application=None</em>, <em>version=None</em>, <em>memory=None</em>, <em>cpu=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hmdccondor/RCEConsoleClient.html#RCEConsoleClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hmdccondor.RCEConsoleClient.RCEConsoleClient" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="method">
+<dt id="hmdccondor.RCEConsoleClient.RCEConsoleClient.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>rceapps</em>, <em>application=None</em>, <em>version=None</em>, <em>memory=None</em>, <em>cpu=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hmdccondor/RCEConsoleClient.html#RCEConsoleClient.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hmdccondor.RCEConsoleClient.RCEConsoleClient.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hmdccondor.RCEConsoleClient.RCEConsoleClient.__module__">
+<code class="descname">__module__</code><em class="property"> = 'hmdccondor.RCEConsoleClient'</em><a class="headerlink" href="#hmdccondor.RCEConsoleClient.RCEConsoleClient.__module__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="hmdccondor.RCEConsoleClient.RCEConsoleClient.attach_all">
 <code class="descname">attach_all</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hmdccondor/RCEConsoleClient.html#RCEConsoleClient.attach_all"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hmdccondor.RCEConsoleClient.RCEConsoleClient.attach_all" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -504,6 +1453,31 @@ if xpra has started within a job.</p>
 <dt id="hmdccondor.RCEExceptionFrame.RCEExceptionFrame">
 <em class="property">class </em><code class="descclassname">hmdccondor.RCEExceptionFrame.</code><code class="descname">RCEExceptionFrame</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hmdccondor/RCEExceptionFrame.html#RCEExceptionFrame"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hmdccondor.RCEExceptionFrame.RCEExceptionFrame" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">wx._windows.Frame</span></code></p>
+<dl class="method">
+<dt id="hmdccondor.RCEExceptionFrame.RCEExceptionFrame._RCEExceptionFrame__do_layout">
+<code class="descname">_RCEExceptionFrame__do_layout</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hmdccondor.RCEExceptionFrame.RCEExceptionFrame._RCEExceptionFrame__do_layout" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hmdccondor.RCEExceptionFrame.RCEExceptionFrame._RCEExceptionFrame__set_properties">
+<code class="descname">_RCEExceptionFrame__set_properties</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hmdccondor.RCEExceptionFrame.RCEExceptionFrame._RCEExceptionFrame__set_properties" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hmdccondor.RCEExceptionFrame.RCEExceptionFrame.__exit_frame__">
+<code class="descname">__exit_frame__</code><span class="sig-paren">(</span><em>event</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hmdccondor/RCEExceptionFrame.html#RCEExceptionFrame.__exit_frame__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hmdccondor.RCEExceptionFrame.RCEExceptionFrame.__exit_frame__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hmdccondor.RCEExceptionFrame.RCEExceptionFrame.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hmdccondor/RCEExceptionFrame.html#RCEExceptionFrame.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hmdccondor.RCEExceptionFrame.RCEExceptionFrame.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hmdccondor.RCEExceptionFrame.RCEExceptionFrame.__module__">
+<code class="descname">__module__</code><em class="property"> = 'hmdccondor.RCEExceptionFrame'</em><a class="headerlink" href="#hmdccondor.RCEExceptionFrame.RCEExceptionFrame.__module__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 </div>
@@ -518,6 +1492,21 @@ if xpra has started within a job.</p>
 <code class="descname">OnInit</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hmdccondor/RCEGraphicalClient.html#RceSubmitLaunch.OnInit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hmdccondor.RCEGraphicalClient.RceSubmitLaunch.OnInit" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
+<dl class="method">
+<dt id="hmdccondor.RCEGraphicalClient.RceSubmitLaunch.__call__">
+<code class="descname">__call__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hmdccondor/RCEGraphicalClient.html#RceSubmitLaunch.__call__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hmdccondor.RCEGraphicalClient.RceSubmitLaunch.__call__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hmdccondor.RCEGraphicalClient.RceSubmitLaunch.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hmdccondor/RCEGraphicalClient.html#RceSubmitLaunch.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hmdccondor.RCEGraphicalClient.RceSubmitLaunch.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hmdccondor.RCEGraphicalClient.RceSubmitLaunch.__module__">
+<code class="descname">__module__</code><em class="property"> = 'hmdccondor.RCEGraphicalClient'</em><a class="headerlink" href="#hmdccondor.RCEGraphicalClient.RceSubmitLaunch.__module__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 </div>
@@ -527,6 +1516,16 @@ if xpra has started within a job.</p>
 <dt id="hmdccondor.RCEGraphicalDispatcher.RCEGraphicalTaskDispatcher">
 <em class="property">class </em><code class="descclassname">hmdccondor.RCEGraphicalDispatcher.</code><code class="descname">RCEGraphicalTaskDispatcher</code><span class="sig-paren">(</span><em>f</em>, <em>*args</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hmdccondor/RCEGraphicalDispatcher.html#RCEGraphicalTaskDispatcher"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hmdccondor.RCEGraphicalDispatcher.RCEGraphicalTaskDispatcher" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">threading.Thread</span></code></p>
+<dl class="method">
+<dt id="hmdccondor.RCEGraphicalDispatcher.RCEGraphicalTaskDispatcher.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>f</em>, <em>*args</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hmdccondor/RCEGraphicalDispatcher.html#RCEGraphicalTaskDispatcher.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hmdccondor.RCEGraphicalDispatcher.RCEGraphicalTaskDispatcher.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hmdccondor.RCEGraphicalDispatcher.RCEGraphicalTaskDispatcher.__module__">
+<code class="descname">__module__</code><em class="property"> = 'hmdccondor.RCEGraphicalDispatcher'</em><a class="headerlink" href="#hmdccondor.RCEGraphicalDispatcher.RCEGraphicalTaskDispatcher.__module__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="hmdccondor.RCEGraphicalDispatcher.RCEGraphicalTaskDispatcher.attach_app">
 <code class="descname">attach_app</code><span class="sig-paren">(</span><em>rceapps</em>, <em>jobid</em>, <em>ad</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hmdccondor/RCEGraphicalDispatcher.html#RCEGraphicalTaskDispatcher.attach_app"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hmdccondor.RCEGraphicalDispatcher.RCEGraphicalTaskDispatcher.attach_app" title="Permalink to this definition">¶</a></dt>
@@ -589,6 +1588,31 @@ if xpra has started within a job.</p>
 <dl class="method">
 <dt id="hmdccondor.RCELaunchLaunchWindowFrame.RCELaunchLaunchWindowFrame.OnSubmitEvent">
 <code class="descname">OnSubmitEvent</code><span class="sig-paren">(</span><em>jobid=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hmdccondor/RCELaunchLaunchWindowFrame.html#RCELaunchLaunchWindowFrame.OnSubmitEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hmdccondor.RCELaunchLaunchWindowFrame.RCELaunchLaunchWindowFrame.OnSubmitEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hmdccondor.RCELaunchLaunchWindowFrame.RCELaunchLaunchWindowFrame._RCELaunchLaunchWindowFrame__do_layout">
+<code class="descname">_RCELaunchLaunchWindowFrame__do_layout</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hmdccondor.RCELaunchLaunchWindowFrame.RCELaunchLaunchWindowFrame._RCELaunchLaunchWindowFrame__do_layout" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hmdccondor.RCELaunchLaunchWindowFrame.RCELaunchLaunchWindowFrame._RCELaunchLaunchWindowFrame__set_properties">
+<code class="descname">_RCELaunchLaunchWindowFrame__set_properties</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hmdccondor.RCELaunchLaunchWindowFrame.RCELaunchLaunchWindowFrame._RCELaunchLaunchWindowFrame__set_properties" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hmdccondor.RCELaunchLaunchWindowFrame.RCELaunchLaunchWindowFrame._RCELaunchLaunchWindowFrame__validate_mem_cpu_entry">
+<code class="descname">_RCELaunchLaunchWindowFrame__validate_mem_cpu_entry</code><span class="sig-paren">(</span><em>event</em><span class="sig-paren">)</span><a class="headerlink" href="#hmdccondor.RCELaunchLaunchWindowFrame.RCELaunchLaunchWindowFrame._RCELaunchLaunchWindowFrame__validate_mem_cpu_entry" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hmdccondor.RCELaunchLaunchWindowFrame.RCELaunchLaunchWindowFrame.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hmdccondor/RCELaunchLaunchWindowFrame.html#RCELaunchLaunchWindowFrame.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hmdccondor.RCELaunchLaunchWindowFrame.RCELaunchLaunchWindowFrame.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hmdccondor.RCELaunchLaunchWindowFrame.RCELaunchLaunchWindowFrame.__module__">
+<code class="descname">__module__</code><em class="property"> = 'hmdccondor.RCELaunchLaunchWindowFrame'</em><a class="headerlink" href="#hmdccondor.RCELaunchLaunchWindowFrame.RCELaunchLaunchWindowFrame.__module__" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>

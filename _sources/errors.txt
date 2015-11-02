@@ -1,2 +1,15 @@
-Understanding Errors and Warnings
----------------------------------
+Diagnosing errors and warnings
+=================================
+
+Your job did not start, exited prematurely
+------------------------------------------
+
+Your job took too long to start
+-------------------------------
+
+Xpra took to long to start
+--------------------------
+
+Unknown exception
+-----------------
+
