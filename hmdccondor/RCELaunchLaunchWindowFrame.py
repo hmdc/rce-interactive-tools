@@ -41,6 +41,8 @@ class RCELaunchLaunchWindowFrame(wx.Frame):
 
     _app_name = "{0} {1}".format(self.application, self._version)
 
+    self.__app_name__ = _app_name
+
     self.RCEApplicationIcon = wx.StaticBitmap(self, wx.ID_ANY, wx.Bitmap(self.rceapps.icon(self.application), wx.BITMAP_TYPE_ANY))
     self.HMDCApplicationNameVersion = wx.StaticText(self, wx.ID_ANY, _(_app_name))
     self.JobMemorySizeLabel = wx.StaticText(self, wx.ID_ANY, _("Memory (GB)"))
@@ -163,7 +165,7 @@ class RCELaunchLaunchWindowFrame(wx.Frame):
 
   def __set_properties(self):
     # begin wxGlade: RCELaunchLaunchWindowFrame.__set_properties
-    self.SetTitle(_("Run RCE Powered Application Version"))
+    self.SetTitle(_("Run RCE Powered {0}".format(self.__app_name__)))
     self.HMDCApplicationNameVersion.SetFont(wx.Font(16, wx.DEFAULT, wx.NORMAL, wx.BOLD, 0, ""))
     self.JobMemorySizeLabel.SetFont(wx.Font(10, wx.DEFAULT, wx.NORMAL, wx.BOLD, 0, ""))
     self.JobMemorySizeLabel.SetToolTipString(_("Enter the desired memory"))
