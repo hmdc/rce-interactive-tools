@@ -108,7 +108,7 @@ login nodes where all desktops are terminated.
 
 When you create a new NoMachine NX4 session, Rce Cluster Tools
 automatically re-attaches all your detached jobs. However, if you're an
-experienced user comfortable with using the command line, you can easily
+experienced user, you can easily
 declutter your desktop by performing the following instructions.
 Otherwise, skip ahead to the `Try it out!`_ section, which demonstrates
 how job persistence can help save your work.
@@ -126,16 +126,15 @@ running on our cluster and re-accessible.
 Re-attaching your job
 ----------------------
 
-Open Applications |rarr| System Tools |rarr| Terminal as shown below.
+Run Applications |rarr| RCE Utilities |rarr| Attach all jobs as shown below.
 
-.. image:: ../_static/open-the-terminal.png
-   :width: 400px
+.. image:: ../_static/attach-all-jobs.png
+   :width: 500px
 
-Run the following command::
+After a few moments, your application(s) will then reappear on your desktop.
 
-  rce_submit.py -attachall
-
-Your application will then reappear on your desktop.
+.. image:: ../_static/attach-job-reappears.png
+   :width: 500px
 
 Try it out!
 -----------

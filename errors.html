@@ -141,15 +141,45 @@
 <h1>Diagnosing errors and warnings<a class="headerlink" href="#diagnosing-errors-and-warnings" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="your-job-did-not-start-exited-prematurely">
 <h2>Your job did not start, exited prematurely<a class="headerlink" href="#your-job-did-not-start-exited-prematurely" title="Permalink to this headline">¶</a></h2>
+<a class="reference internal image-reference" href="_images/error-job-terminated.png"><img alt="_images/error-job-terminated.png" src="_images/error-job-terminated.png" style="width: 400px; height: 100px;" /></a>
+<p>This error indicates your job terminated immediately upon start or was
+removed from the queue before it was started. The output includes a
+<code class="docutils literal"><span class="pre">RemoveReason</span></code> which may or may not be populated depending on the
+error causing your application to exit prematurely. In this example, I
+manually terminated the job before it began to run in order to produce
+this error as an example.</p>
+<p>Most likely, this error is caused by allocating <strong>too few</strong> cpus or
+<strong>too little</strong> memory to an application, such that upon start it exits.</p>
 </div>
 <div class="section" id="your-job-took-too-long-to-start">
 <h2>Your job took too long to start<a class="headerlink" href="#your-job-took-too-long-to-start" title="Permalink to this headline">¶</a></h2>
+<a class="reference internal image-reference" href="_images/error-too-long.png"><img alt="_images/error-too-long.png" src="_images/error-too-long.png" style="width: 400px; height: 100px;" /></a>
+<p>If you receive an error that your job took too long to start, this means
+that:</p>
+<ul class="simple">
+<li>There are not enough resources in the cluster to start your job</li>
+<li>Your CPU and/or Memory requests are so high that they are unable to be
+satisfied.</li>
+</ul>
+<p>You can check how much resources are available in the cluster by running
+Applications → RCE Utilities → Show available RCE cluster
+resources</p>
+<p>If there are resources available, try lowering your CPU and memory
+request and try again. If you <strong>absolutely</strong> need a large contiguous CPU
+and memory request, you should try submitting your job as a <a class="reference external" href="http://projects.iq.harvard.edu/rce/book/batch-processing-basics">batch job</a></p>
 </div>
 <div class="section" id="xpra-took-to-long-to-start">
 <h2>Xpra took to long to start<a class="headerlink" href="#xpra-took-to-long-to-start" title="Permalink to this headline">¶</a></h2>
+<p>If, while submitting your job, you encounter an error stating that Xpra
+took too long to start, please e-mail
+<a class="reference external" href="mailto:rce_services&#37;&#52;&#48;help&#46;hmdc&#46;harvard&#46;edu">rce_services<span>&#64;</span>help<span>&#46;</span>hmdc<span>&#46;</span>harvard<span>&#46;</span>edu</a>, including the entire output of the
+error message.</p>
 </div>
 <div class="section" id="unknown-exception">
 <h2>Unknown exception<a class="headerlink" href="#unknown-exception" title="Permalink to this headline">¶</a></h2>
+<p>If, while submitting your job, you encounter an unknown exception error,
+please e-mail <a class="reference external" href="mailto:rce_services&#37;&#52;&#48;help&#46;hmdc&#46;harvard&#46;edu">rce_services<span>&#64;</span>help<span>&#46;</span>hmdc<span>&#46;</span>harvard<span>&#46;</span>edu</a>, including the entire
+output of the error message.</p>
 </div>
 </div>
 
