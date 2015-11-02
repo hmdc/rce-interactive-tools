@@ -8,6 +8,7 @@ from wx.lib.pubsub import setupkwargs
 from wx.lib.pubsub import pub
 import classad
 import htcondor
+import webbrowser
 # begin wxGlade: dependencies
 # end wxGlade
 
@@ -55,6 +56,7 @@ class RCELaunchLaunchWindowFrame(wx.Frame):
     # No one should try to acquire interactive job slots > 999 CPU(s)
     self.JobCpuTextCtrl.SetMaxLength(3)
     self.HelpBtn = wx.Button(self, wx.ID_ANY, _("Help"))
+    self.HelpBtn.Bind(wx.EVT_BUTTON, self.OnHelp)
     self.RunJobBtn = wx.Button(self, wx.ID_ANY, _("Run"))
     self.RunJobBtn.Bind(wx.EVT_BUTTON, self.OnRunJobBtn)
     pub.subscribe(self.OnSubmitEvent, 'rce_submit.job_submitted')
@@ -63,6 +65,10 @@ class RCELaunchLaunchWindowFrame(wx.Frame):
     self.__set_properties()
     self.__do_layout()
     # end wxGlade
+
+  def OnHelp(self, event):
+    return webbrowser.open(
+      'http://hmdc.github.io/rce-interactive-tools')
 
   def OnException(self, excpt):
     self.progress_bar_window.complete_task()
