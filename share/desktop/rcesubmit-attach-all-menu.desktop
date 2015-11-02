@@ -1,0 +1,10 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Attach all jobs
+Comment=Attach all jobs using RCE cluster tools
+Exec=/usr/bin/rce_submit.py -attachall
+Terminal=false
+Icon=hmdc-ico
+Type=Application
+Categories=Application;RCEUtil
+
