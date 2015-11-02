@@ -1,3 +1,7 @@
+"""
+Provides a series of functions which wrap logging functionality.
+"""
+
 import logging.handlers
 import logging
 import pwd
@@ -5,6 +9,19 @@ import os
 import classad
 
 def exception_helper(excpt):
+  """a wrapper for an HMDC defined exception. All HMDC defined
+  exceptions in this project contain the message() class method, whereas
+  all other exceptions do not. Passing an exception to this function
+  will either return the value of the message() class method or return a
+  string which says that that the application has encountered an unknown
+  exception and to contact support.
+
+  :param excpt: exception
+  :type excpt: Exception
+  :returns: explanatory text wrt. exception
+  :rtype: str
+
+  """
   try:
     return excpt.message()
   except:
@@ -18,6 +35,21 @@ Exception: {0}.format(excpt)
 
 def rcelog(level, message, our_logger='rce_submit',
     my_username=pwd.getpwuid(os.getuid())[0]):
+  """this function wraps the logger class methods. Its primary feature
+  is to add the username of the executing user to the syslog message for
+  debugging purpose.
+
+  :param level: debugging level for log message
+  :type level: str
+  :param message: message to log
+  :type message: str
+  :param our_logger: name of logger
+  :type our_logger: str
+  :param my_username: username to append to log message, defaults to
+    executing user.
+  :type my_username: str
+
+  """
 
   def __rcelog__():
     return getattr(logging.getLogger(our_logger), level)

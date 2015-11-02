@@ -1,12 +1,22 @@
 import classad
 
 class RCEJobNotFoundError(Exception):
+  """RCEJobNotFoundError is thrown when a user attempts to attach a job
+  with a jobid that does not exist."""
+
   def __init__(self, jobid):
     self.jobid = jobid
   def __str__(self):
     return repr('No job running, held, or terminated with jobid {0}'.
         format(self.jobid))
   def message(self):
+    """message returns the explanatory text for RCEJobNotFoundError.
+
+    :returns: text
+    :rtype: str
+
+    """
+
     return """\
 Job {0} could not be attached. This job could not be found on the
 RCE. Are you sure this is the correct job id? Run the following
@@ -16,6 +26,9 @@ rce_submit.py -jobs\
 """.format(self.jobid)
 
 class RCEJobDidNotStart(Exception):
+  """RCEJobDidNotStart is thrown when a user submits a job but it fails
+  to start."""
+
   def __init__(self, result):
     self.status = result[0]
     self.ad = classad.parseOld(result[1])
@@ -23,6 +36,13 @@ class RCEJobDidNotStart(Exception):
     return repr('Job {0} did not start properly. Return status: {1}'.
       format(int(self.ad['ClusterId']), self.ad['JobStatus']))
   def __determine_cause__(self):
+    """__determine_cause__() returns the reason why the job did not
+    start, which is embedded in the ClassAd held by the exception.
+
+    :returns: reason for job start failure
+    :rtype: str
+
+    """
     try:
       return "HoldReason={0}".format(self.ad['HoldReason'])
     except:
@@ -38,6 +58,13 @@ class RCEJobDidNotStart(Exception):
     except:
       return "Unknown reason"
   def message(self):
+    """returns explanatory text as to why job did not start.
+
+    :returns: text
+    :rtype: str
+
+    """
+
     return """\
 Your job {0} exited before launching {1}. This indicates that one
 of the following conditions are present:
@@ -59,12 +86,22 @@ or email support@help.hmdc.harvard.edu\
 """.format(self.ad['ClusterId'], self.ad['HMDCApplicationName'], self.__determine_cause__())
 
 class RCEJobTookTooLongStartError(Exception):
+  """RCEJobTookTooLongStartError is thrown when a user submits a job but
+  it takes too long to start."""
+
   def __init__(self, jobid):
     self.jobid = jobid
   def __str__(self):
     return repr('Job {0} took too long to start'.
         format(self.jobid))
   def message(self):
+    """returns explanatory text to user.
+
+    :returns: text
+    :rtype: str
+
+    """
+
     return """\
 Your job {0} took too long to start. Typically, an RCE job should
 take between thirty seconds and one minute to start, unless the
@@ -87,9 +124,21 @@ automatically remove this job.\
 """.format(self.jobid)
 
 class RCEXpraTookTooLongStartError(Exception):
+  """RCEXpraTookTooLongStartError is thrown if the xpra server, running
+  on an HTCondor worker node, takes too long to start under the
+  submitted job's slot."""
+
   def __init__(self, ad):
     self.ad = ad
   def get_ad(self):
+    """A getter that returns the ClassAd of the failed job stored in the
+    exception.
+
+    :returns: classad of failed job
+    :rtype: classad.ClassAd
+
+    """
+
     return self.ad
   def __get_err__(self):
     return ad['Err'].eval()
@@ -101,6 +150,13 @@ class RCEXpraTookTooLongStartError(Exception):
     return repr('Job {0}, xpra server took too long to start'.
         format(int(ad['ClusterId'])))
   def message(self):
+    """returns explanatory text wrt. xpra taking too long to start,
+    advises contacting support as this is a critical error.
+
+    :returns: text
+    :rtype: str
+
+    """
     return """\
 Job {0}, {1} {2}, was unable to start Xpra. This is a critical
 error. Please send an email to support@help.hmdc.harvard.edu and

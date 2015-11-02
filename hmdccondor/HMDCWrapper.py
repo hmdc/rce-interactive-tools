@@ -1,3 +1,32 @@
+"""``HMDCWrapper`` class is responsible for setting the resource limits of a
+job and executing the job's command as specified in the job's ClassAd in
+the Cmd field. HMDCWrapper reads the ``_CONDOR_JOB_AD`` and
+``_CONDOR_MACHINE_AD`` environment variables which are present in any
+application executing within a HTCondor job slot to read in the
+appropriate classads and execute the application. Note that wrappers in
+HTCondor must always end with an exec system call.
+
+.. note::
+
+   According to `HTCondor documentation
+   <http://research.cs.wisc.edu/htcondor/manual/v8.2/3_12Setting_Up.html#42050>`_::
+   
+     The following variables are set in the environment of the the
+     USER_JOB_WRAPPER script by the condor_starter daemon, when the
+     USER_JOB_WRAPPER is defined.
+
+     _CONDOR_MACHINE_AD
+     The full path and file name of the file containing the machine
+     ClassAd.
+     _CONDOR_JOB_AD
+     The full path and file name of the file containing the job ClassAd.
+     _CONDOR_WRAPPER_ERROR_FILE
+     The full path and file name of the file that the USER_JOB_WRAPPER
+     script should create, if there is an error. The text in this file
+     will be included in any HTCondor failure messages.
+
+"""
+
 import os
 import sys
 import htcondor
@@ -48,6 +77,9 @@ class HMDCWrapper:
     self.memory_bytes = (int(self.machine_ad['Memory']) * 1024) * 1024
 
   def __set_limits__(self):
+    """sets ulimits on application running within job slot according to
+    memory and cpu allocated to slot."""
+
     log.info("Setting limits on memory: {0}".format(self.memory_bytes))
     return map(lambda limit: resource.setrlimit(
       getattr(resource, limit),
@@ -55,6 +87,7 @@ class HMDCWrapper:
       ['RLIMIT_RSS', 'RLIMIT_DATA', 'RLIMIT_AS'])
 
   def run(self):
+    """runs application in job splot specified in the Cmd field in classad"""
     try:
       self.__set_limits__()
     except Exception as e:
@@ -69,6 +102,10 @@ class HMDCWrapper:
       return self.run_xpra() if self.use_xpra else self.run_screen()
 
   def run_sshd(self):
+    """When running condor_ssh_to_job, condor_ssh_to_job submits a ClassAd
+    directly to the host on which the requested job is running with the
+    value of Cmd being sshd. If this is the case, must run sshd, not the
+    original Cmd."""
     os.execvp(self.cmd_orig[0], 
         [self.__BASENAME__] +
         self.cmd_orig[1:])

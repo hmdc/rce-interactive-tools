@@ -1,3 +1,5 @@
+"""Command line client for RCE Cluster Tools"""
+
 from tabulate import tabulate
 from hmdccondor import HMDCCondor
 from hmdccondor import RCEJobNotFoundError, \
@@ -19,6 +21,9 @@ class HMDCRceSubmitClient:
     return None
 
   def __parse_args(self):
+    """Sets up command line argument parsing and returns parsed
+    arguments."""
+
     parser = argparse.ArgumentParser(
         description = 'RCE interactive job submission and access tool'
         )
@@ -92,6 +97,17 @@ class HMDCRceSubmitClient:
 
 
   def __version_string(self, app, version):
+    """returns the version of the application specified, affixes two
+    asterisks if version returned is the default version.
+
+    :arg app: application name
+    :type app: ``str``
+    :arg version: application version
+    :type version: ``str``
+    :returns: version string
+    :rtype: ``str``
+
+    """
     rceapps = self.rceapps
     if rceapps.is_default(app,version):
       return "%s **" %(version)
@@ -99,6 +115,13 @@ class HMDCRceSubmitClient:
       return version
 
   def __list_apps(self):
+    """returns a table of applications listed in the RceApp
+    configuration file.
+
+    :returns: list of application
+    :rtype: ``list``
+
+    """
 
     rceapps = self.rceapps
 
@@ -118,6 +141,12 @@ class HMDCRceSubmitClient:
     return tabulate(table, headers=['Application', 'Version(s)'])
 
   def __list_jobs(self):
+    """returns a table of jobs currently running by user.
+
+    :returns: list of jobs
+    :rtype: ``list``
+
+    """
     return tabulate(map(
       lambda ad: [float(ad['ClusterId']),
         ad['HMDCApplicationName'],
@@ -132,12 +161,46 @@ class HMDCRceSubmitClient:
         'Requested Memory'])
 
   def attach_all(self, rceapps):
+    """attaches all currently running jobs.
+
+    :arg rceapps: ``rceapp`` object
+    :type rceapps: rceapp.rceapp
+    :returns: pids of xpra clients
+    :rtype: ``list``
+    """
+
     return RCEConsoleClient(rceapps).attach_all()
 
   def attach_app(self, rceapps, jobid):
+    """attaches a job specified by a ``jobid``
+
+    :arg rceapps: ``rceapp`` object
+    :type rceapps: rceapp.rceapp
+    :arg jobid: htcondor job id
+    :type jobid: ``int``
+    :returns: pid of xpra client
+    :rtype: ``list``
+    """
+
     return RCEConsoleClient(rceapps).attach_app(jobid)
 
   def run_app(self, rceapps, application, version, memory, cpu, graphical):
+    """runs an application on the HTCondor cluster.
+
+    :arg rceapps: ``rceapp`` object
+    :type rceapps: rceapp.rceapp
+    :arg application: application name
+    :type application: ``str``
+    :arg version: application version
+    :type version: ``str``
+    :arg memory: requested memory for job
+    :type memory: ``int``
+    :arg cpu: requested cpu(s) for job
+    :type cpu: ``int``
+    :arg graphical: whether to run app using CLI or GUI interface
+    :type graphical: ``bool``
+
+    """
 
     def gb_to_mb(n):
       return n*1024 if isinstance(n, int) else n
@@ -151,16 +214,22 @@ class HMDCRceSubmitClient:
 		cpu = cpu)()
 
   def list_jobs(self):
+    """prints a list of currently running jobs to stdout."""
     print self.__list_jobs()
 
   def list_apps(self):
+    """prints a list of available applications/versions to stdout."""
+
     print "** denotes default"
     print self.__list_apps()
 
   def run(self):
+    """main function of class. parses command line arguments and routes
+    appropriately."""
+
     args = self.__parse_args()
     self.rceapps = rceapp.rceapp(args.config)
- 
+
     logging.getLogger('rce_submit').setLevel(logging.DEBUG)
     handler = logging.handlers.SysLogHandler(address='/dev/log')
     handler.setFormatter(logging.Formatter('RceSubmit.%(user)s.%(process)d.%(module)s.%(funcName)s: %(message)s'))

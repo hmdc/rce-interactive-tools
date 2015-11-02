@@ -1,4 +1,4 @@
-Using the RCE Submit Client
+Using the RCE submit client
 ===========================
 
 .. warning::

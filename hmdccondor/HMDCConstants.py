@@ -1,3 +1,7 @@
+"""
+Useful constants for HTCondor.
+"""
+
 import htcondor
 
 FILESYSTEM_DOMAIN = htcondor.param.get("FILESYSTEM_DOMAIN")
