@@ -221,20 +221,6 @@ last_check_time={1},current_time={2},idle_time={3}'.format(jobid,
       jobid))
     return 0
 
-  try:
-    condor._collector.advertise([
-      (lambda ad, time: ad.update({'JobCpuIdleTime': time,
-        'UpdateSequenceNumber': ad['UpdateSequenceNumber'] + 1}) or ad)(
-          condor._collector.query(htcondor.AdTypes.Startd,
-            'JobId =?= "{0}"'.format(jobid))[0],
-          idle_time)
-        ],
-        'UPDATE_STARTD_AD')
-  except:
-    log.critical('Job {0}: Unable to edit slot classad'.format(
-      jobid))
-    return 0
-
   log.info('Job {0}: LastIdleCheckTime={1}, JobCpuIdleTime={2}'.format(
     jobid,
     current_time,
