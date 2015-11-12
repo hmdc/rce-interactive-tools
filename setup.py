@@ -2,7 +2,7 @@ from os import chmod
 from distutils.core import setup
 
 setup(name='rce-interactive-tools',
-      version='1.7.0',
+      version='1.7.1',
       description='HMDC utilities and scripts to submit condor jobs.',
       url='https://github.com/hmdc/rce-interactive-tools',
       author='Evan Sarmiento',
@@ -16,7 +16,7 @@ setup(name='rce-interactive-tools',
           ['share/desktop/rcesubmit-reattach-jobs.desktop']),
         ('/usr/local/share/applications',
           ['share/desktop/rcesubmit-attach-all-menu.desktop']),
-        ('/etc/cron.d/HMDC_startd_cron_idle_generator',
+        ('/etc/cron.d',
           ['share/cron/HMDC_startd_cron_idle_generator'])
         ],
       scripts=[
