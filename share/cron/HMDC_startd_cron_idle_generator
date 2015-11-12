@@ -1,0 +1,4 @@
+# make sure MON is running 
+
+MAILTO=ops@latte.harvard.edu
+*/5 * * * * root /usr/local/bin/HMDC_startd_cron_idle_genereator.py
