@@ -228,7 +228,7 @@ last_check_time={1},current_time={2},idle_time={3}'.format(jobid,
 
   try:
     with open("{0}/.idletime".format(os.environ['TEMP']), 'w') as f:
-      f.write(idle_time)
+      f.write(str(idle_time))
   except Exception as e:
     log.critical('Job {0}: Unable to open .idletime file in TEMP: {1}'.
         format(jobid, e))
