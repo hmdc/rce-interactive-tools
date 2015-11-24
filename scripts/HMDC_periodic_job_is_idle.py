@@ -23,9 +23,8 @@ handler.setFormatter(formatter)
 
 log.addHandler(handler)
 
-def check_if_preempt(condor,
+def check_if_preempt(ad,
     idletime,
-    ad,
     notice_lock_file = "{0}/.sent-notice".format(
       os.environ['TEMP'])):
 
@@ -143,10 +142,13 @@ RCE Development and Support Team
       log.critical('Error sending email notification: {0}'.format(e))
       log.critical('Setting job {0} IdleTime to 0 due to exception'.format(
         ad['ClusterId']))
-      update_job(condor, int(ad['ClusterId']), "{0}.{1}".format(
+
+      update_job("{0}.{1}".format(
         str(ad['ClusterId']),
         str(ad['ProcId'])),
-        False)
+        False,
+        ad)
+
       return 1 if not __notice_lock_file_exists__() else __remove_notice_lock_file__()
 
   def __is_an_xpra_job__():
@@ -170,117 +172,92 @@ RCE Development and Support Team
   return 0 if __when_preemptible__() is None else __can_be_preempt__(
       __when_preemptible__())
 
-def update_job(condor, clusterid, jobid, is_job_idle):
+def update_job(jobid, is_job_idle, q_classad):
+
+  def get_last_check_time():
+    try:
+      return int(os.path.getmtime('{0}/.idletime'.format(os.environ['TEMP'])))
+    except Exception as e:
+      log.critical("""Job {0}: Failure reading last_check_time from
+.idletime file, exception: {1}""".format(jobid, e))
+      return 0
+
+  def get_current_time():
+    return int(q_classad['CurrentTime'].eval())
+
+  def get_current_idle_time():
+    try:
+      with open('{0}/.idletime'.format(os.environ['TEMP']), 'r') as itf:
+        return int(itf.readline().strip())
+    except Exception as e:
+      log.critical('Job {0}: Unable to read .idletime file: {1}'.format(
+        jobid, e))
+      return 0
+
+  def evaluate_new_idle_time(ct=get_current_time()):
+
+    def __evaluate_new_idle_time__(ct):
+      return (ct, get_current_idle_time() + (ct -
+        (get_last_check_time() or ct)))
+
+    try:
+      return ((is_job_idle and __evaluate_new_idle_time__(ct)) or (ct,
+        0))
+    except:
+      return (ct, 0)
+
+  def set_idle_time(current_time, idle_time):
+
+    log.info('Job {0}: LastIdleCheckTime={1}, JobCpuIdleTime={2}'.format(
+      jobid,
+      current_time,
+      idle_time))
+    try:
+      with open("{0}/.idletime".format(os.environ['TEMP']), 'w') as f:
+        f.write(str(idle_time))
+    except Exception as e:
+      log.critical('Job {0}: Unable to open .idletime file in TEMP: {1}'.
+          format(jobid, e))
+      return 0
+
+    return idle_time
+
+
+  return set_idle_time(*evaluate_new_idle_time())
+
+
+def main(job_classad = classad.parseOld(sys.stdin)):
+
+  jobid = lambda ad: "{0}.{1}".format(
+      str(ad['ClusterId']),
+      str(ad['ProcId']))
+
+  is_interactive = lambda ad: job_classad['HMDCInteractive']
 
   try:
-    schedd, classad = condor.get_sched_for_job(jobid)
+    if not is_interactive(job_classad):
+      return 0
   except:
-    log.critical('Job {0}: Could not find ClassAd'.format(jobid))
     return 0
-
-  log.info('Job {0}: Found ClassAd.'.format(jobid))
-
-  q_classad = classad[0]
-
-  try:
-    current_time = int(q_classad['CurrentTime'].eval())
-  except:
-    log.critical(
-        'Job {0}: Could not evaluate CurrentTime'.format(jobid)
-        )
-    return 0
-
-  log.info('Job {0}: CurrentTime = {1}'.format(jobid, current_time))
-
-  try:
-    last_check_time = int(q_classad['LastIdleCheckTime'])
-    idle_time = int(q_classad['JobCpuIdleTime'])
-  except KeyError:
-    last_check_time = 0
-    idle_time = 0
-  except:
-    return 0
-
-  log.info('Job {0}: \
-last_check_time={1},current_time={2},idle_time={3}'.format(jobid,
-        last_check_time,
-        current_time,
-        idle_time))
-
-  if is_job_idle:
-    differend = current_time - last_check_time
-    idle_time += differend if last_check_time > 0 else 0
-  else:
-    idle_time = 0
-
-  try:
-    schedd.edit([jobid], 'LastIdleCheckTime', str(current_time))
-    schedd.edit([jobid], 'JobCpuIdleTime', str(idle_time))
-  except:
-    log.critical('Job {0}: Unable to edit ClassAd in queue'.format(
-      jobid))
-    return 0
-
-  log.info('Job {0}: LastIdleCheckTime={1}, JobCpuIdleTime={2}'.format(
-    jobid,
-    current_time,
-    idle_time))
-
-  try:
-    with open("{0}/.idletime".format(os.environ['TEMP']), 'w') as f:
-      f.write(str(idle_time))
-  except Exception as e:
-    log.critical('Job {0}: Unable to open .idletime file in TEMP: {1}'.
-        format(jobid, e))
-
-  return idle_time
-
-
-def main():
-
-  hmdc_condor = HMDCCondor()
-
-  int_collect = hmdc_condor._collector
-
-  job_classad = classad.parseOld(sys.stdin)
-
-  try:
-    is_interactive = job_classad['HMDCInteractive']
-  except:
-    sys.exit(0)
-
-  if is_interactive == False:
-    sys.exit(0)
-
 
   # If the job isn't currently running, we don't care.
-  if job_classad['JobStatus'] != 2:
-    job.info('Job is no longer running, exiting.')
+  if 2 > job_classad['JobStatus'] > 2:
+    log.info('Job is no longer running, exiting.')
     return 0
 
-  clusterid = job_classad['ClusterId']
-  procid = job_classad['ProcId']
-
-  log.info ('Job {0}.{1}: Running.'.format(clusterid, procid))
-
-  jobid = "{0}.{1}".format(
-      str(clusterid),
-      str(procid))
+  log.info ('Job {0}: Running.'.format(jobid(job_classad)))
 
   try:
-    is_job_idle = int_collect.query(htcondor.AdTypes.Any,
-        'JobId =?= "{0}"'.format(jobid),
+    is_job_idle = HMDCCondor()._collector.query(htcondor.AdTypes.Any,
+        'JobId =?= "{0}"'.format(jobid(job_classad)),
         ['JobCpuIsIdle'])[0]['JobCpuIsIdle'].eval()
-
-    log.info('Job {0}: Idle? {1}'.format(jobid, is_job_idle))
-
+    log.info('Job {0}: Idle? {1}'.format(jobid(job_classad), is_job_idle))
   except:
-    log.info('Job {0}: Unable to evaluate JobCpuIsIdle')
+    log.info('Job {0}: Unable to evaluate JobCpuIsIdle'.format(jobid(job_classad)))
     return 0
 
-  return check_if_preempt(hmdc_condor,
-      update_job(hmdc_condor, clusterid, jobid, is_job_idle),
-      job_classad)
+  return check_if_preempt(job_classad, update_job(jobid(job_classad),
+    is_job_idle, job_classad))
 
 if __name__ == '__main__':
   exit(main())
