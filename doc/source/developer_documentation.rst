@@ -6,13 +6,6 @@ Operations/Development Documentation
    :hidden:
 
    development/modules
-
-Getting the source code
------------------------
-
-Building the documentation
---------------------------
-=======
    development/logs
    development/architecture
    development/add_an_app
