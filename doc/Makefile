@@ -13,6 +13,7 @@ $(error The '$(SPHINXBUILD)' command was not found. Make sure you have Sphinx in
 endif
 
 # Internal variables.
+CURRENT_BRANCH  = $(shell git rev-parse --abbrev-ref HEAD)
 PAPEROPT_a4     = -D latex_paper_size=a4
 PAPEROPT_letter = -D latex_paper_size=letter
 ALLSPHINXOPTS   = -d $(BUILDDIR)/doctrees $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) source
@@ -190,3 +191,13 @@ pseudoxml:
 	$(SPHINXBUILD) -b pseudoxml $(ALLSPHINXOPTS) $(BUILDDIR)/pseudoxml
 	@echo
 	@echo "Build finished. The pseudo-XML files are in $(BUILDDIR)/pseudoxml."
+
+ghpages:
+	git checkout gh-pages
+	cp -a $(BUILDDIR)/html/* ../
+	git add -A ../
+	git commit -a -m "Updating gh-pages on `date`"
+	git push origin gh-pages
+	@echo "Published to gh-pages."
+	git checkout $(CURRENT_BRANCH)
+
