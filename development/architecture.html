@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Modules and Classes Reference &mdash; RCE Cluster Tools 1.6.0 documentation</title>
+  <title>Architecture &mdash; RCE Cluster Tools 1.6.0 documentation</title>
   
 
   
@@ -32,8 +32,8 @@
   
     <link rel="top" title="RCE Cluster Tools 1.6.0 documentation" href="../index.html"/>
         <link rel="up" title="Operations/Development Documentation" href="../developer_documentation.html"/>
-        <link rel="next" title="hmdccondor package" href="modules/hmdccondor.html"/>
-        <link rel="prev" title="Operations/Development Documentation" href="../developer_documentation.html"/> 
+        <link rel="next" title="Adding an RCE Powered Application to the menu" href="add_an_app.html"/>
+        <link rel="prev" title="Epylog messages" href="logs.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -88,13 +88,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../job_lifetime.html">Job lifetime limits in the RCE</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../errors.html">Diagnosing errors and warnings</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../developer_documentation.html">Operations/Development Documentation</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="">Modules and Classes Reference</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="modules/hmdccondor.html">hmdccondor package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="modules/rceapp.html">rceapp package</a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="modules.html">Modules and Classes Reference</a></li>
 <li class="toctree-l2"><a class="reference internal" href="logs.html">Epylog messages</a></li>
-<li class="toctree-l2"><a class="reference internal" href="architecture.html">Architecture</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="">Architecture</a></li>
 <li class="toctree-l2"><a class="reference internal" href="add_an_app.html">Adding an RCE Powered Application to the menu</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../developer_documentation.html#getting-the-source-code">Getting the source code</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../developer_documentation.html#upgrading-application-to-latest-master">Upgrading application to latest master</a></li>
@@ -135,11 +131,11 @@
       
           <li><a href="../developer_documentation.html">Operations/Development Documentation</a> &raquo;</li>
       
-    <li>Modules and Classes Reference</li>
+    <li>Architecture</li>
       <li class="wy-breadcrumbs-aside">
         
           
-            <a href="../_sources/development/modules.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/development/architecture.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -149,35 +145,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="modules-and-classes-reference">
-<h1>Modules and Classes Reference<a class="headerlink" href="#modules-and-classes-reference" title="Permalink to this headline">¶</a></h1>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="modules/hmdccondor.html">hmdccondor package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="modules/hmdccondor.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/hmdccondor.html#module-hmdccondor.HMDCCondor">hmdccondor.HMDCCondor module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/hmdccondor.html#module-hmdccondor.HMDCConstants">hmdccondor.HMDCConstants module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/hmdccondor.html#module-hmdccondor.HMDCExceptions">hmdccondor.HMDCExceptions module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/hmdccondor.html#module-hmdccondor.HMDCLog">hmdccondor.HMDCLog module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/hmdccondor.html#module-hmdccondor.HMDCPoller">hmdccondor.HMDCPoller module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/hmdccondor.html#module-hmdccondor.HMDCRceSubmitClient">hmdccondor.HMDCRceSubmitClient module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/hmdccondor.html#module-hmdccondor.HMDCWrapper">hmdccondor.HMDCWrapper module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/hmdccondor.html#module-hmdccondor.ProgressBarThreadCli">hmdccondor.ProgressBarThreadCli module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/hmdccondor.html#module-hmdccondor.ProgressBarThreadGUI">hmdccondor.ProgressBarThreadGUI module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/hmdccondor.html#module-hmdccondor.RCEConsoleClient">hmdccondor.RCEConsoleClient module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/hmdccondor.html#module-hmdccondor.RCEExceptionFrame">hmdccondor.RCEExceptionFrame module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/hmdccondor.html#module-hmdccondor.RCEGraphicalClient">hmdccondor.RCEGraphicalClient module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/hmdccondor.html#module-hmdccondor.RCEGraphicalDispatcher">hmdccondor.RCEGraphicalDispatcher module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/hmdccondor.html#module-hmdccondor.RCELaunchLaunchWindowFrame">hmdccondor.RCELaunchLaunchWindowFrame module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/hmdccondor.html#module-hmdccondor">Module contents</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="modules/rceapp.html">rceapp package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="modules/rceapp.html#module-rceapp">Module contents</a></li>
-</ul>
-</li>
-</ul>
-</div>
+  <div class="section" id="architecture">
+<h1>Architecture<a class="headerlink" href="#architecture" title="Permalink to this headline">¶</a></h1>
 </div>
 
 
@@ -187,10 +156,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="modules/hmdccondor.html" class="btn btn-neutral float-right" title="hmdccondor package" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="add_an_app.html" class="btn btn-neutral float-right" title="Adding an RCE Powered Application to the menu" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../developer_documentation.html" class="btn btn-neutral" title="Operations/Development Documentation" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="logs.html" class="btn btn-neutral" title="Epylog messages" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

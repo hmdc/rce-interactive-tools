@@ -88,8 +88,14 @@
 <li class="toctree-l1"><a class="reference internal" href="errors.html">Diagnosing errors and warnings</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="">Operations/Development Documentation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="development/modules.html">Modules and Classes Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="development/logs.html">Epylog messages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="development/architecture.html">Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="development/add_an_app.html">Adding an RCE Powered Application to the menu</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#getting-the-source-code">Getting the source code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#upgrading-application-to-latest-master">Upgrading application to latest master</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#building-the-documentation">Building the documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#editing-the-documentation">Editing the documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#publishing-documentation-to-github-pages">Publishing documentation to GitHub pages</a></li>
 </ul>
 </li>
 </ul>
@@ -142,9 +148,68 @@
 </div>
 <div class="section" id="getting-the-source-code">
 <h2>Getting the source code<a class="headerlink" href="#getting-the-source-code" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">git</span> <span class="pre">clone</span> <span class="pre">git&#64;github.com:hmdc/rce-interactive-tools.git</span></code></p>
+</div>
+<div class="section" id="upgrading-application-to-latest-master">
+<h2>Upgrading application to latest master<a class="headerlink" href="#upgrading-application-to-latest-master" title="Permalink to this headline">¶</a></h2>
+<p>For development environment, run from <code class="docutils literal"><span class="pre">hmdc-admin</span></code> checkout:</p>
+<div class="highlight-python"><div class="highlight"><pre>cap condor:upgrade_hmdc_cluster_tools
+</pre></div>
+</div>
+<p>For production environment, run from <code class="docutils literal"><span class="pre">hmdc-admin</span></code> checkout:</p>
+<div class="highlight-python"><div class="highlight"><pre>cap production condor:upgrade_hmdc_cluster_tools
+</pre></div>
+</div>
 </div>
 <div class="section" id="building-the-documentation">
 <h2>Building the documentation<a class="headerlink" href="#building-the-documentation" title="Permalink to this headline">¶</a></h2>
+<p>From the RCE, run:</p>
+<div class="highlight-python"><div class="highlight"><pre>git clone git@github.com:hmdc/rce-interactive-tools.git
+pip install sphinx --user --force-reinstall --upgrade
+pip install sphinx_rtd_theme --user --force-reinstall --upgrade
+cd rce-interactive-tools/doc
+PATH=~/.local/bin PYTHONPATH=../:$PYTHONPATH make html
+</pre></div>
+</div>
+<p>Once you&#8217;ve installed the  <code class="docutils literal"><span class="pre">sphinx</span></code> and <code class="docutils literal"><span class="pre">sphinx_rtd_theme</span></code>
+pre-requisites, you can rebuild documentation by running:</p>
+<div class="highlight-python"><div class="highlight"><pre>cd rce-interactive-tools/doc
+PATH=~/.local/bin PYTHONPATH=../:$PYTHONPATH make html
+</pre></div>
+</div>
+<p>HTML output is placed in <code class="docutils literal"><span class="pre">rce-interactive-tools/doc/build/html</span></code> which
+you can view via any web browser.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Sphinx and sphinx_rtd_theme are already installed on NFS in
+<code class="docutils literal"><span class="pre">/nfs/tools/lib/python/2.6/current</span></code>. However, the Python 2.6
+virtualenv executable is unable to locate htcondor appropriately. In
+the meantime, I simply force reinstall these modules to my home
+directory in order to build the documentation. Although someone should
+look into this.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This entire process could be done automatically via Jenkins git
+hooks.</p>
+</div>
+</div>
+<div class="section" id="editing-the-documentation">
+<h2>Editing the documentation<a class="headerlink" href="#editing-the-documentation" title="Permalink to this headline">¶</a></h2>
+<p>Documentation is written with sphinx and ReST. Here are some helpful
+resources:</p>
+<ul class="simple">
+<li><a class="reference external" href="http://thomas-cokelaer.info/tutorials/sphinx/rest_syntax.html">Restructed Text (reST) and Sphinx Cheat Sheet</a></li>
+<li><a class="reference external" href="https://pythonhosted.org/an_example_pypi_project/sphinx.html">Documenting Your Project Using Sphinx</a></li>
+</ul>
+</div>
+<div class="section" id="publishing-documentation-to-github-pages">
+<h2>Publishing documentation to GitHub pages<a class="headerlink" href="#publishing-documentation-to-github-pages" title="Permalink to this headline">¶</a></h2>
+<p>From the RCE, run:</p>
+<div class="highlight-python"><div class="highlight"><pre>cd rce-interactive-tools/doc
+PATH=~/.local/bin PYTHONPATH=../:$PYTHONPATH make html ghpages
+</pre></div>
+</div>
 </div>
 </div>
 

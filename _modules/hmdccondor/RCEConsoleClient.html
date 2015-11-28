@@ -174,27 +174,6 @@
 <span class="s">          &quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
           <span class="k">return</span> <span class="mi">1</span>
 </div>
-<div class="viewcode-block" id="RCEConsoleClient.munge_requested_resources"><a class="viewcode-back" href="../../development/modules/hmdccondor.html#hmdccondor.RCEConsoleClient.RCEConsoleClient.munge_requested_resources">[docs]</a>    <span class="k">def</span> <span class="nf">munge_requested_resources</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">version</span><span class="p">):</span>
-
-      <span class="k">def</span> <span class="nf">__resource_none_or_not_adjustable__</span><span class="p">():</span>
-        <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-          <span class="k">return</span> <span class="bp">True</span>
-
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">rceapps</span><span class="o">.</span><span class="n">supports_adjustable</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">application</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
-          <span class="k">return</span> <span class="bp">False</span>
-        <span class="k">else</span><span class="p">:</span>
-          <span class="k">print</span> <span class="s">&quot;** {0} unable to use {1} greater than default&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-              <span class="bp">self</span><span class="o">.</span><span class="n">application</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span>
-          <span class="k">print</span> <span class="s">&quot;** Using default {0} value for {1}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-              <span class="n">label</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">application</span><span class="p">)</span>
-          <span class="k">return</span> <span class="bp">True</span>
-
-        <span class="k">return</span> <span class="bp">False</span>
-
-      <span class="k">return</span> <span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rceapps</span><span class="p">,</span> <span class="n">label</span><span class="p">))(</span><span class="bp">self</span><span class="o">.</span><span class="n">application</span><span class="p">,</span> 
-          <span class="n">version</span><span class="p">)</span> <span class="k">if</span> <span class="n">__resource_none_or_not_adjustable__</span><span class="p">()</span> <span class="k">else</span> \
-              <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span>
-</div>
 <div class="viewcode-block" id="RCEConsoleClient.run_app"><a class="viewcode-back" href="../../development/modules/hmdccondor.html#hmdccondor.RCEConsoleClient.RCEConsoleClient.run_app">[docs]</a>    <span class="k">def</span> <span class="nf">run_app</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">_version</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">version</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">version</span> <span class="k">else</span> \
                 <span class="bp">self</span><span class="o">.</span><span class="n">rceapps</span><span class="o">.</span><span class="n">get_default_version</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">application</span><span class="p">)</span>
@@ -206,14 +185,11 @@
 
         <span class="n">rce</span> <span class="o">=</span> <span class="n">HMDCCondor</span><span class="p">()</span>
 
-        <span class="n">_cpu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">munge_requested_resources</span><span class="p">(</span><span class="s">&#39;cpu&#39;</span><span class="p">,</span> <span class="n">_version</span><span class="p">)</span>
-        <span class="n">_memory</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">munge_requested_resources</span><span class="p">(</span><span class="s">&#39;memory&#39;</span><span class="p">,</span> <span class="n">_version</span><span class="p">)</span>
+        <span class="n">_cpu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rceapps</span><span class="o">.</span><span class="n">cpu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">application</span><span class="p">,</span> <span class="n">_version</span><span class="p">)</span> <span class="k">if</span> \
+                <span class="bp">self</span><span class="o">.</span><span class="n">cpu</span> <span class="ow">is</span> <span class="bp">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">cpu</span>
 
-        <span class="c"># _cpu = self.rceapps.cpu(self.application, _version) if \</span>
-        <span class="c">#        self.cpu is None else self.cpu</span>
-
-        <span class="c"># _memory = self.rceapps.memory(self.application,_version) if \</span>
-        <span class="c">#        self.memory is None else self.memory</span>
+        <span class="n">_memory</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rceapps</span><span class="o">.</span><span class="n">memory</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">application</span><span class="p">,</span><span class="n">_version</span><span class="p">)</span> <span class="k">if</span> \
+                <span class="bp">self</span><span class="o">.</span><span class="n">memory</span> <span class="ow">is</span> <span class="bp">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">memory</span>
 
 
         <span class="n">job_submit_bar</span> <span class="o">=</span> <span class="n">ProgressBarThreadCli</span><span class="p">(</span><span class="s">&#39;* Submitting job&#39;</span><span class="p">)</span>
