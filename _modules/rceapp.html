@@ -336,6 +336,21 @@
     <span class="k">else</span><span class="p">:</span>
       <span class="k">return</span> <span class="p">(</span><span class="bp">True</span> <span class="k">if</span> <span class="n">app</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">apps</span><span class="p">()</span> <span class="k">else</span> <span class="bp">False</span><span class="p">)</span>
 </div>
+<div class="viewcode-block" id="rceapp.supports_cpu_adjustable"><a class="viewcode-back" href="../development/modules/rceapp.html#rceapp.rceapp.supports_cpu_adjustable">[docs]</a>  <span class="k">def</span> <span class="nf">supports_cpu_adjustable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">app</span><span class="p">):</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">supports_adjustable</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="s">&#39;cpu&#39;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="rceapp.supports_memory_adjustable"><a class="viewcode-back" href="../development/modules/rceapp.html#rceapp.rceapp.supports_memory_adjustable">[docs]</a>  <span class="k">def</span> <span class="nf">supports_memory_adjustable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">app</span><span class="p">):</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">supports_adjustable</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="s">&#39;memory&#39;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="rceapp.supports_adjustable"><a class="viewcode-back" href="../development/modules/rceapp.html#rceapp.rceapp.supports_adjustable">[docs]</a>  <span class="k">def</span> <span class="nf">supports_adjustable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">app</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
+    <span class="k">assert</span> <span class="n">label</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&#39;memory&#39;</span><span class="p">,</span> <span class="s">&#39;cpu&#39;</span><span class="p">]</span>
+
+    <span class="k">try</span><span class="p">:</span>
+      <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">app</span><span class="p">][</span><span class="s">&#39;global&#39;</span><span class="p">][</span><span class="s">&quot;supports_{0}_adjustable&quot;</span><span class="o">.</span>
+          <span class="n">format</span><span class="p">(</span><span class="n">label</span><span class="p">)]</span>
+    <span class="k">except</span><span class="p">:</span>
+      <span class="k">return</span> <span class="bp">True</span>
+</div>
 <div class="viewcode-block" id="rceapp.command"><a class="viewcode-back" href="../development/modules/rceapp.html#rceapp.rceapp.command">[docs]</a>  <span class="k">def</span> <span class="nf">command</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">app</span><span class="p">,</span><span class="n">version</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    command() returns the full path of an application given its version and</span>
