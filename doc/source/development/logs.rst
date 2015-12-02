@@ -51,6 +51,26 @@ RCE Development Team.
 
 Unable to open job classad or machinead
 ---------------------------------------
+::
+
+  Unable to open machinead from environment variable _CONDOR_MACHINE_AD
+  Unable to open machinead from environment variable _CONDOR_JOB_AD
+
+``HMDCWrapper.py`` opens the job classad and machine classads referenced
+by environment variables set by HTCondor ``_CONDOR_MACHINE_AD`` and
+``_CONDOR_JOB_AD``. When a job executes, HTCondor writes the machinead
+and the job classad to the job's execute directory in ``/tmp/condor/execute`` as
+``.machine.ad`` and ``.job.ad`` respectively.
+
+This is a critical error and you should never see this. If this error
+does occur, it could mean that free space on ``/tmp``, the parent
+directory of all HTCondor execute directories, is exhausted and HTCondor
+is unable to write these files. If you discover that ``/tmp`` is indeed
+full, clear out the problematic files and ask the impacted users to
+resubmit their jobs.
+
+If ``/tmp`` is not full, this error indicates a more serious problem.
+Investigate and create a ticket in the RCE Development queue.
 
 Encountered exception setting memory limits
 -------------------------------------------
