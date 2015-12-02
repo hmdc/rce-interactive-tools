@@ -16,12 +16,12 @@ Epylog messages
 
 ``HMDC_periodic_job_is_idle.py`` is run periodically for every job
 currently executing. It calculates idletime by determing whether the
-currently executing job is idle, and, if it is, incrementing the job's
+currently executing job is idle, and, if so, incrementing the job's
 idletime found in ``$TEMP/.idletime``. ``$TEMP`` references the job's
 execute directory under ``/tmp/condor/execute``.
 
 If ``$TEMP/.idletime`` does not exist, ``HMDC_periodic_job_is_idle.py`` will
-write this error to syslog, but then create ``$TEMP/.idletime`` with a
+write this error to syslog and create ``$TEMP/.idletime`` with a
 value of 0. ``$TEMP/.idletime`` does not exist when a job begins to
 execute, so this error is expected and can be ignored.
 
@@ -203,3 +203,12 @@ time permits. Most likely, this means that a user has corrupted their
 
 Error sending email notification
 --------------------------------
+::
+  
+  Error sending email notification: {notification}
+
+This error is produced when ``HMDC_periodic_job_is_idle.py`` is unable
+to send an email to the job owner regarding the jobs impending
+pre-emptibility. This is not a serious error, but, should be
+investigated. Operations should manually notify the user of their job's
+impending preemptibility. 
