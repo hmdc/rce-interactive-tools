@@ -33,3 +33,39 @@ Development team.
 
    ``HMDC_job_wrapper.py`` should create a blank ``$TEMP/.idletime`` upon
    job execution such that these errors aren't logged unnecessarily.
+
+Unable to find email in either gecos or mail field
+--------------------------------------------------
+::
+
+  RceSubmit.esarmien.31662.HMDCLog.__rcelog_str__: _get_email(): Unable
+  to find email in either gecos or mail field. Investigate
+
+
+``rce_submit.py`` sets the ``Email`` field of the submitted ClassAd by
+looking for the user's email address first in the ``gecos`` field, then
+in the ``mail`` field. If an email address is found in neither,
+Operations should investigate in order to fix the erroneous LDAP record.
+If the LDAP record is found not to be erroneous, open a ticket with the
+RCE Development Team.
+
+Unable to open job classad or machinead
+---------------------------------------
+
+Encountered exception setting memory limits
+-------------------------------------------
+
+Found job in history, terminated in error
+-----------------------------------------
+
+Xpra took too long to start
+---------------------------
+
+Encountered unknown exception
+-----------------------------
+
+Encountered exception while removing LocalJobDir
+------------------------------------------------
+
+Error sending email notification
+--------------------------------
