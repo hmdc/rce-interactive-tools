@@ -114,6 +114,35 @@ safely ignore this. The following could cause this error:
   one reason or another, this log message will be produced.
 * HTCondor misconfiguration -- unlikely, although possible.
 
+Job took too long to start
+--------------------------
+::
+
+  Oct 21 13:55:35 dev-rce6-1
+  RceSubmit.esarmien.18147.HMDCLog.__rcelog_str__: run_app(): Job 148 took
+  too long to start:
+  Application=shell,Version=2.31.3,RequestMemory=9999,RequestCpu=9999
+
+This is typically not a critical error and can be ignored, unless you
+notice a substantial number of these messages in epylog.
+
+The above job took too long to start because it requested 9999 GiB of
+memory and 9999 CPUs. It is unlikely you'll encounter such an obvious
+reason why a job took too long to start. Most often, jobs take too long
+to start when:
+
+* There are not enough resources to satisfy the job in the cluster, run
+  ``rce-info.sh`` to determine the amount of resources available.
+
+* User entered an extreme resource allocation request
+
+* There are no execute nodes joined to the cluster (use
+  ``condor_status`` to determine whether machines have joined the
+  cluster) or all execute machines have ``START=FALSE``.
+
+* Other problems in HTCondor configuration or execute nodes.
+
+
 Xpra took too long to start
 ---------------------------
 
