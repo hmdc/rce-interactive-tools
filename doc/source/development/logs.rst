@@ -53,8 +53,10 @@ Unable to open job classad or machinead
 ---------------------------------------
 ::
 
-  Unable to open machinead from environment variable _CONDOR_MACHINE_AD
-  Unable to open machinead from environment variable _CONDOR_JOB_AD
+  Unable to open machinead from environment variable _CONDOR_MACHINE_AD:
+  {Exception}
+  Unable to open machinead from environment variable _CONDOR_JOB_AD:
+  {Exception}
 
 ``HMDCWrapper.py`` opens the job classad and machine classads referenced
 by environment variables set by HTCondor ``_CONDOR_MACHINE_AD`` and
@@ -72,11 +74,45 @@ resubmit their jobs.
 If ``/tmp`` is not full, this error indicates a more serious problem.
 Investigate and create a ticket in the RCE Development queue.
 
+.. note::
+
+   See
+   http://research.cs.wisc.edu/htcondor/manual/v8.4/2_5Submitting_Job.html#3382
+   for more information regarding HTCondor set environment variables.
+
 Encountered exception setting memory limits
 -------------------------------------------
+::
+ 
+  Encountered exception setting memory limits: {Exception}
+
+This is a critical error. Before a job executes, ``HMDCWrapper.py`` sets
+the appropriate ulimits on the job according to to the slot's memory and
+cpu allocation. While the job will still succeed in executing, this job
+will not be resource limited via ulimits, just by cgroups. If you discover this
+error, investigate immediately and create a ticket for RCE Development
+with the full output of the log.
+
+.. note::
+
+   We may do away with ulimits in the future and solely rely on cgroups.
+   For now, this is a critical error.
+
 
 Found job in history, terminated in error
 -----------------------------------------
+::
+
+  find_job_and_status(): Found job {JobId} in history. Terminated in error.
+
+This is usually not a critical error. This means that a user submitted a
+job which immediately exited. Unless the user submits a ticket, you can
+safely ignore this. The following could cause this error:
+
+* An inappropriately sized memory or cpu request.
+* Application crashes -- if Matlab, XStata, or R crash upon startup for
+  one reason or another, this log message will be produced.
+* HTCondor misconfiguration -- unlikely, although possible.
 
 Xpra took too long to start
 ---------------------------
