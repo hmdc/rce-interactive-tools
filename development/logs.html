@@ -89,7 +89,19 @@
 <li class="toctree-l1"><a class="reference internal" href="../errors.html">Diagnosing errors and warnings</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../developer_documentation.html">Operations/Development Documentation</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="modules.html">Modules and Classes Reference</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="">Epylog messages</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="">Epylog messages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#idletime">.idletime</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#unable-to-find-email-in-either-gecos-or-mail-field">Unable to find email in either gecos or mail field</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#unable-to-open-job-classad-or-machinead">Unable to open job classad or machinead</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#encountered-exception-setting-memory-limits">Encountered exception setting memory limits</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#found-job-in-history-terminated-in-error">Found job in history, terminated in error</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#job-took-too-long-to-start">Job took too long to start</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#xpra-took-too-long-to-start">Xpra took too long to start</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#encountered-unknown-exception">Encountered unknown exception</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#encountered-exception-while-removing-localjobdir">Encountered exception while removing LocalJobDir</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#error-sending-email-notification">Error sending email notification</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="architecture.html">Architecture</a></li>
 <li class="toctree-l2"><a class="reference internal" href="add_an_app.html">Adding an RCE Powered Application to the menu</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../developer_documentation.html#getting-the-source-code">Getting the source code</a></li>
@@ -147,6 +159,196 @@
             
   <div class="section" id="epylog-messages">
 <h1>Epylog messages<a class="headerlink" href="#epylog-messages" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="idletime">
+<h2>.idletime<a class="headerlink" href="#idletime" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre>Nov 30 11:09:03 exec6-3 HMDC_periodic_job_is_idle.get_current_idle_time:
+Job 33727.0: Unable to read .idletime file: [Errno 2] No such file or
+directory: &#39;/tmp/condor/execute/dir_85231/.idletime&#39;
+
+Nov 30 11:09:03 exec6-3 HMDC_periodic_job_is_idle.get_last_check_time:
+Job 33727.0: Failure reading last_check_time from#012.idletime file,
+exception: [Errno 2] No such file or directory:
+&#39;/tmp/condor/execute/dir_85231/.idletime&#39;
+</pre></div>
+</div>
+<p><code class="docutils literal"><span class="pre">HMDC_periodic_job_is_idle.py</span></code> is run periodically for every job
+currently executing. It calculates idletime by determing whether the
+currently executing job is idle, and, if so, incrementing the job&#8217;s
+idletime found in <code class="docutils literal"><span class="pre">$TEMP/.idletime</span></code>. <code class="docutils literal"><span class="pre">$TEMP</span></code> references the job&#8217;s
+execute directory under <code class="docutils literal"><span class="pre">/tmp/condor/execute</span></code>.</p>
+<p>If <code class="docutils literal"><span class="pre">$TEMP/.idletime</span></code> does not exist, <code class="docutils literal"><span class="pre">HMDC_periodic_job_is_idle.py</span></code> will
+write this error to syslog and create <code class="docutils literal"><span class="pre">$TEMP/.idletime</span></code> with a
+value of 0. <code class="docutils literal"><span class="pre">$TEMP/.idletime</span></code> does not exist when a job begins to
+execute, so this error is expected and can be ignored.</p>
+<p>However, if the logged exception is something other than <code class="docutils literal"><span class="pre">No</span> <span class="pre">such</span> <span class="pre">file</span>
+<span class="pre">or</span> <span class="pre">directory</span></code>, Operations should create a new ticket for the RCE
+Development team.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><code class="docutils literal"><span class="pre">HMDC_job_wrapper.py</span></code> should create a blank <code class="docutils literal"><span class="pre">$TEMP/.idletime</span></code> upon
+job execution such that these errors aren&#8217;t logged unnecessarily.</p>
+</div>
+</div>
+<div class="section" id="unable-to-find-email-in-either-gecos-or-mail-field">
+<h2>Unable to find email in either gecos or mail field<a class="headerlink" href="#unable-to-find-email-in-either-gecos-or-mail-field" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre>RceSubmit.esarmien.31662.HMDCLog.__rcelog_str__: _get_email(): Unable
+to find email in either gecos or mail field. Investigate
+</pre></div>
+</div>
+<p><code class="docutils literal"><span class="pre">rce_submit.py</span></code> sets the <code class="docutils literal"><span class="pre">Email</span></code> field of the submitted ClassAd by
+looking for the user&#8217;s email address first in the <code class="docutils literal"><span class="pre">gecos</span></code> field, then
+in the <code class="docutils literal"><span class="pre">mail</span></code> field. If an email address is found in neither,
+Operations should investigate in order to fix the erroneous LDAP record.
+If the LDAP record is found not to be erroneous, open a ticket with the
+RCE Development Team.</p>
+</div>
+<div class="section" id="unable-to-open-job-classad-or-machinead">
+<h2>Unable to open job classad or machinead<a class="headerlink" href="#unable-to-open-job-classad-or-machinead" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre>Unable to open machinead from environment variable _CONDOR_MACHINE_AD:
+{Exception}
+Unable to open machinead from environment variable _CONDOR_JOB_AD:
+{Exception}
+</pre></div>
+</div>
+<p><code class="docutils literal"><span class="pre">HMDCWrapper.py</span></code> opens the job classad and machine classads referenced
+by environment variables set by HTCondor <code class="docutils literal"><span class="pre">_CONDOR_MACHINE_AD</span></code> and
+<code class="docutils literal"><span class="pre">_CONDOR_JOB_AD</span></code>. When a job executes, HTCondor writes the machinead
+and the job classad to the job&#8217;s execute directory in <code class="docutils literal"><span class="pre">/tmp/condor/execute</span></code> as
+<code class="docutils literal"><span class="pre">.machine.ad</span></code> and <code class="docutils literal"><span class="pre">.job.ad</span></code> respectively.</p>
+<p>This is a critical error and you should never see this. If this error
+does occur, it could mean that free space on <code class="docutils literal"><span class="pre">/tmp</span></code>, the parent
+directory of all HTCondor execute directories, is exhausted and HTCondor
+is unable to write these files. If you discover that <code class="docutils literal"><span class="pre">/tmp</span></code> is indeed
+full, clear out the problematic files and ask the impacted users to
+resubmit their jobs.</p>
+<p>If <code class="docutils literal"><span class="pre">/tmp</span></code> is not full, this error indicates a more serious problem.
+Investigate and create a ticket in the RCE Development queue.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">See
+<a class="reference external" href="http://research.cs.wisc.edu/htcondor/manual/v8.4/2_5Submitting_Job.html#3382">http://research.cs.wisc.edu/htcondor/manual/v8.4/2_5Submitting_Job.html#3382</a>
+for more information regarding HTCondor set environment variables.</p>
+</div>
+</div>
+<div class="section" id="encountered-exception-setting-memory-limits">
+<h2>Encountered exception setting memory limits<a class="headerlink" href="#encountered-exception-setting-memory-limits" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre>Encountered exception setting memory limits: {Exception}
+</pre></div>
+</div>
+<p>This is a critical error. Before a job executes, <code class="docutils literal"><span class="pre">HMDCWrapper.py</span></code> sets
+the appropriate ulimits on the job according to to the slot&#8217;s memory and
+cpu allocation. While the job will still succeed in executing, this job
+will not be resource limited via ulimits, just by cgroups. If you discover this
+error, investigate immediately and create a ticket for RCE Development
+with the full output of the log.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">We may do away with ulimits in the future and solely rely on cgroups.
+For now, this is a critical error.</p>
+</div>
+</div>
+<div class="section" id="found-job-in-history-terminated-in-error">
+<h2>Found job in history, terminated in error<a class="headerlink" href="#found-job-in-history-terminated-in-error" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre>find_job_and_status(): Found job {JobId} in history. Terminated in error.
+</pre></div>
+</div>
+<p>This is usually not a critical error. This means that a user submitted a
+job which immediately exited. Unless the user submits a ticket, you can
+safely ignore this. The following could cause this error:</p>
+<ul class="simple">
+<li>An inappropriately sized memory or cpu request.</li>
+<li>Application crashes &#8211; if Matlab, XStata, or R crash upon startup for
+one reason or another, this log message will be produced.</li>
+<li>HTCondor misconfiguration &#8211; unlikely, although possible.</li>
+</ul>
+</div>
+<div class="section" id="job-took-too-long-to-start">
+<h2>Job took too long to start<a class="headerlink" href="#job-took-too-long-to-start" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre>Oct 21 13:55:35 dev-rce6-1
+RceSubmit.esarmien.18147.HMDCLog.__rcelog_str__: run_app(): Job 148 took
+too long to start:
+Application=shell,Version=2.31.3,RequestMemory=9999,RequestCpu=9999
+</pre></div>
+</div>
+<p>This is typically not a critical error and can be ignored, unless you
+notice a substantial number of these messages in epylog.</p>
+<p>The above job took too long to start because it requested 9999 GiB of
+memory and 9999 CPUs. It is unlikely you&#8217;ll encounter such an obvious
+reason why a job took too long to start. Most often, jobs take too long
+to start when:</p>
+<ul class="simple">
+<li>There are not enough resources to satisfy the job in the cluster, run
+<code class="docutils literal"><span class="pre">rce-info.sh</span></code> to determine the amount of resources available.</li>
+<li>User entered an extreme resource allocation request</li>
+<li>There are no execute nodes joined to the cluster (use
+<code class="docutils literal"><span class="pre">condor_status</span></code> to determine whether machines have joined the
+cluster) or all execute machines have <code class="docutils literal"><span class="pre">START=FALSE</span></code>.</li>
+<li>Other problems in HTCondor configuration or execute nodes.</li>
+</ul>
+</div>
+<div class="section" id="xpra-took-too-long-to-start">
+<h2>Xpra took too long to start<a class="headerlink" href="#xpra-took-too-long-to-start" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre>run_app(): Job {jobid}, xpra took too long to start. Printing classad.
+</pre></div>
+</div>
+<p>This is a critical error. When <code class="docutils literal"><span class="pre">rce_submit.py</span></code> submits a job, it polls
+the xpra server running in the job slot on the remote execute machine to
+determine whether it has started up. Upon startup, <code class="docutils literal"><span class="pre">rce_submit.py</span></code>
+launches an xpra client to connect to the launched xpra server.</p>
+<p>If xpra took too long to start, this could mean that:</p>
+<ul class="simple">
+<li>The xpra log located in
+<code class="docutils literal"><span class="pre">$HOME/.HMDC/interactive/{application}-{version}_{jobid}_{date}/out.txt</span></code>
+does not contain a string like <code class="docutils literal"><span class="pre">Using</span> <span class="pre">display</span> <span class="pre">number</span> <span class="pre">provided</span> <span class="pre">by</span>
+<span class="pre">xpra_Xdummy:</span> <span class="pre">:3</span></code>. This is the string that rce_submit.py polls for to
+determine when Xpra has launched. This string could change in newer
+versions of Xpra, but, it is unlikely, and checking this is part of
+the RCE Cluster Tools development process.</li>
+<li>There is an XPRA error in
+<code class="docutils literal"><span class="pre">$HOME/.HMDC/interactive/{application}-{version}_{jobid}_{date}/err.txt</span></code>.
+Note that XPRA writes all output to stderr, so you will need to sift
+through the log and determine which errors are pertinent.</li>
+<li>There was an X server error. Check the appropriate <code class="docutils literal"><span class="pre">$HOME/.xpra/Xorg.:{display}.log</span></code></li>
+</ul>
+<p>While investigating, please also create a ticket for the RCE Development
+team.</p>
+</div>
+<div class="section" id="encountered-unknown-exception">
+<h2>Encountered unknown exception<a class="headerlink" href="#encountered-unknown-exception" title="Permalink to this headline">¶</a></h2>
+<p>All exceptions should be caught. If you see this, attempt to
+investigate, but also open a ticket for the RCE Development team.</p>
+</div>
+<div class="section" id="encountered-exception-while-removing-localjobdir">
+<h2>Encountered exception while removing LocalJobDir<a class="headerlink" href="#encountered-exception-while-removing-localjobdir" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre>Encountered exception while removing LocalJobDir: {dir}
+</pre></div>
+</div>
+<p>All jobs submitted using <code class="docutils literal"><span class="pre">rce_submit.py</span></code> have an extra ClassAd element
+<code class="docutils literal"><span class="pre">LocalJobDir</span></code>, which typically resolves to
+<code class="docutils literal"><span class="pre">$HOME/.HMDC/interactive/{application}-{version}_{jobid}_{date}/</span></code>.
+Stdout, stderr, and xpra logs are written here. When a job exits
+successfully, this directory is removed. If this directory is unable to
+be removed successfully, the preceeding log message will be produced.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Run <code class="docutils literal"><span class="pre">condor_q</span> <span class="pre">-autoformat</span> <span class="pre">LocalJobDir</span> <span class="pre">-constraint</span> <span class="pre">'HMDCUseXpra</span> <span class="pre">=?=</span>
+<span class="pre">True'</span></code> for an example</p>
+</div>
+<p>While this is not a critical error, it should be investigated as soon as
+time permits. Most likely, this means that a user has corrupted their
+<code class="docutils literal"><span class="pre">.HMDC</span></code> file permissions in their home directory.</p>
+</div>
+<div class="section" id="error-sending-email-notification">
+<h2>Error sending email notification<a class="headerlink" href="#error-sending-email-notification" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre>Error sending email notification: {notification}
+</pre></div>
+</div>
+<p>This error is produced when <code class="docutils literal"><span class="pre">HMDC_periodic_job_is_idle.py</span></code> is unable
+to send an email to the job owner regarding the jobs impending
+pre-emptibility. This is not a serious error, but, should be
+investigated. Operations should manually notify the user of their job&#8217;s
+impending preemptibility.</p>
+</div>
 </div>
 
 
