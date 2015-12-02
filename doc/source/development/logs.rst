@@ -176,9 +176,30 @@ team.
 
 Encountered unknown exception
 -----------------------------
+All exceptions should be caught. If you see this, attempt to
+investigate, but also open a ticket for the RCE Development team.
 
 Encountered exception while removing LocalJobDir
 ------------------------------------------------
+::
+
+  Encountered exception while removing LocalJobDir: {dir}
+
+All jobs submitted using ``rce_submit.py`` have an extra ClassAd element
+``LocalJobDir``, which typically resolves to
+``$HOME/.HMDC/interactive/{application}-{version}_{jobid}_{date}/``.
+Stdout, stderr, and xpra logs are written here. When a job exits
+successfully, this directory is removed. If this directory is unable to
+be removed successfully, the preceeding log message will be produced.
+
+.. note::
+
+  Run ``condor_q -autoformat LocalJobDir -constraint 'HMDCUseXpra =?=
+  True'`` for an example
+
+While this is not a critical error, it should be investigated as soon as
+time permits. Most likely, this means that a user has corrupted their
+``.HMDC`` file permissions in their home directory.
 
 Error sending email notification
 --------------------------------
