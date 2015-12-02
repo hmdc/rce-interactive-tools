@@ -17,7 +17,7 @@ Epylog messages
 ``HMDC_periodic_job_is_idle.py`` is run periodically for every job
 currently executing. It calculates idletime by determing whether the
 currently executing job is idle, and, if it is, incrementing the job's
-idletime found in ``$TEMP/.idletime.`` ``$TEMP`` references the job's
+idletime found in ``$TEMP/.idletime``. ``$TEMP`` references the job's
 execute directory under ``/tmp/condor/execute``.
 
 If ``$TEMP/.idletime`` does not exist, ``HMDC_periodic_job_is_idle.py`` will
@@ -29,7 +29,7 @@ However, if the logged exception is something other than ``No such file
 or directory``, Operations should create a new ticket for the RCE
 Development team.
 
-.. note:
+.. note::
 
    ``HMDC_job_wrapper.py`` should create a blank ``$TEMP/.idletime`` upon
    job execution such that these errors aren't logged unnecessarily.
