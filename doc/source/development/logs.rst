@@ -145,6 +145,34 @@ to start when:
 
 Xpra took too long to start
 ---------------------------
+::
+
+  run_app(): Job {jobid}, xpra took too long to start. Printing classad.
+
+This is a critical error. When ``rce_submit.py`` submits a job, it polls
+the xpra server running in the job slot on the remote execute machine to
+determine whether it has started up. Upon startup, ``rce_submit.py``
+launches an xpra client to connect to the launched xpra server.
+
+If xpra took too long to start, this could mean that:
+
+* The xpra log located in
+  ``$HOME/.HMDC/interactive/{application}-{version}_{jobid}_{date}/out.txt``
+  does not contain a string like ``Using display number provided by
+  xpra_Xdummy: :3``. This is the string that rce_submit.py polls for to
+  determine when Xpra has launched. This string could change in newer
+  versions of Xpra, but, it is unlikely, and checking this is part of
+  the RCE Cluster Tools development process.
+
+* There is an XPRA error in
+  ``$HOME/.HMDC/interactive/{application}-{version}_{jobid}_{date}/err.txt``. 
+  Note that XPRA writes all output to stderr, so you will need to sift
+  through the log and determine which errors are pertinent.
+
+* There was an X server error. Check the appropriate ``$HOME/.xpra/Xorg.:{display}.log``
+
+While investigating, please also create a ticket for the RCE Development
+team.
 
 Encountered unknown exception
 -----------------------------
