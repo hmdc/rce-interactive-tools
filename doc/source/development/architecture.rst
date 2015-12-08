@@ -151,7 +151,8 @@ Most of the work is performed by HTCondor startd or execute nodes.
     STARTER_JOB_HOOK_KEYWORD = HMDC
 
 * ``HMDC_interactive_prepare_job`` performs the following tasks:
-  ** Creates a job directory under ``$HOME/.HMDC/jobs/interactive``,
+
+* Creates a job directory under ``$HOME/.HMDC/jobs/interactive``,
   specified by the classad element ``LocalJobDir`` to
   house stdout, stderr, and console output from job. When the XPRA
   server is started, XPRA server output is written to this directory.
@@ -159,9 +160,9 @@ Most of the work is performed by HTCondor startd or execute nodes.
 * After ``HMDC_interactive_prepare_job`` successfully completes,
   ``HMDC_job_wrapper.py`` executes the command specified in the job
   classad by:
-  ** Setting ulimits on the executing job based on the slot's memory and
+* Setting ulimits on the executing job based on the slot's memory and
   cpu allocation.
-  ** Executing an Xpra server which runs the command specified in the
+* Executing an Xpra server which runs the command specified in the
   job classad.
 
 ClassAd Elements
