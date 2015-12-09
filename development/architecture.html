@@ -90,7 +90,16 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../developer_documentation.html">Operations/Development Documentation</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="modules.html">Modules and Classes Reference</a></li>
 <li class="toctree-l2"><a class="reference internal" href="logs.html">Epylog messages</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="">Architecture</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="">Architecture</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#basic-overview">Basic overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#server-side-operations">Server-side operations</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#starting-a-job">Starting a job</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#counting-idle-time">Counting idle time</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#classad-elements">ClassAd Elements</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="add_an_app.html">Adding an RCE Powered Application to the menu</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../developer_documentation.html#getting-the-source-code">Getting the source code</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../developer_documentation.html#upgrading-application-to-latest-master">Upgrading application to latest master</a></li>
@@ -147,6 +156,318 @@
             
   <div class="section" id="architecture">
 <h1>Architecture<a class="headerlink" href="#architecture" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="basic-overview">
+<h2>Basic overview<a class="headerlink" href="#basic-overview" title="Permalink to this headline">¶</a></h2>
+<p>Submitting an interactive job to the RCE by issuing the following
+command:</p>
+<div class="highlight-python"><div class="highlight"><pre>rce_submit.py -r -a shell
+</pre></div>
+</div>
+<p>performs the following tasks:</p>
+<ul class="simple">
+<li>Creates a classad for the job and submits this classad to the central
+manager. A truncated version of a such a generated classad is
+reproduced below.</li>
+</ul>
+<div class="highlight-python"><div class="highlight"><pre>HMDCUseXpra = true
+Email = &quot;evansarm@gmail.com&quot;
+AccountingGroup = &quot;group_interactive.esarmien&quot;
+User = &quot;esarmien@hmdc.harvard.edu&quot;
+OnExitHold = false
+MyType = &quot;Job&quot;
+PeriodicHold = false
+PeriodicRemove = false
+Err =
+strcat(&quot;/nfs/home/E/esarmien/.HMDC/jobs/interactive&quot;,&quot;/&quot;,&quot;shell_2.31.3&quot;,&quot;_&quot;,ClusterId,&quot;_&quot;,&quot;201510271445984022&quot;,&quot;/err.txt&quot;)
+ProcId = 0
+HMDCApplicationName = &quot;shell&quot;
+AcctGroupUser = &quot;esarmien&quot;
+JobUniverse = 5
+In = &quot;/dev/null&quot;
+HMDCApplicationVersion = &quot;2.31.3&quot;
+Requirements = true &amp;&amp; TARGET.OPSYS == &quot;LINUX&quot; &amp;&amp; TARGET.ARCH ==
+&quot;X86_64&quot; &amp;&amp; TARGET.FileSystemDomain == MY.FileSystemDomain &amp;&amp;
+TARGET.Disk &gt;= RequestDisk &amp;&amp; TARGET.Memory &gt;= RequestMemory
+LocalJobDir =
+strcat(&quot;/nfs/home/E/esarmien/.HMDC/jobs/interactive&quot;,&quot;/&quot;,&quot;shell_2.31.3&quot;,&quot;_&quot;,ClusterId,&quot;_&quot;,&quot;201510271445984022&quot;)
+PublicClaimId = &quot;&lt;10.0.0.34:9619&gt;#1442840844#313#...&quot;
+WhenToTransferOutput = &quot;ON_EXIT&quot;
+Environment = &quot;_=&#39;/usr/bin/rce_submit.py&#39;
+XAUTHORITY=&#39;/nfs/home/E/esarmien/.Xauthority&#39;
+MY_INTERACTIVE_JOB_DIR=&#39;/nfs/home/E/esarmien/.HMDC/jobs/interactive&#39;
+LOCATE_PATH=&#39;:/nfs/tools/lib/locate/locate.db::/nfs/tools/lib/locate/locate.db::/nfs/tools/lib/locate/locate.db&#39;
+KDE_IS_PRELINKED=&#39;1&#39;
+HMDC_PROD_KEYS_PATH=&#39;/nfs/home/E/esarmien/.hmdc_prod_keys&#39;
+rvm_version=&#39;1.26.11 (latest)&#39; NX_ROOT=&#39;/nfs/home/E/esarmien/.nx&#39;
+COLORTERM=&#39;gnome-terminal&#39; LINES=&#39;43&#39;
+rvm_path=&#39;/nfs/home/E/esarmien/.rvm&#39; LESSOPEN=&#39;||/usr/bin/lesspipe.sh
+%s&#39; RUBY_VERSION=&#39;ruby-2.2.1&#39;
+_CONDOR_ENTITLEMENTS=&#39;\&quot;admin,mail_manager_root,hmdcOpsview,rt,cvs,jabber,desktopadmin,jenkins,login_manager_rce,bomgar\&quot;&#39;
+LOGNAME=&#39;esarmien&#39; USER=&#39;esarmien&#39; HOME=&#39;/nfs/home/E/esarmien&#39;
+PATH=&#39;/opt/bin:/usr/local/bin:/opt/bin:/usr/local/bin:/nfs/home/E/esarmien/.rvm/gems/ruby-2.2.1/bin:/nfs/home/E/esarmien/.rvm/gems/ruby-2.2.1@global/bin:/nfs/home/E/esarmien/.rvm/rubies/ruby-2.2.1/bin:/opt/bin:/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/bin:/usr/bin:/usr/X11R6/bin:/usr/local/HMDC/sbin:/usr/local/HMDC/bin:/nfs/home/E/esarmien/bin:/nfs/home/E/esarmien/.rvm/bin:/nfs/home/E/esarmien/.rvm/bin:/nfs/home/E/esarmien/.rvm/bin:/nfs/home/E/esarmien/bin:/usr/local/HMDC/sbin:/usr/local/HMDC/bin:/nfs/home/E/esarmien/bin:/usr/local/HMDC/sbin:/usr/local/HMDC/bin:/nfs/home/E/esarmien/bin:/nfs/home/E/esarmien/.rvm/bin:/nfs/home/E/esarmien/.rvm/bin:/nfs/home/E/esarmien/.rvm/bin&#39;
+MFINPUTS=&#39;:/usr/share/texlive/texmf-dist/fonts/source/public/mathabx::/usr/share/texlive/texmf-dist/fonts/source/public/mathabx::/usr/share/texlive/texmf-dist/fonts/source/public/mathabx:&#39;
+HMDC_DEV_KEYS_PATH=&#39;/nfs/home/E/esarmien/.hmdc_dev_keys&#39;
+_CONDOR_EMAIL=&#39;\&quot;esarmien@g.harvard.edu\&quot;&#39;
+LD_LIBRARY_PATH=&#39;/opt/lib64:/opt/lib:/nfs/home/E/esarmien/lib&#39;
+SSH_AGENT_PID=&#39;17080&#39; LANG=&#39;en_US.UTF-8&#39; TERM=&#39;xterm&#39; SHELL=&#39;/bin/bash&#39;
+CVS_RSH=&#39;ssh&#39;
+XDG_SESSION_COOKIE=&#39;eb5986295c70101fb32f63f90000001a-1445872821.791472-194473865&#39;
+SESSION_MANAGER=&#39;local/unix:@/tmp/.ICE-unix/17079,unix/unix:/tmp/.ICE-unix/17079&#39;
+SHLVL=&#39;2&#39; _system_arch=&#39;x86_64&#39; NXDIR=&#39;/usr/NX&#39; G_BROKEN_FILENAMES=&#39;1&#39;
+NX_CLIENT=&#39;/usr/NX/bin/nxclient&#39; HISTSIZE=&#39;1000&#39; WINDOWID=&#39;41943043&#39;
+ORBIT_SOCKETDIR=&#39;/scratch/orbit-esarmien&#39; XMODIFIERS=&#39;@im=none&#39;
+IMSETTINGS_INTEGRATE_DESKTOP=&#39;yes&#39; GIO_LAUNCHED_DESKTOP_FILE_PID=&#39;3453&#39;
+NX_SYSTEM=&#39;/usr/NX&#39;
+MY_BATCH_JOB_DIR=&#39;/nfs/home/E/esarmien/.HMDC/jobs/batch&#39;
+GEM_PATH=&#39;/nfs/home/E/esarmien/.rvm/gems/ruby-2.2.1:/nfs/home/E/esarmien/.rvm/gems/ruby-2.2.1@global&#39;
+rvm_bin_path=&#39;/nfs/home/E/esarmien/.rvm/bin&#39; USERNAME=&#39;esarmien&#39;
+IMSETTINGS_MODULE=&#39;none&#39; GTK_IM_MODULE=&#39;gtk-im-context-simple&#39;
+GIO_LAUNCHED_DESKTOP_FILE=&#39;/usr/share/applications/gnome-terminal.desktop&#39;
+_system_version=&#39;6&#39; rvm_prefix=&#39;/nfs/home/E/esarmien&#39;
+HMDC_ADMIN_PATH=&#39;/nfs/home/E/esarmien/git/hmdc-admin&#39; NX_TEMP=&#39;/tmp&#39;
+T1FONTS=&#39;:/usr/share/texlive/texmf-dist/fonts/type1/public/mathabx-type1::/usr/share/texlive/texmf-dist/fonts/type1/public/mathabx-type1::/usr/share/texlive/texmf-dist/fonts/type1/public/mathabx-type1:&#39;
+SSH_AUTH_SOCK=&#39;/scratch/keyring-11bgaB/socket.ssh&#39;
+IRBRC=&#39;/nfs/home/E/esarmien/.rvm/rubies/ruby-2.2.1/.irbrc&#39;
+_system_type=&#39;Linux&#39;
+MY_RUBY_HOME=&#39;/nfs/home/E/esarmien/.rvm/rubies/ruby-2.2.1&#39;
+ACRO_ENABLE_FONT_CONFIG=&#39;1&#39; COLUMNS=&#39;166&#39; SPSSTMPDIR=&#39;/scratch&#39;
+_system_name=&#39;CentOS&#39; NX_SESSION_ID=&#39;2FB0CB7AC10E341D8605AEC17D60E014&#39;
+TMPDIR=&#39;/scratch&#39;
+TEXINPUTS=&#39;:/usr/local/share/texlive/texmf:/usr/share/texlive/texmf-dist:/usr/share/texmf:/usr/local/share/texmf/hmdc/misc:/usr/share/texlive/texmf-dist/tex/latex/powerdot:/usr/local/share/texmf/hmdc/imsart:/usr/share/texlive/texmf-dist/tex/generic/mathabx::/usr/local/share/texlive/texmf:/usr/share/texlive/texmf-dist:/usr/share/texmf:/usr/local/share/texmf/hmdc/misc:/usr/share/texlive/texmf-dist/tex/latex/powerdot:/usr/local/share/texmf/hmdc/imsart:/usr/share/texlive/texmf-dist/tex/generic/mathabx::/usr/local/share/texlive/texmf:/usr/share/texlive/texmf-dist:/usr/share/texmf:/usr/local/share/texmf/hmdc/misc:/usr/share/texlive/texmf-dist/tex/latex/powerdot:/usr/local/share/texmf/hmdc/imsart:/usr/share/texlive/texmf-dist/tex/generic/mathabx::/usr/share/texmf/tex/latex/ppower4:/usr/lib/R/share/texmf:/usr/share/latex2html/texinputs::/usr/share/texmf/tex/latex/ppower4:/usr/lib/R/share/texmf:/usr/share/latex2html/texinputs::/usr/share/texmf/tex/latex/ppower4:/usr/lib/R/share/texmf:/usr/share/latex2html/texinputs:&#39;
+CVSEDITOR=&#39;vi&#39; KDEDIRS=&#39;/usr&#39; JAVA_HOME=&#39;/usr/lib/jvm/java-1.8.0/jre&#39;
+DISPLAY=&#39;:1004.0&#39; NX_CUPS_BIN=&#39;/usr/bin&#39;
+BIBINPUTS=&#39;.:/nfs/home/E/esarmien/gkbibtex:.:/nfs/home/E/esarmien/gkbibtex:.:/nfs/home/E/esarmien/gkbibtex::&#39;
+OLDPWD=&#39;/nfs/home/E/esarmien/projects/rce-interactive-tools&#39;
+HOSTNAME=&#39;dev-rce6-2.hmdc.harvard.edu&#39;
+BSTINPUTS=&#39;.:/nfs/home/E/esarmien/gkbibtex:.:/nfs/home/E/esarmien/gkbibtex:.:/nfs/home/E/esarmien/gkbibtex::&#39;
+TEXMFLOCAL=&#39;:/usr/share/texlive/texmf:/usr/share/texlive/texmf-dist:/usr/share/texmf:/usr/local/share/texmf::/usr/share/texlive/texmf:/usr/share/texlive/texmf-dist:/usr/share/texmf:/usr/local/share/texmf::/usr/share/texlive/texmf:/usr/share/texlive/texmf-dist:/usr/share/texmf:/usr/local/share/texmf:&#39;
+HISTCONTROL=&#39;ignoredups&#39; PWD=&#39;/nfs/home/E/esarmien&#39; QT_IM_MODULE=&#39;xim&#39;
+GTK_RC_FILES=&#39;/etc/gtk/gtkrc:/nfs/home/E/esarmien/.gtkrc-1.2-gnome2&#39;
+MAIL=&#39;/var/spool/mail/esarmien&#39;
+LS_COLORS=&#39;rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=01;05;37;41:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arj=01;31:*.taz=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.dz=01;31:*.gz=01;31:*.lz=01;31:*.xz=01;31:*.bz2=01;31:*.tbz=01;31:*.tbz2=01;31:*.bz=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.rar=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.axv=01;35:*.anx=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=01;36:*.au=01;36:*.flac=01;36:*.mid=01;36:*.midi=01;36:*.mka=01;36:*.mp3=01;36:*.mpc=01;36:*.ogg=01;36:*.ra=01;36:*.wav=01;36:*.axa=01;36:*.oga=01;36:*.spx=01;36:*.xspf=01;36:&#39;
+GEM_HOME=&#39;/nfs/home/E/esarmien/.rvm/gems/ruby-2.2.1&#39;
+TFMFONTS=&#39;:/usr/share/texlive/texmf-dist/fonts/tfm/public/mathabx::/usr/share/texlive/texmf-dist/fonts/tfm/public/mathabx::/usr/share/texlive/texmf-dist/fonts/tfm/public/mathabx:&#39;&quot;
+TargetType = &quot;Machine&quot;
+LeaveJobInQueue = false
+JobNotification = 1
+Owner = &quot;esarmien&quot;
+CondorPlatform = &quot;$CondorPlatform: x86_64_RedHat6 $&quot;
+JobLeaseDuration = 1200
+RecentBlockWriteKbytes = 0
+TransferIn = false
+ExitStatus = 0
+RootDir = &quot;/&quot;
+NumJobMatches = 1
+JobCurrentStartDate = 1445969625
+HMDCInteractive = true
+Args = false
+CondorVersion = &quot;$CondorVersion: 8.2.9 Aug 13 2015 BuildID: 335839 $&quot;
+Out =
+strcat(&quot;/nfs/home/E/esarmien/.HMDC/jobs/interactive&quot;,&quot;/&quot;,&quot;shell_2.31.3&quot;,&quot;_&quot;,ClusterId,&quot;_&quot;,&quot;201510271445984022&quot;,&quot;/out.txt&quot;)
+ShouldTransferFiles = &quot;NO&quot;
+FileSystemDomain = &quot;hmdc.harvard.edu&quot;
+JobPrio = 0
+NumCkpts = 0
+DebugPrepareJobHook = true
+BufferBlockSize = 32768
+ImageSize = 325000
+StatsLifetimeStarter = 3286729
+Cmd = &quot;/usr/bin/gnome-terminal&quot;
+Iwd = &quot;/nfs/home/E/esarmien&quot;
+AcctGroup = &quot;group_interactive&quot;
+Entitlements = &quot;admin mail_manager_root hmdcOpsview rt cvs jabber
+desktopadmin jenkins login_manager_rce bomgar&quot;
+</pre></div>
+</div>
+<ul class="simple">
+<li>Some of these classad elements are added by rce_submit.py and have
+effects on job scheduling.</li>
+<li>Upon submission, rce_submit.py polls the central manager, every five
+seconds, to check whether the job has started yet, polling for a
+maximum of 90 seconds. The <code class="docutils literal"><span class="pre">POLL_TIMEOUT</span></code> is set in
+<code class="docutils literal"><span class="pre">hmdccondor/HMDCCondor.py</span></code>.</li>
+<li>When the poller finds that the submitted classad has a <code class="docutils literal"><span class="pre">JobStatus</span>
+<span class="pre">==</span> <span class="pre">2</span></code>, <code class="docutils literal"><span class="pre">rce_submit.py</span></code> launches Xpra to connect to the running
+job&#8217;s xpra server.</li>
+</ul>
+</div>
+<div class="section" id="server-side-operations">
+<h2>Server-side operations<a class="headerlink" href="#server-side-operations" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="starting-a-job">
+<h3>Starting a job<a class="headerlink" href="#starting-a-job" title="Permalink to this headline">¶</a></h3>
+<p>Most of the work is performed by HTCondor startd or execute nodes.</p>
+<ul>
+<li><p class="first">When a job submitted using rce_submit.py starts running, the execute
+node runs <code class="docutils literal"><span class="pre">HMDC_interactive_prepare_job</span></code>, as configured in
+<code class="docutils literal"><span class="pre">hmdc-admin/templates/etc-condor-config.d/compute.config.erb</span></code>:</p>
+<div class="highlight-python"><div class="highlight"><pre>HMDC_HOOK_UPDATE_JOB_INFO = $(PIP_BINDIR)/HMDC_periodic_job_is_idle.py
+HMDC_HOOK_PREPARE_JOB = $(PIP_BINDIR)/HMDC_interactive_prepare_job.py
+HMDC_HOOK_JOB_EXIT = $(PIP_BINDIR)/HMDC_clean_up.py
+STARTER_JOB_HOOK_KEYWORD = HMDC
+</pre></div>
+</div>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">HMDC_interactive_prepare_job</span></code> performs the following tasks:</p>
+<ul class="simple">
+<li>Creates a job directory under <code class="docutils literal"><span class="pre">$HOME/.HMDC/jobs/interactive</span></code>,
+specified by the classad element <code class="docutils literal"><span class="pre">LocalJobDir</span></code> to
+house stdout, stderr, and console output from job. When the Xpra
+server is started, Xpra server output is written to this directory.</li>
+</ul>
+</li>
+<li><p class="first">After <code class="docutils literal"><span class="pre">HMDC_interactive_prepare_job</span></code> successfully completes,
+<code class="docutils literal"><span class="pre">HMDC_job_wrapper.py</span></code> executes the command specified in the job
+classad by:</p>
+<ul class="simple">
+<li>Setting ulimits on the executing job based on the slot&#8217;s memory and
+cpu allocation.</li>
+<li>Executing an Xpra server which runs the command specified in the
+job classad.</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="counting-idle-time">
+<h3>Counting idle time<a class="headerlink" href="#counting-idle-time" title="Permalink to this headline">¶</a></h3>
+<ul>
+<li><p class="first"><code class="docutils literal"><span class="pre">HMDC_periodic_job_is_idle.py</span></code> is run periodically for each job
+running on an execute node, as configured in
+<code class="docutils literal"><span class="pre">hmdc-admin/templates/etc-condor-config.d/compute.config.erb</span></code>.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">HMDC_periodic_job_is_idle.py</span></code> performs the following functions:</p>
+<ul class="simple">
+<li>Opens <code class="docutils literal"><span class="pre">$TEMP/.idletime</span></code> and reads the integer representing the
+total time a job was idle. Here, <code class="docutils literal"><span class="pre">$TEMP</span></code> is the job&#8217;s execute
+directory under <code class="docutils literal"><span class="pre">/tmp/condor/execute</span></code></li>
+<li>If the job is currently idle, <code class="docutils literal"><span class="pre">HMDC_periodic_job_is_idle.py</span></code>
+subtracts the mtime of <code class="docutils literal"><span class="pre">$TEMP/.idletime</span></code> from the current time and
+adds this value to the idle time value stored in
+<code class="docutils literal"><span class="pre">$TEMP/.idletime</span></code>.</li>
+<li>If the job is currently active, <code class="docutils literal"><span class="pre">HMDC_periodic_job_is_idle.py</span></code>
+writes 0 to <code class="docutils literal"><span class="pre">$TEMP/.idletime</span></code></li>
+<li>If the job is currently idle and idle for two or more days,
+<code class="docutils literal"><span class="pre">HMDC_periodic_job_is_idle.py</span></code> sends a notification to the job
+owner of the job&#8217;s impeding preemptibility.</li>
+</ul>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">HMDC_periodic_job_is_idle.py</span></code> calculates idletime for a job, but, a
+different script actually propagates this value to the HTCondor
+collector.</p>
+</li>
+<li><p class="first">Every five minutes, cron runs
+<code class="docutils literal"><span class="pre">/usr/bin/HMDC_startd_cron_idle_generator.py</span></code></p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">/usr/bin/HMDC_startd_cron_idle_generator.py</span></code> performs the following
+tasks:</p>
+<ul>
+<li><p class="first">For every running job, opens and reads the value in
+<code class="docutils literal"><span class="pre">$TMP/.idletime</span></code></p>
+</li>
+<li><p class="first">If idletime is greater than zero, generates a string composed of all
+Job IDs and idle times and writes this as a script to
+<code class="docutils literal"><span class="pre">/usr/bin/HMDC_startd_cron_idle.sh</span></code>, for example:</p>
+<div class="highlight-python"><div class="highlight"><pre>[root@dev-cod6-1 bin]# /usr/bin/HMDC_startd_cron_idle.sh
+HMDCIdleJobs = &quot;110.0,3702664 113.0,3637730 114.0,0 187.0,105483
+192.0,105480 198.0,105484&quot;
+</pre></div>
+</div>
+</li>
+</ul>
+</li>
+<li><p class="first">Every ten seconds, HTCondor executes
+<code class="docutils literal"><span class="pre">/usr/bin/HMDC_startd_cron_idle.sh</span></code>, which publishes the
+<code class="docutils literal"><span class="pre">HMDCIdleJobs</span></code> machine classad to the collector, as configured in:</p>
+<div class="highlight-python"><div class="highlight"><pre>STARTD_CRON_IDLEJOBS_AUTOPUBLISH = If_Changed
+STARTD_CRON_IDLEJOBS_EXECUTABLE = /usr/bin/HMDC_startd_cron_idle.sh
+STARTD_CRON_IDLEJOBS_MODE = Periodic
+STARTD_CRON_IDLEJOBS_PERIOD = 10s
+STARTD_CRON_JOBLIST =  idlejobs
+</pre></div>
+</div>
+</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Unfortunately, a system cron job and an HTCondor cron job are
+required, but, not desired. The <code class="docutils literal"><span class="pre">.idletime</span></code> file created by
+<code class="docutils literal"><span class="pre">HMDC_periodic_job_is_idle.py</span></code> is owned by the executing user,
+whereas scripts executed by <code class="docutils literal"><span class="pre">STARTD_CRON</span></code> run as user <code class="docutils literal"><span class="pre">daemon</span></code> and
+are unable to read <code class="docutils literal"><span class="pre">.idletime</span></code> files. Therefore, a root system
+cronjob reads these files such that the <cite>STARTD_CRON`</cite> job can access
+them.</p>
+</div>
+</div>
+</div>
+<div class="section" id="classad-elements">
+<h2>ClassAd Elements<a class="headerlink" href="#classad-elements" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="docutils">
+<colgroup>
+<col width="5%" />
+<col width="14%" />
+<col width="16%" />
+<col width="65%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">ClassAd Element</th>
+<th class="head">Accepted values</th>
+<th class="head">Description</th>
+<th class="head">Effect</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>HMDCUseXpra</td>
+<td>True, False</td>
+<td>Determines whether a job should use XPRA</td>
+<td>If True, execute node treats this job as an XPRA-enabled interactive job, launching an XPRA server to execute the job&#8217;s command.</td>
+</tr>
+<tr class="row-odd"><td>AccountingGroup</td>
+<td>group_interactive.$(Owner) or group_batch.$(Owner)</td>
+<td>Places a job into an accounting group</td>
+<td>If set to group_interactive.$(Owner), user&#8217;s job is limited by group_interactive&#8217;s quota. If set to group_batch.$(Owner), user&#8217;s job is l imited by group_batch&#8217;s quota. In January 2016, quotas will be disabled in favor of multi-slot pre-emption and this ClassAd element will become deprecated.</td>
+</tr>
+<tr class="row-even"><td>Err</td>
+<td>Fully qualified path to stderr output</td>
+<td>Location of stderr output file.</td>
+<td>The running job&#8217;s stderr output will be redirected to this file.</td>
+</tr>
+<tr class="row-odd"><td>HMDCApplicationName</td>
+<td>A human readable string denoting the running job&#8217;s application</td>
+<td>A human readable string denoting the running job&#8217;s application</td>
+<td>No effect, useful for statistics</td>
+</tr>
+<tr class="row-even"><td>HMDCApplicationVersion</td>
+<td>A string denoting the running job&#8217;s version</td>
+<td>A string denoting the running job&#8217;s version</td>
+<td>No effect, useful for statistics</td>
+</tr>
+<tr class="row-odd"><td>LocalJobDir</td>
+<td>Fully qualified path of a directory</td>
+<td>This directory will store stdout and stderr output from the running job.</td>
+<td>LocalJobDir will be created by the HTCondor execute node and stderr and stdout output friom the job will be stored in this directory.</td>
+</tr>
+<tr class="row-even"><td>Environment</td>
+<td>A string of x=y pairs separated by spaces the job&#8217;s environment</td>
+<td>The job&#8217;s environment</td>
+<td>This is a standard HTCondor ClassAd element populated by rce_submit.py with the user&#8217;s shell environment, subtracting GNOME and DBUS environment variables.</td>
+</tr>
+<tr class="row-odd"><td>HMDCInteractive</td>
+<td>True, False</td>
+<td>Determines whether a job should be treated as an interactive job</td>
+<td>HMDCInteractive, when set to True, influences a number of HTCondor policy decisions regarding preemption.</td>
+</tr>
+<tr class="row-even"><td>Entitlements</td>
+<td>A string of entitlements separated by spaces</td>
+<td>The user&#8217;s eduPersonEntitlements</td>
+<td>Entitlements is populated by rce_submit.py by querying LDAP, or, when using condor_submit, through the environment varaible <code class="docutils literal"><span class="pre">$_CONDOR_ENTITLEMENTS</span> <span class="pre">``created</span> <span class="pre">by</span> <span class="pre">``/etc/profile.d/Condor_group.sh</span></code> or <code class="docutils literal"><span class="pre">/etc/profile.d/Condor_group.csh</span></code></td>
+</tr>
+<tr class="row-odd"><td>Out</td>
+<td>Fully qualified path to stdout output</td>
+<td>Location of stdout output file</td>
+<td>The running job&#8217;s stdout output will be redirected to this file.</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 
 
