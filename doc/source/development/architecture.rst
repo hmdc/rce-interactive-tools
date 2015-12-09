@@ -1,7 +1,7 @@
 Architecture
 ============
 
-Basic Overview
+Basic overview
 ---------------
 Submitting an interactive job to the RCE by issuing the following
 command::
@@ -10,8 +10,8 @@ command::
 
 performs the following tasks:
 
-* Creates a ClassAd for the job and submits this classad to the central
-  manager. A truncated version of a such a generated ClassAd is
+* Creates a classad for the job and submits this classad to the central
+  manager. A truncated version of a such a generated classad is
   reproduced below.
 
 ::
@@ -125,19 +125,19 @@ performs the following tasks:
   Entitlements = "admin mail_manager_root hmdcOpsview rt cvs jabber
   desktopadmin jenkins login_manager_rce bomgar"
 
-* A number of these ClassAd elements are added by rce_submit.py and are
-  have effects on job routing.
+* Some of these classad elements are added by rce_submit.py and have
+  effects on job scheduling.
 
 * Upon submission, rce_submit.py polls the central manager, every five
   seconds, to check whether the job has started yet, polling for a
   maximum of 90 seconds. The ``POLL_TIMEOUT`` is set in
   ``hmdccondor/HMDCCondor.py``.
 
-* When the poller finds that the submitted ClassAd now has a ``JobStatus
+* When the poller finds that the submitted classad has a ``JobStatus
   == 2``, ``rce_submit.py`` launches Xpra to connect to the running
   job's xpra server.
 
-Server-side Operations
+Server-side operations
 ----------------------
 
 Starting a job
@@ -158,8 +158,8 @@ Most of the work is performed by HTCondor startd or execute nodes.
 
   * Creates a job directory under ``$HOME/.HMDC/jobs/interactive``,
     specified by the classad element ``LocalJobDir`` to
-    house stdout, stderr, and console output from job. When the XPRA
-    server is started, XPRA server output is written to this directory.
+    house stdout, stderr, and console output from job. When the Xpra
+    server is started, Xpra server output is written to this directory.
 
 * After ``HMDC_interactive_prepare_job`` successfully completes,
   ``HMDC_job_wrapper.py`` executes the command specified in the job
@@ -252,7 +252,7 @@ ClassAd Elements
 +------------------------+-----------------------------------------------------------------+--------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | Environment            | A string of x=y pairs separated by spaces the job's environment | The job's environment                                                    | This is a standard HTCondor ClassAd element populated by rce_submit.py with the user's shell environment, subtracting GNOME and DBUS environment variables.                                                                                                                                                  |
 +------------------------+-----------------------------------------------------------------+--------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| HMDCInteractive        | True, False                                                     | Determines whether a job should be treated as an interactive job         | HMDCInteractive, when set to True, influences a number of HTCondor policy decisions:                                                                                                                                                                                                                         |
+| HMDCInteractive        | True, False                                                     | Determines whether a job should be treated as an interactive job         | HMDCInteractive, when set to True, influences a number of HTCondor policy decisions regarding preemption.                                                                                                                                                                                                                        |
 +------------------------+-----------------------------------------------------------------+--------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | Entitlements           | A string of entitlements separated by spaces                    | The user's eduPersonEntitlements                                         | Entitlements is populated by rce_submit.py by querying LDAP, or, when using condor_submit, through the environment varaible ``$_CONDOR_ENTITLEMENTS ``created by ``/etc/profile.d/Condor_group.sh`` or ``/etc/profile.d/Condor_group.csh``                                                                   |
 +------------------------+-----------------------------------------------------------------+--------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
