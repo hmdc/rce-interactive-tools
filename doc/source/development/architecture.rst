@@ -139,6 +139,10 @@ performs the following tasks:
 
 Server-side Operations
 ----------------------
+
+Starting a job
+^^^^^^^^^^^^^^
+
 Most of the work is performed by HTCondor startd or execute nodes.
 
 * When a job submitted using rce_submit.py starts running, the execute
@@ -152,18 +156,81 @@ Most of the work is performed by HTCondor startd or execute nodes.
 
 * ``HMDC_interactive_prepare_job`` performs the following tasks:
 
-* Creates a job directory under ``$HOME/.HMDC/jobs/interactive``,
-  specified by the classad element ``LocalJobDir`` to
-  house stdout, stderr, and console output from job. When the XPRA
-  server is started, XPRA server output is written to this directory.
+  * Creates a job directory under ``$HOME/.HMDC/jobs/interactive``,
+    specified by the classad element ``LocalJobDir`` to
+    house stdout, stderr, and console output from job. When the XPRA
+    server is started, XPRA server output is written to this directory.
 
 * After ``HMDC_interactive_prepare_job`` successfully completes,
   ``HMDC_job_wrapper.py`` executes the command specified in the job
   classad by:
-* Setting ulimits on the executing job based on the slot's memory and
-  cpu allocation.
-* Executing an Xpra server which runs the command specified in the
-  job classad.
+
+  * Setting ulimits on the executing job based on the slot's memory and
+    cpu allocation.
+  * Executing an Xpra server which runs the command specified in the
+    job classad.
+
+Counting idle time
+^^^^^^^^^^^^^^^^^^
+* ``HMDC_periodic_job_is_idle.py`` is run periodically for each job
+  running on an execute node, as configured in
+  ``hmdc-admin/templates/etc-condor-config.d/compute.config.erb``.
+
+* ``HMDC_periodic_job_is_idle.py`` performs the following functions:
+  
+  * Opens ``$TEMP/.idletime`` and reads the integer representing the
+    total time a job was idle. Here, ``$TEMP`` is the job's execute
+    directory under ``/tmp/condor/execute``
+  * If the job is currently idle, ``HMDC_periodic_job_is_idle.py``
+    subtracts the mtime of ``$TEMP/.idletime`` from the current time and
+    adds this value to the idle time value stored in
+    ``$TEMP/.idletime``.
+  * If the job is currently active, ``HMDC_periodic_job_is_idle.py``
+    writes 0 to ``$TEMP/.idletime``
+  * If the job is currently idle and idle for two or more days,
+    ``HMDC_periodic_job_is_idle.py`` sends a notification to the job
+    owner of the job's impeding preemptibility.
+
+* ``HMDC_periodic_job_is_idle.py`` calculates idletime for a job, but, a
+  different script actually propagates this value to the HTCondor
+  collector.
+
+* Every five minutes, cron runs
+  ``/usr/bin/HMDC_startd_cron_idle_generator.py``
+
+* ``/usr/bin/HMDC_startd_cron_idle_generator.py`` performs the following
+  tasks:
+
+  * For every running job, opens and reads the value in
+    ``$TMP/.idletime``
+  * If idletime is greater than zero, generates a string composed of all
+    Job IDs and idle times and writes this as a script to
+    ``/usr/bin/HMDC_startd_cron_idle.sh``, for example::
+
+      [root@dev-cod6-1 bin]# /usr/bin/HMDC_startd_cron_idle.sh 
+      HMDCIdleJobs = "110.0,3702664 113.0,3637730 114.0,0 187.0,105483
+      192.0,105480 198.0,105484"
+
+* Every ten seconds, HTCondor executes
+  ``/usr/bin/HMDC_startd_cron_idle.sh``, which publishes the
+  ``HMDCIdleJobs`` machine classad to the collector, as configured in::
+
+    STARTD_CRON_IDLEJOBS_AUTOPUBLISH = If_Changed
+    STARTD_CRON_IDLEJOBS_EXECUTABLE = /usr/bin/HMDC_startd_cron_idle.sh
+    STARTD_CRON_IDLEJOBS_MODE = Periodic
+    STARTD_CRON_IDLEJOBS_PERIOD = 10s
+    STARTD_CRON_JOBLIST =  idlejobs
+
+.. note::
+
+  Unfortunately, a system cron job and an HTCondor cron job are
+  required, but, not desired. The ``.idletime`` file created by
+  ``HMDC_periodic_job_is_idle.py`` is owned by the executing user,
+  whereas scripts executed by ``STARTD_CRON`` run as user ``daemon`` and
+  are unable to read ``.idletime`` files. Therefore, a root system
+  cronjob reads these files such that the `STARTD_CRON`` job can access
+  them.
+
 
 ClassAd Elements
 ----------------
