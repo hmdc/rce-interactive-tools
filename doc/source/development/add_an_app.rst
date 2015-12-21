@@ -39,7 +39,7 @@ stanza::
 	    memory: 2048
 	    cpu: 1
 	    icon: /usr/share/icons/hicolor/48x48/apps/firefox.png
-      install_icon: false
+      install_icon: false      
 	    supports_memory_adjustable: true
 	    supports_cpu_adjustable: true
 	    supports_cli_mode: false
