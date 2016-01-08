@@ -183,7 +183,7 @@ def update_job(jobid, is_job_idle, q_classad):
       return 0
 
   def get_current_time():
-    return int(q_classad['CurrentTime'].eval())
+    return int(q_classad['ServerTime'].eval())
 
   def get_current_idle_time():
     try:
