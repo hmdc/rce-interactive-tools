@@ -7,6 +7,7 @@ import logging.handlers
 import os
 import smtplib
 import re
+import time
 from email.mime.text import MIMEText
 from email.MIMEMultipart import MIMEMultipart
 from hmdccondor import HMDCCondor
@@ -183,7 +184,7 @@ def update_job(jobid, is_job_idle, q_classad):
       return 0
 
   def get_current_time():
-    return int(q_classad['ServerTime'].eval())
+    return int(time.time())
 
   def get_current_idle_time():
     try:
