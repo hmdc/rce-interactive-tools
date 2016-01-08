@@ -32,7 +32,7 @@ def remove_dir(dir, id):
 def main():
 
   try:
-    ad = is_xpra_job(classad.parseOld(sys.stdin))
+    ad = is_xpra_job(classad.parseOne(sys.stdin))
   except:
     return 0
 

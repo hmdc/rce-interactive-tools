@@ -100,7 +100,7 @@ class RCELaunchLaunchWindowFrame(wx.Frame):
       return run_next_task()
 
     def run_next_task():
-      parsed_ad = classad.parseOld(ad)
+      parsed_ad = classad.parseOne(ad)
       self.progress_bar_window.start_task("Attaching to job {0}".format(parsed_ad['HMDCApplicationName']))
       self.dispatcher = RCEGraphicalTaskDispatcher('attach_app', self.rceapps, self.jobid, ad)
       self.dispatcher.start() 

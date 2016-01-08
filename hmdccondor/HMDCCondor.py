@@ -321,13 +321,13 @@ class HMDCCondor:
     if ad is None:
       status, _classad = self.poll(jobid, want_results= [None, CONSTANTS.JOB_STATUS_RUNNING] )
     else:
-      status, _classad = classad.parseOld(ad)['JobStatus'], ad
+      status, _classad = classad.parseOne(ad)['JobStatus'], ad
 
     if status is None or _classad is None:
       raise RCEJobNotFoundError(jobid)
 
     return (lambda ad: self.attach_xpra(ad, rceapps,
-      self.poll_xpra(ad)))(classad.parseOld(_classad))
+      self.poll_xpra(ad)))(classad.parseOne(_classad))
 
   def attach_xpra(self, _classad, rceapps, display):
     """

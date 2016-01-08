@@ -18,7 +18,7 @@ def generate_string(dir):
     except:
       return 0
 
-  return get_jobid_idle_string(classad.parseOld(open("{0}/.job.ad".format(dir))))
+  return get_jobid_idle_string(classad.parseOne(open("{0}/.job.ad".format(dir))))
 
 if not "STARTD" in htcondor.param.get("DAEMON_LIST"):
   sys.exit(0)
