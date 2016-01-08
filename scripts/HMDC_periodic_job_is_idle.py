@@ -226,7 +226,7 @@ def update_job(jobid, is_job_idle, q_classad):
   return set_idle_time(*evaluate_new_idle_time())
 
 
-def main(job_classad = classad.parseOne(sys.stdin)):
+def main(job_classad = classad.parseOne(sys.stdin.read())):
 
   jobid = lambda ad: "{0}.{1}".format(
       str(ad['ClusterId']),
