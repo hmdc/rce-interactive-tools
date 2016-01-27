@@ -31,6 +31,8 @@ class RCELaunchLaunchWindowFrame(wx.Frame):
     self.cpu = kwds['cpu']
     self.memory = kwds['memory']
 
+    self.panel = wx.Panel(self)
+
     self._version = self.version if self.version else \
                self.rceapps.get_default_version(self.application)
 
@@ -44,27 +46,28 @@ class RCELaunchLaunchWindowFrame(wx.Frame):
 
     self.__app_name__ = _app_name
 
-    self.RCEApplicationIcon = wx.StaticBitmap(self, wx.ID_ANY, wx.Bitmap(self.rceapps.icon(self.application), wx.BITMAP_TYPE_ANY))
-    self.HMDCApplicationNameVersion = wx.StaticText(self, wx.ID_ANY, _(_app_name))
-    self.JobMemorySizeLabel = wx.StaticText(self, wx.ID_ANY, _("Memory (GB)"))
+    self.RCEApplicationIcon = wx.StaticBitmap(self.panel, wx.ID_ANY, wx.Bitmap(self.rceapps.icon(self.application), wx.BITMAP_TYPE_ANY))
+    self.HMDCApplicationNameVersion = wx.StaticText(self.panel, wx.ID_ANY, _(_app_name))
+    self.JobMemorySizeLabel = wx.StaticText(self.panel, wx.ID_ANY, _("Memory (GB)"))
     self.JobMemorySizeTooltip = "Amount of memory to reserve for your job"
-    self.JobMemoryTextCtrl = wx.TextCtrl(self, wx.ID_ANY, str(self._memory), style = self.__adjustable_resource_field__('memory', self.application))
+    self.JobMemoryTextCtrl = wx.TextCtrl(self.panel, wx.ID_ANY, str(self._memory), style = self.__adjustable_resource_field__('memory', self.application))
     # No node in the cluster currently has > 999GiB memory to reserve
     self.JobMemoryTextCtrl.SetMaxLength(3)
     # Make sure that only integers can be typed into this field
     self.JobMemoryTextCtrl.Bind(wx.EVT_CHAR, self.__validate_mem_cpu_entry)
-    self.JobCpuRequestLabel = wx.StaticText(self, wx.ID_ANY, _("CPU (cores)"))
+    self.JobMemoryTextCtrl.SetFocus()
+    self.JobCpuRequestLabel = wx.StaticText(self.panel, wx.ID_ANY, _("CPU (cores)"))
     self.JobCpuRequestTooltip = "Number of CPU cores to reserve for your job"
-    self.JobCpuTextCtrl = wx.TextCtrl(self, wx.ID_ANY, str(self._cpu), style = self.__adjustable_resource_field__('cpu', self.application))
+    self.JobCpuTextCtrl = wx.TextCtrl(self.panel, wx.ID_ANY, str(self._cpu), style = self.__adjustable_resource_field__('cpu', self.application))
     # Make sure that only integers can be teyped into this field
     self.JobCpuTextCtrl.Bind(wx.EVT_CHAR, self.__validate_mem_cpu_entry)
     # No one should try to acquire interactive job slots > 999 CPU(s)
     self.JobCpuTextCtrl.SetMaxLength(3)
-    self.HelpBtn = wx.Button(self, wx.ID_ANY, _("Help"))
+    self.HelpBtn = wx.Button(self.panel, wx.ID_ANY, _("Help"))
     self.HelpBtn.Bind(wx.EVT_BUTTON, self.OnHelp)
-    self.AvailableResourcesBtn = wx.Button(self, wx.ID_ANY, _("Show Available Resources"))
+    self.AvailableResourcesBtn = wx.Button(self.panel, wx.ID_ANY, _("Show Available Resources"))
     self.AvailableResourcesBtn.Bind(wx.EVT_BUTTON, self.OnAvailableResources)
-    self.RunJobBtn = wx.Button(self, wx.ID_ANY, _("Run"))
+    self.RunJobBtn = wx.Button(self.panel, wx.ID_ANY, _("Run"))
     self.RunJobBtn.Bind(wx.EVT_BUTTON, self.OnRunJobBtn)
     pub.subscribe(self.OnSubmitEvent, 'rce_submit.job_submitted')
     pub.subscribe(self.OnPollEvent, 'rce_submit.job_started')
@@ -204,17 +207,19 @@ class RCELaunchLaunchWindowFrame(wx.Frame):
     LaunchWindowSizer.Add(self.HelpBtn, 0, wx.EXPAND, 0)
     LaunchWindowSizer.Add(self.AvailableResourcesBtn, 0, wx.EXPAND, 0)
     LaunchWindowSizer.Add(self.RunJobBtn, 0, wx.EXPAND, 0)
-    self.SetSizer(LaunchWindowSizer)
+    self.panel.SetSizer(LaunchWindowSizer)
+    # Fit inner Panel, then outer Frame
+    LaunchWindowSizer.Fit(self.panel)
     LaunchWindowSizer.Fit(self)
     LaunchWindowSizer.AddGrowableCol(2)
     LaunchWindowSizer.AddGrowableCol(3)
-    self.Layout()
+    self.panel.Layout()
     # end wxGlade
 
   def __validate_mem_cpu_entry(self, event):
     keycode = event.GetKeyCode()
     
-    if chr(keycode) in "1234567890" or keycode in [13, 314, 316, 8, 127]:
+    if chr(keycode) in "1234567890" or keycode in [9, 13, 314, 316, 8, 127]:
       event.Skip()
       return
     else:
