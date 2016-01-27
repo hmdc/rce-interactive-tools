@@ -31,8 +31,7 @@ class TestHmdcCondorClass:
     "HOME='/home/app' PYTHONPATH='/home/app/.local'"
 
   def test_create_classad_returns_classad(self, monkeypatch, condor):
-    # HMDCCondor()._create_classad('shell', '2.1.32',
-    #  '/usr/bin/gnome-terminal', [], 1, 2048)
+    """_create_classad() should return a classad"""
     import classad
     monkeypatch.setattr('pwd.getpwuid', lambda uid: ['app'])
     assert isinstance( condor._create_classad('shell', '2.1.32',
@@ -40,6 +39,7 @@ class TestHmdcCondorClass:
 
   def test_create_classad_creates_correct_output_dir_entries(self,
     monkeypatch, condor):
+    """determines whether _create_classad() creates a proper classad"""
     import classad
     import pwd
     import datetime
