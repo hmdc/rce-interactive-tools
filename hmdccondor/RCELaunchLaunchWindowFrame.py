@@ -9,6 +9,7 @@ from wx.lib.pubsub import pub
 import classad
 import htcondor
 import webbrowser
+import os
 # begin wxGlade: dependencies
 # end wxGlade
 
@@ -46,12 +47,14 @@ class RCELaunchLaunchWindowFrame(wx.Frame):
     self.RCEApplicationIcon = wx.StaticBitmap(self, wx.ID_ANY, wx.Bitmap(self.rceapps.icon(self.application), wx.BITMAP_TYPE_ANY))
     self.HMDCApplicationNameVersion = wx.StaticText(self, wx.ID_ANY, _(_app_name))
     self.JobMemorySizeLabel = wx.StaticText(self, wx.ID_ANY, _("Memory (GB)"))
+    self.JobMemorySizeTooltip = "Amount of memory to reserve for your job"
     self.JobMemoryTextCtrl = wx.TextCtrl(self, wx.ID_ANY, str(self._memory), style = self.__adjustable_resource_field__('memory', self.application))
     # No node in the cluster currently has > 999GiB memory to reserve
     self.JobMemoryTextCtrl.SetMaxLength(3)
     # Make sure that only integers can be typed into this field
     self.JobMemoryTextCtrl.Bind(wx.EVT_CHAR, self.__validate_mem_cpu_entry)
-    self.JobCpuRequestLabel = wx.StaticText(self, wx.ID_ANY, _("Cpu"))
+    self.JobCpuRequestLabel = wx.StaticText(self, wx.ID_ANY, _("CPU (cores)"))
+    self.JobCpuRequestTooltip = "Number of CPU cores to reserve for your job"
     self.JobCpuTextCtrl = wx.TextCtrl(self, wx.ID_ANY, str(self._cpu), style = self.__adjustable_resource_field__('cpu', self.application))
     # Make sure that only integers can be teyped into this field
     self.JobCpuTextCtrl.Bind(wx.EVT_CHAR, self.__validate_mem_cpu_entry)
@@ -59,6 +62,8 @@ class RCELaunchLaunchWindowFrame(wx.Frame):
     self.JobCpuTextCtrl.SetMaxLength(3)
     self.HelpBtn = wx.Button(self, wx.ID_ANY, _("Help"))
     self.HelpBtn.Bind(wx.EVT_BUTTON, self.OnHelp)
+    self.AvailableResourcesBtn = wx.Button(self, wx.ID_ANY, _("Show Available Resources"))
+    self.AvailableResourcesBtn.Bind(wx.EVT_BUTTON, self.OnAvailableResources)
     self.RunJobBtn = wx.Button(self, wx.ID_ANY, _("Run"))
     self.RunJobBtn.Bind(wx.EVT_BUTTON, self.OnRunJobBtn)
     pub.subscribe(self.OnSubmitEvent, 'rce_submit.job_submitted')
@@ -75,6 +80,15 @@ class RCELaunchLaunchWindowFrame(wx.Frame):
   def OnHelp(self, event):
     return webbrowser.open(
       'http://hmdc.github.io/rce-interactive-tools')
+
+  def OnAvailableResources(self, event):
+    return os.spawnv(
+      os.P_NOWAIT,
+      '/usr/bin/gnome-terminal',
+      ('gnome-terminal',
+       '-t', 'RCE Cluster Resources Available',
+       '-x', '/usr/bin/watch',
+       '-t', '/usr/bin/rce-info.sh'))
 
   def OnException(self, excpt):
     self.progress_bar_window.complete_task()
@@ -168,20 +182,27 @@ class RCELaunchLaunchWindowFrame(wx.Frame):
     self.SetTitle(_("Run RCE Powered {0}".format(self.__app_name__)))
     self.HMDCApplicationNameVersion.SetFont(wx.Font(16, wx.DEFAULT, wx.NORMAL, wx.BOLD, 0, ""))
     self.JobMemorySizeLabel.SetFont(wx.Font(10, wx.DEFAULT, wx.NORMAL, wx.BOLD, 0, ""))
-    self.JobMemorySizeLabel.SetToolTipString(_("Enter the desired memory"))
+    self.JobMemorySizeLabel.SetToolTipString(self.JobMemorySizeTooltip)
+    self.JobMemoryTextCtrl.SetToolTipString(self.JobMemorySizeTooltip)
     self.JobCpuRequestLabel.SetFont(wx.Font(10, wx.DEFAULT, wx.NORMAL, wx.BOLD, 0, ""))
+    self.JobCpuRequestLabel.SetToolTipString(self.JobCpuRequestTooltip)
+    self.JobCpuTextCtrl.SetToolTipString(self.JobCpuRequestTooltip)
     # end wxGlade
 
   def __do_layout(self):
     # begin wxGlade: RCELaunchLaunchWindowFrame.__do_layout
-    LaunchWindowSizer = wx.FlexGridSizer(3, 2, 2, 6)
+    LaunchWindowSizer = wx.FlexGridSizer(3, 3, 2, 6)
     LaunchWindowSizer.Add(self.RCEApplicationIcon, 0, 0, 0)
     LaunchWindowSizer.Add(self.HMDCApplicationNameVersion, 0, wx.ALIGN_CENTER_VERTICAL, 0)
+    LaunchWindowSizer.Add(wx.StaticText(self, -1, ''), 0, wx.EXPAND, 0)
     LaunchWindowSizer.Add(self.JobMemorySizeLabel, 0, wx.ALIGN_CENTER_VERTICAL, 0)
     LaunchWindowSizer.Add(self.JobMemoryTextCtrl, 0, wx.EXPAND, 10)
+    LaunchWindowSizer.Add(wx.StaticText(self, -1, ''), 0, wx.EXPAND, 0)
     LaunchWindowSizer.Add(self.JobCpuRequestLabel, 0, wx.ALIGN_CENTER_VERTICAL, 0)
     LaunchWindowSizer.Add(self.JobCpuTextCtrl, 0, wx.EXPAND, 10)
+    LaunchWindowSizer.Add(wx.StaticText(self, -1, ''), 0, wx.EXPAND, 0)
     LaunchWindowSizer.Add(self.HelpBtn, 0, wx.EXPAND, 0)
+    LaunchWindowSizer.Add(self.AvailableResourcesBtn, 0, wx.EXPAND, 0)
     LaunchWindowSizer.Add(self.RunJobBtn, 0, wx.EXPAND, 0)
     self.SetSizer(LaunchWindowSizer)
     LaunchWindowSizer.Fit(self)
