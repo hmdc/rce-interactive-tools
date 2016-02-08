@@ -1,4 +1,5 @@
 import pytest
+import os
 
 class TestHmdcCondorClass:
 
@@ -61,3 +62,8 @@ class TestHmdcCondorClass:
     assert '/home/app' in ad['Out'].eval()
     assert '/home/app' in ad['Err'].eval()
     assert '/home/app' in ad['LocalJobDir'].eval()
+ 
+  def test_poll_xpra_thread(self, monkeypatch, poll_xpra_thread_function):
+    display_id = poll_xpra_thread_function("{0}/fixtures/shell_2.31.3_129_201601271453946250/out.txt".format(os.path.dirname(os.path.realpath(__file__))))
+    assert int(display_id) >= 0
+
