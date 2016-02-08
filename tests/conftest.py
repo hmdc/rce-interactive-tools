@@ -9,4 +9,9 @@ def condor():
 def poll_xpra_thread_function():
   from hmdccondor.HMDCCondor import poll_xpra_thread
   return poll_xpra_thread
+
+@pytest.fixture(scope="module")
+def poll_thread_function():
+  from hmdccondor.HMDCCondor import poll_thread
+  return poll_thread
   

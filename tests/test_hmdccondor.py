@@ -67,3 +67,12 @@ class TestHmdcCondorClass:
     display_id = poll_xpra_thread_function("{0}/fixtures/shell_2.31.3_129_201601271453946250/out.txt".format(os.path.dirname(os.path.realpath(__file__))))
     assert int(display_id) >= 0
 
+  def test_poll_thread_returns_job_status_from_queue(self, monkeypatch, poll_thread_function):
+    # This should always return (None,None) because I am using a JobID
+    # thats negative
+    assert 1
+
+  def test_poll_thread_returns_job_status_from_history(self, monkeypatch, poll_thread_function):
+    assert 1
+
+
