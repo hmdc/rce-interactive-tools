@@ -9,6 +9,7 @@ from wx.lib.pubsub import pub
 import classad
 import htcondor
 import webbrowser
+import os
 # begin wxGlade: dependencies
 # end wxGlade
 
@@ -30,6 +31,8 @@ class RCELaunchLaunchWindowFrame(wx.Frame):
     self.cpu = kwds['cpu']
     self.memory = kwds['memory']
 
+    self.panel = wx.Panel(self)
+
     self._version = self.version if self.version else \
                self.rceapps.get_default_version(self.application)
 
@@ -43,23 +46,28 @@ class RCELaunchLaunchWindowFrame(wx.Frame):
 
     self.__app_name__ = _app_name
 
-    self.RCEApplicationIcon = wx.StaticBitmap(self, wx.ID_ANY, wx.Bitmap(self.rceapps.icon(self.application), wx.BITMAP_TYPE_ANY))
-    self.HMDCApplicationNameVersion = wx.StaticText(self, wx.ID_ANY, _(_app_name))
-    self.JobMemorySizeLabel = wx.StaticText(self, wx.ID_ANY, _("Memory (GB)"))
-    self.JobMemoryTextCtrl = wx.TextCtrl(self, wx.ID_ANY, str(self._memory), style = self.__adjustable_resource_field__('memory', self.application))
+    self.RCEApplicationIcon = wx.StaticBitmap(self.panel, wx.ID_ANY, wx.Bitmap(self.rceapps.icon(self.application), wx.BITMAP_TYPE_ANY))
+    self.HMDCApplicationNameVersion = wx.StaticText(self.panel, wx.ID_ANY, _(_app_name))
+    self.JobMemorySizeLabel = wx.StaticText(self.panel, wx.ID_ANY, _("Memory (GB)"))
+    self.JobMemorySizeTooltip = "Amount of memory to reserve for your job"
+    self.JobMemoryTextCtrl = wx.TextCtrl(self.panel, wx.ID_ANY, str(self._memory), style = self.__adjustable_resource_field__('memory', self.application))
     # No node in the cluster currently has > 999GiB memory to reserve
     self.JobMemoryTextCtrl.SetMaxLength(3)
     # Make sure that only integers can be typed into this field
     self.JobMemoryTextCtrl.Bind(wx.EVT_CHAR, self.__validate_mem_cpu_entry)
-    self.JobCpuRequestLabel = wx.StaticText(self, wx.ID_ANY, _("Cpu"))
-    self.JobCpuTextCtrl = wx.TextCtrl(self, wx.ID_ANY, str(self._cpu), style = self.__adjustable_resource_field__('cpu', self.application))
+    self.JobMemoryTextCtrl.SetFocus()
+    self.JobCpuRequestLabel = wx.StaticText(self.panel, wx.ID_ANY, _("CPU (cores)"))
+    self.JobCpuRequestTooltip = "Number of CPU cores to reserve for your job"
+    self.JobCpuTextCtrl = wx.TextCtrl(self.panel, wx.ID_ANY, str(self._cpu), style = self.__adjustable_resource_field__('cpu', self.application))
     # Make sure that only integers can be teyped into this field
     self.JobCpuTextCtrl.Bind(wx.EVT_CHAR, self.__validate_mem_cpu_entry)
     # No one should try to acquire interactive job slots > 999 CPU(s)
     self.JobCpuTextCtrl.SetMaxLength(3)
-    self.HelpBtn = wx.Button(self, wx.ID_ANY, _("Help"))
+    self.HelpBtn = wx.Button(self.panel, wx.ID_ANY, _("Help"))
     self.HelpBtn.Bind(wx.EVT_BUTTON, self.OnHelp)
-    self.RunJobBtn = wx.Button(self, wx.ID_ANY, _("Run"))
+    self.AvailableResourcesBtn = wx.Button(self.panel, wx.ID_ANY, _("Show Available Resources"))
+    self.AvailableResourcesBtn.Bind(wx.EVT_BUTTON, self.OnAvailableResources)
+    self.RunJobBtn = wx.Button(self.panel, wx.ID_ANY, _("Run"))
     self.RunJobBtn.Bind(wx.EVT_BUTTON, self.OnRunJobBtn)
     pub.subscribe(self.OnSubmitEvent, 'rce_submit.job_submitted')
     pub.subscribe(self.OnPollEvent, 'rce_submit.job_started')
@@ -75,6 +83,15 @@ class RCELaunchLaunchWindowFrame(wx.Frame):
   def OnHelp(self, event):
     return webbrowser.open(
       'http://hmdc.github.io/rce-interactive-tools')
+
+  def OnAvailableResources(self, event):
+    return os.spawnv(
+      os.P_NOWAIT,
+      '/usr/bin/gnome-terminal',
+      ('gnome-terminal',
+       '-t', 'RCE Cluster Resources Available',
+       '-x', '/usr/bin/watch',
+       '-t', '/usr/bin/rce-info.sh'))
 
   def OnException(self, excpt):
     self.progress_bar_window.complete_task()
@@ -168,32 +185,41 @@ class RCELaunchLaunchWindowFrame(wx.Frame):
     self.SetTitle(_("Run RCE Powered {0}".format(self.__app_name__)))
     self.HMDCApplicationNameVersion.SetFont(wx.Font(16, wx.DEFAULT, wx.NORMAL, wx.BOLD, 0, ""))
     self.JobMemorySizeLabel.SetFont(wx.Font(10, wx.DEFAULT, wx.NORMAL, wx.BOLD, 0, ""))
-    self.JobMemorySizeLabel.SetToolTipString(_("Enter the desired memory"))
+    self.JobMemorySizeLabel.SetToolTipString(self.JobMemorySizeTooltip)
+    self.JobMemoryTextCtrl.SetToolTipString(self.JobMemorySizeTooltip)
     self.JobCpuRequestLabel.SetFont(wx.Font(10, wx.DEFAULT, wx.NORMAL, wx.BOLD, 0, ""))
+    self.JobCpuRequestLabel.SetToolTipString(self.JobCpuRequestTooltip)
+    self.JobCpuTextCtrl.SetToolTipString(self.JobCpuRequestTooltip)
     # end wxGlade
 
   def __do_layout(self):
     # begin wxGlade: RCELaunchLaunchWindowFrame.__do_layout
-    LaunchWindowSizer = wx.FlexGridSizer(3, 2, 2, 6)
+    LaunchWindowSizer = wx.FlexGridSizer(3, 3, 2, 6)
     LaunchWindowSizer.Add(self.RCEApplicationIcon, 0, 0, 0)
     LaunchWindowSizer.Add(self.HMDCApplicationNameVersion, 0, wx.ALIGN_CENTER_VERTICAL, 0)
+    LaunchWindowSizer.Add(wx.StaticText(self, -1, ''), 0, wx.EXPAND, 0)
     LaunchWindowSizer.Add(self.JobMemorySizeLabel, 0, wx.ALIGN_CENTER_VERTICAL, 0)
     LaunchWindowSizer.Add(self.JobMemoryTextCtrl, 0, wx.EXPAND, 10)
+    LaunchWindowSizer.Add(wx.StaticText(self, -1, ''), 0, wx.EXPAND, 0)
     LaunchWindowSizer.Add(self.JobCpuRequestLabel, 0, wx.ALIGN_CENTER_VERTICAL, 0)
     LaunchWindowSizer.Add(self.JobCpuTextCtrl, 0, wx.EXPAND, 10)
+    LaunchWindowSizer.Add(wx.StaticText(self, -1, ''), 0, wx.EXPAND, 0)
     LaunchWindowSizer.Add(self.HelpBtn, 0, wx.EXPAND, 0)
+    LaunchWindowSizer.Add(self.AvailableResourcesBtn, 0, wx.EXPAND, 0)
     LaunchWindowSizer.Add(self.RunJobBtn, 0, wx.EXPAND, 0)
-    self.SetSizer(LaunchWindowSizer)
+    self.panel.SetSizer(LaunchWindowSizer)
+    # Fit inner Panel, then outer Frame
+    LaunchWindowSizer.Fit(self.panel)
     LaunchWindowSizer.Fit(self)
     LaunchWindowSizer.AddGrowableCol(2)
     LaunchWindowSizer.AddGrowableCol(3)
-    self.Layout()
+    self.panel.Layout()
     # end wxGlade
 
   def __validate_mem_cpu_entry(self, event):
     keycode = event.GetKeyCode()
     
-    if chr(keycode) in "1234567890" or keycode in [13, 314, 316, 8, 127]:
+    if chr(keycode) in "1234567890" or keycode in [9, 13, 314, 316, 8, 127]:
       event.Skip()
       return
     else:

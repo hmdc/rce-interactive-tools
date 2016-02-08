@@ -60,7 +60,7 @@ class HMDCRceSubmitClient:
 
     parser.add_argument('-cpu', '--cpu',
         type=int,
-        help='Number of CPUs to request for job.',
+        help='Number of CPU cores to request for job.',
         default=None
         )
 
@@ -257,4 +257,7 @@ non-graphical interactive jobs.\
     elif args.attach and isinstance(args.attach, (int, float, str)):
       self.attach_app(self.rceapps, int(args.attach))
     else:
+      print """\
+Insufficient parameters. Try --help or --list.\
+"""
       exit(0)
