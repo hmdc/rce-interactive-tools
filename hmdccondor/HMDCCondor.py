@@ -86,7 +86,7 @@ def poll_xpra_thread(out_txt):
   while 1:
     try:
       with open(out_txt, 'r') as out:
-        return int(map(lambda _line: re.findall('Xdummy: :(\d)$',
+        return int(map(lambda _line: re.findall('Xdummy: :(\d+)$',
           _line),out.readlines())[0][0])
     except:
       time.sleep(5)
