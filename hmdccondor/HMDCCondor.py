@@ -429,6 +429,8 @@ class HMDCCondor:
     out = classad.Function('strcat', job_dir_base, '/', _out, '_', classad.ExprTree('ClusterId'), '_', dt, '/out.txt')
     err = classad.Function('strcat', job_dir_base, '/', _out, '_', classad.ExprTree('ClusterId'), '_', dt, '/err.txt')
 
+    _email = self.get_email_for_classad()
+
     _classad = classad.ClassAd({
       'AcctGroup': 'group_interactive',
       'AcctGroupUser': pwd.getpwuid(os.getuid())[0],
@@ -453,7 +455,8 @@ class HMDCCondor:
       'Entitlements': self._get_entitlements(),
       'Environment': self._get_environment(),
       'JobNotification': 1,
-      'Email': self._get_email_for_classad(),
+      'NotifyUser': _email,
+      'Email': _email,
       'FileSystemDomain': CONSTANTS.FILESYSTEM_DOMAIN
       })
 
