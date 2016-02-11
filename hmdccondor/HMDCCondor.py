@@ -429,7 +429,7 @@ class HMDCCondor:
     out = classad.Function('strcat', job_dir_base, '/', _out, '_', classad.ExprTree('ClusterId'), '_', dt, '/out.txt')
     err = classad.Function('strcat', job_dir_base, '/', _out, '_', classad.ExprTree('ClusterId'), '_', dt, '/err.txt')
 
-    _email = self.get_email_for_classad()
+    _email = self._get_email_for_classad()
 
     _classad = classad.ClassAd({
       'AcctGroup': 'group_interactive',
