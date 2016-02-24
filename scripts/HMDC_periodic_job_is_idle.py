@@ -107,6 +107,9 @@ day, please make sure to save your work or terminate your job if you've
 successfully accomplished your tasks. Otherwise, using {1} within the
 next 24 hours will stave off pre-emptability for another two days.
 
+If you are unable to see your running job in the RCE desktop,
+click the Applications menu and select RCE Utilities -> Attach all jobs.
+
 If you believe you've received this message in error, please e-mail
 rce_services@help.hmdc.harvard.edu.
 
