@@ -485,7 +485,7 @@ class HMDCCondor:
     _my_username = pwd.getpwuid(os.getuid())[0]
 
     try:
-      return ' '.join(
+      return ','.join(
           simpleldap.Connection(self.ldap_server, encryption='ssl')
           .search("uid={0}".format(_my_username),
             attrs = ['eduPersonEntitlement'], 
