@@ -150,7 +150,7 @@ class HMDCCondor:
         'Owner =?= "{0}" && HMDCInteractive =?= True && HMDCUseXpra =?= True && JobStatus =?= 2'.format(my_username)), 
         self._collector.locateAll(htcondor.DaemonTypes.Schedd))))
 
-  def get_sched_ad_for_job(self, jobid):
+  def get_sched_ad_for_job(self, jobid, user=pwd.getpwuid(os.getuid())[0] ):
     """get_sched_ad_for_job() returns the classad for the schedd
     currently running a job with id ``jobid``
 
@@ -169,7 +169,7 @@ class HMDCCondor:
     try:
       return filter(lambda t: len(t) > 0,
           map(lambda ad: ([], ad)[len(htcondor.Schedd(ad).query(
-            "ClusterId =?= {0}".format(jobid))) > 0],
+            "ClusterId =?= {0} && Owner =?= \"{1}\"".format(jobid,user))) > 0],
             self._collector.locateAll(htcondor.DaemonTypes.Schedd)))[0]
     except:
       raise
