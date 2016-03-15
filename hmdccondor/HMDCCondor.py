@@ -152,7 +152,18 @@ class HMDCCondor:
 
   def get_sched_ad_for_job(self, jobid, user=pwd.getpwuid(os.getuid())[0] ):
     """get_sched_ad_for_job() returns the classad for the schedd
-    currently running a job with id ``jobid``
+    currently running a job with id ``jobid``.
+
+    Job ClassAds and Machine ClassAds are distinct from Schedd classad,
+    which is the classad of the running schedd. In order to find the
+    ScheddIpAddr of the job in question, we need to ask HTCondor to
+    provide the ScheddAd associated with the job.
+
+    First, this function acquires ClassAds for all schedds, in our case,
+    rce1-N. Once all Sched ClassAds have been acquired, this queries
+    every single schedd to find out which schedd is running/managing the
+    job represented by ``jobid.``. When successful, it returns the
+    schedd's ClassAd.
 
     :param jobid: job id
     :type jobid: ``int``
@@ -295,6 +306,23 @@ class HMDCCondor:
     """
     attach() executes the xpra client to connect to an xpra server
     running as job ``jobid`` on the htcondor cluster.
+
+    If provided a ClassAd as ``ad``, attach() does not poll all the
+    schedds in the RCE for the job's classad, as it is assumed that this
+    attach() function has been executed by rce_submit.py during the
+    process of starting a job.
+
+    If no ``ad`` is provided, attach() executes the poller thread to
+    poll for the job's run-status, which needs to be 2, ``running``, in
+    order for the job to attach.
+
+    If no such job is found, an exception is raised which produces
+    output in the console or on the GUI.
+
+    Upon verifying that the job is alive, attach() calls attach_xpra()
+    which performs the work of determining whether the XPRA server is,
+    in fact, alive, and then executes the xpra client in order to
+    connect to it.
 
     :param jobid: job id
     :type jobid: ``int``
