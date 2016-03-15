@@ -7,6 +7,7 @@ import logging.handlers
 import os
 import smtplib
 import re
+import time
 from email.mime.text import MIMEText
 from email.MIMEMultipart import MIMEMultipart
 from hmdccondor import HMDCCondor
@@ -106,6 +107,9 @@ day, please make sure to save your work or terminate your job if you've
 successfully accomplished your tasks. Otherwise, using {1} within the
 next 24 hours will stave off pre-emptability for another two days.
 
+If you are unable to see your running job in the RCE desktop,
+click the Applications menu and select RCE Utilities -> Attach all jobs.
+
 If you believe you've received this message in error, please e-mail
 rce_services@help.hmdc.harvard.edu.
 
@@ -183,7 +187,7 @@ def update_job(jobid, is_job_idle, q_classad):
       return 0
 
   def get_current_time():
-    return int(q_classad['CurrentTime'].eval())
+    return int(time.time())
 
   def get_current_idle_time():
     try:
@@ -226,7 +230,7 @@ def update_job(jobid, is_job_idle, q_classad):
   return set_idle_time(*evaluate_new_idle_time())
 
 
-def main(job_classad = classad.parseOld(sys.stdin)):
+def main(job_classad = classad.parseOne(sys.stdin.read())):
 
   jobid = lambda ad: "{0}.{1}".format(
       str(ad['ClusterId']),

@@ -86,7 +86,7 @@ def poll_xpra_thread(out_txt):
   while 1:
     try:
       with open(out_txt, 'r') as out:
-        return int(map(lambda _line: re.findall('Xdummy: :(\d)$',
+        return int(map(lambda _line: re.findall('Xdummy: :(\d+)$',
           _line),out.readlines())[0][0])
     except:
       time.sleep(5)
@@ -150,7 +150,7 @@ class HMDCCondor:
         'Owner =?= "{0}" && HMDCInteractive =?= True && HMDCUseXpra =?= True && JobStatus =?= 2'.format(my_username)), 
         self._collector.locateAll(htcondor.DaemonTypes.Schedd))))
 
-  def get_sched_ad_for_job(self, jobid):
+  def get_sched_ad_for_job(self, jobid, user=pwd.getpwuid(os.getuid())[0] ):
     """get_sched_ad_for_job() returns the classad for the schedd
     currently running a job with id ``jobid``
 
@@ -169,7 +169,7 @@ class HMDCCondor:
     try:
       return filter(lambda t: len(t) > 0,
           map(lambda ad: ([], ad)[len(htcondor.Schedd(ad).query(
-            "ClusterId =?= {0}".format(jobid))) > 0],
+            "ClusterId =?= {0} && Owner =?= \"{1}\"".format(jobid,user))) > 0],
             self._collector.locateAll(htcondor.DaemonTypes.Schedd)))[0]
     except:
       raise
@@ -321,13 +321,13 @@ class HMDCCondor:
     if ad is None:
       status, _classad = self.poll(jobid, want_results= [None, CONSTANTS.JOB_STATUS_RUNNING] )
     else:
-      status, _classad = classad.parseOld(ad)['JobStatus'], ad
+      status, _classad = classad.parseOne(ad)['JobStatus'], ad
 
     if status is None or _classad is None:
       raise RCEJobNotFoundError(jobid)
 
     return (lambda ad: self.attach_xpra(ad, rceapps,
-      self.poll_xpra(ad)))(classad.parseOld(_classad))
+      self.poll_xpra(ad)))(classad.parseOne(_classad))
 
   def attach_xpra(self, _classad, rceapps, display):
     """
@@ -429,6 +429,8 @@ class HMDCCondor:
     out = classad.Function('strcat', job_dir_base, '/', _out, '_', classad.ExprTree('ClusterId'), '_', dt, '/out.txt')
     err = classad.Function('strcat', job_dir_base, '/', _out, '_', classad.ExprTree('ClusterId'), '_', dt, '/err.txt')
 
+    _email = self._get_email_for_classad()
+
     _classad = classad.ClassAd({
       'AcctGroup': 'group_interactive',
       'AcctGroupUser': pwd.getpwuid(os.getuid())[0],
@@ -453,7 +455,8 @@ class HMDCCondor:
       'Entitlements': self._get_entitlements(),
       'Environment': self._get_environment(),
       'JobNotification': 1,
-      'Email': self._get_email_for_classad(),
+      'NotifyUser': _email,
+      'Email': _email,
       'FileSystemDomain': CONSTANTS.FILESYSTEM_DOMAIN
       })
 
@@ -482,7 +485,7 @@ class HMDCCondor:
     _my_username = pwd.getpwuid(os.getuid())[0]
 
     try:
-      return ' '.join(
+      return ','.join(
           simpleldap.Connection(self.ldap_server, encryption='ssl')
           .search("uid={0}".format(_my_username),
             attrs = ['eduPersonEntitlement'], 

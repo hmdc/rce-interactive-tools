@@ -31,7 +31,7 @@ class RCEJobDidNotStart(Exception):
 
   def __init__(self, result):
     self.status = result[0]
-    self.ad = classad.parseOld(result[1])
+    self.ad = classad.parseOne(result[1])
   def __str__(self):
     return repr('Job {0} did not start properly. Return status: {1}'.
       format(int(self.ad['ClusterId']), self.ad['JobStatus']))

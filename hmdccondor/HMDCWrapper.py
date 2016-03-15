@@ -50,14 +50,14 @@ class HMDCWrapper:
   def __init__(self, argv):
 
     try:
-      self.classad = classad.parseOld(
+      self.classad = classad.parseOne(
         open(os.environ['_CONDOR_JOB_AD']))
     except Exception as e:
       log.critical("Unable to open classad from environment variable _CONDOR_JOB_AD: {0}".format(e))
       sys.exit(1)
      
     try: 
-      self.machine_ad = classad.parseOld(
+      self.machine_ad = classad.parseOne(
         open(os.environ['_CONDOR_MACHINE_AD']))
     except Exception as e:
       log.critical("Unable to open machinead from environment variable _CONDOR_MACHINE_AD: {0}".format(e))

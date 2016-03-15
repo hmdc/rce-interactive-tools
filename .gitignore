@@ -1,3 +1,7 @@
+# Emacs temporary files
+\#*\#
+.\#*
+
 # Compiled python modules.
 *.pyc
 

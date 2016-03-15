@@ -18,7 +18,7 @@ def debug(will_debug, _fd, message):
   else:
     return False
 
-job_classad = classad.parseOld(sys.stdin)
+job_classad = classad.parseOne(sys.stdin.read())
 home = pwd.getpwnam(pwd.getpwuid(os.getuid())[0]).pw_dir
 
 # 'HMDCNewSubmit'

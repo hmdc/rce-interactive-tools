@@ -2,7 +2,7 @@ from os import chmod
 from distutils.core import setup
 
 setup(name='rce-interactive-tools',
-      version='1.7.3',
+      version='1.7.8',
       description='HMDC utilities and scripts to submit condor jobs.',
       url='https://github.com/hmdc/rce-interactive-tools',
       author='Evan Sarmiento',
