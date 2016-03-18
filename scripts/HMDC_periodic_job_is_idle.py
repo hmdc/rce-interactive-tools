@@ -96,7 +96,8 @@ def check_if_preempt(ad,
 Dear {0},
 
 Your RCE powered job {1} {2} has been idle for {3} days. If your job
-remains idle for three or more days, your job will become preemptible.
+remains idle for two or more days, your job will become preemptible
+or may be terminated.
 
 Under conditions of RCE cluster saturation, RCE powered jobs, idle for
 three or more days, can be pre-empted in order to satisfy resource
