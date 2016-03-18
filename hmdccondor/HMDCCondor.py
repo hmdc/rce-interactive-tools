@@ -36,7 +36,7 @@ def poll_thread(id,return_status,use_local_schedd):
      is executed in an independent thread.
      ``poll_thread`` creates a new ``HMDCPoller`` which runs until the
      job represented by ``id`` has a ``JobStatus`` equal to any number in
-     the ``return_status`` array.
+     the ``return_status`` array. Look at ``HMDCPoller.py.``
 
      :param id: HTCondor Job Id to poll for
      :type id: ``int``
