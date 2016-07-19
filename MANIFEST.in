@@ -9,6 +9,7 @@ include scripts/HMDC_periodic_job_is_idle.py
 include scripts/pexpect_run.py
 include scripts/HMDC_clean_up.py
 include scripts/HMDC_startd_cron_idle_generator.py
+include scripts/hmdc_xstata_monitor.py
 include share/desktop/rcesubmit-reattach-jobs.desktop
 include rceapp/*
 include hmdccondor/*
