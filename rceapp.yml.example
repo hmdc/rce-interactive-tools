@@ -6,7 +6,7 @@ xstata-mp:
     supports_cpu_adjustable: true
     supports_cli_mode: false
     icon: /usr/share/icons/hicolor/48x48/apps/icon-stata.png
-    wrapper: /usr/bin/hmdc_xstata_monitor
+    wrapper: /usr/bin/hmdc_xstata_monitor.py
   '13.1':
     command: /usr/local/bin/xstata-se-13.1
   '14.0':
@@ -20,7 +20,7 @@ xstata-se:
     supports_cpu_adjustable: false
     supports_cli_mode: false
     icon: /usr/share/icons/hicolor/48x48/apps/icon-stata.png
-    wrapper: /usr/bin/hmdc_xstata_monitor
+    wrapper: /usr/bin/hmdc_xstata_monitor.py
   '13.1':
     command: /usr/local/bin/xstata-se-13.1
   '14.0':
