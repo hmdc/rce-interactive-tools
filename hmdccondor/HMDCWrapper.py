@@ -68,6 +68,7 @@ class HMDCWrapper:
 
     self.app = self.classad['HMDCApplicationName']
     self.use_xpra = self.classad['HMDCUseXpra']
+    self.wrapper = self.classad['HMDCUseWrapper']
     self.localjobdir = self.classad['LocalJobDir'].eval()
     self.app_log = "{0}/{1}.out.txt".format(
         self.localjobdir,
@@ -112,17 +113,17 @@ class HMDCWrapper:
 
   def run_xpra(self):
     xpra = '/usr/bin/xpra'
-    pexpect_run = '/usr/bin/pexpect_run.py'
-    pexpect_cmd = "{0} {1} {2}".format(pexpect_run,
-        self.app_log,
-        self.cmd)
-
+    if self.wrapper:
+      xpra_child_command = "{0} {1}".format(self.wrapper, self.cmd)
+    else:
+      xpra_child_command = self.cmd
+    
     os.execlp(xpra,
         self.__BASENAME__,
         '--no-daemon',
         '--exit-with-children',
         'start',
-        '--start-child={0}'.format(pexpect_cmd),
+        '--start-child={0}'.format(xpra_child_command),
         '--socket-dir={0}'.format(os.environ['TEMP']))
 
     return 0

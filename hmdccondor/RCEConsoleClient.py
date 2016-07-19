@@ -75,6 +75,7 @@ class RCEConsoleClient:
 
         _cpu = self.munge_requested_resources('cpu', _version)
         _memory = self.munge_requested_resources('memory', _version)
+        _wrapper = self.rceapps.wrapper(self.application, _version)
 
         # _cpu = self.rceapps.cpu(self.application, _version) if \
         #        self.cpu is None else self.cpu
@@ -92,7 +93,8 @@ class RCEConsoleClient:
             self.rceapps.command(self.application,_version),
             self.rceapps.args(self.application,_version),
             _memory,
-            _cpu)
+            _cpu,
+            _wrapper)
 
         job_submit_bar.stop()
         job_submit_bar.join()

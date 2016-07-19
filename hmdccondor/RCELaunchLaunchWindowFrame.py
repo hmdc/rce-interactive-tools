@@ -42,6 +42,9 @@ class RCELaunchLaunchWindowFrame(wx.Frame):
     self._memory = (self.rceapps.memory(self.application,self._version) if \
                 self.memory is None or self.rceapps.supports_memory_adjustable(self.application) is False else self.memory) // 1024
 
+    self._wrapper = self.rceapps.wrapper(self.application,
+      self_.version)
+
     _app_name = "{0} {1}".format(self.application, self._version)
 
     self.__app_name__ = _app_name
@@ -177,7 +180,8 @@ class RCELaunchLaunchWindowFrame(wx.Frame):
         self.rceapps.command(self.application, self._version),
         self.rceapps.args(self.application, self._version),
         int(self.JobMemoryTextCtrl.GetValue()) * 1024,
-        int(self.JobCpuTextCtrl.GetValue()))
+        int(self.JobCpuTextCtrl.GetValue()),
+        self._wrapper)
     self.dispatcher.start()
 
   def __set_properties(self):

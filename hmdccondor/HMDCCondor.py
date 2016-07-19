@@ -196,7 +196,7 @@ class HMDCCondor:
             map(htcondor.Schedd,
               self._collector.locateAll(htcondor.DaemonTypes.Schedd)))))
 
-  def submit(self, app_name, app_version, cmd, args, memory, cpu):
+  def submit(self, app_name, app_version, cmd, args, memory, cpu, wrapper):
     """submit() submits a job to the HTCondor cluster using the
     specified arguments.
 
@@ -229,7 +229,8 @@ class HMDCCondor:
       cmd,
       args,
       cpu,
-      memory), 1)
+      memory,
+      wrapper), 1)
 
   def poll(self, jobid, return_status=None, use_local_schedd=False, want_results=[CONSTANTS.JOB_STATUS_RUNNING]):
     """poll() takes a job id and returns a ``(JobStatus,ClassAd)`` tuple if,
@@ -394,7 +395,7 @@ class HMDCCondor:
       pool.terminate()
       raise RCEXpraTookTooLongStartError(ad)
 
-  def _create_classad(self, app_name, app_version, cmd, args, cpu, memory):
+  def _create_classad(self, app_name, app_version, cmd, args, cpu, memory, wrapper):
     """_create_classad() creates a classad for submission to the
     htcondor cluster, utilizing HMDC custom ClassAds.
 
@@ -440,6 +441,7 @@ class HMDCCondor:
       'HMDCApplicationVersion': app_version,
       'HMDCInteractive': True,
       'HMDCUseXpra': True,
+      'HMDCUseWrapper': wrapper,
       'JobLeaseDuration': 1200,
       'LocalJobDir': job_dir,
       'DebugPrepareJobHook': True,
