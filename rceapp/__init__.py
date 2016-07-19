@@ -183,7 +183,8 @@ class rceapp:
     except TypeError as e:
       raise RCEAppIntError(self.cfg, e)
 
-    if len(filter(lambda app: self.data[app]['global'].has_key('wrapper') and os.path.isabs(self.data[app]['global']['wrapper']) == False)) > 0:
+    if len(filter(lambda app: self.data[app]['global'].has_key('wrapper') and os.path.isabs(self.data[app]['global']['wrapper']) == False,
+      self.apps())) > 0:
       raise RCEWrapperError(self.cfg)
 
 
