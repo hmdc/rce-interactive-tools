@@ -2,6 +2,24 @@
 # or any other configuration management.
 
 from yaml import load, dump
+import os
+
+class RCEWrapperError(Exception):
+  """
+  This is a self-defined exception such that I can output a useful error
+  message which says that the wrapper field in the YAML is not an
+  absolute path.
+
+  Variables:
+  cfg: path to RCEApp YML configuration
+  value: Wrapper value
+  """
+
+  def __init__(self, cfg):
+    self.cfg = cfg
+  def __str__(self):
+    return repr('A wrapper field in %s is not an absolute path.'
+        %(self.cfg))
 
 class RCEAppGlobalError(Exception):
   """
@@ -165,6 +183,9 @@ class rceapp:
     except TypeError as e:
       raise RCEAppIntError(self.cfg, e)
 
+    if len(filter(lambda app: self.data[app]['global'].has_key('wrapper') and os.path.isabs(self.data[app]['global']['wrapper']) == False)) > 0:
+      raise RCEWrapperError(self.cfg)
+
 
 
     # Checks whether at least one version is default, no more than one
@@ -269,6 +290,20 @@ class rceapp:
       return self.data[app][_version]['memory']
     except:
       return self.data[app]['global']['memory']
+
+  def wrapper(self, app, version=None):
+    """
+    wrapper() returns the full path to the wrapper necessary to execute
+    an application. If no wrapper, return False.
+    """
+    _version = version if version else self.get_default_version(app)
+    try:
+      return self.data[app][_version]['wrapper']
+    except:
+      try:
+        return self.data[app]['global']['wrapper']
+      except:
+        return False
 
   def icon(self, app, version=None):
     """

@@ -83,7 +83,7 @@ def check_if_preempt(ad,
     try:
       notice = MIMEMultipart()
 
-      notice['Subject'] = 'Warning: Job {0}: {1} {2} has been idle for {3} days'.format(
+      notice['Subject'] = 'Warning: Job {0} is pending termination: {1} {2} has been idle for {3} days'.format(
         int(ad['ClusterId']),
         ad['HMDCApplicationName'],
         ad['HMDCApplicationVersion'],
@@ -95,16 +95,15 @@ def check_if_preempt(ad,
 Dear {0},
 
 Your RCE powered job {1} {2} has been idle for {3} days. If your job
-remains idle for three or more days, your job will become preemptible.
+remains idle for two or more days, your job will be automatically
+terminated.
 
-Under conditions of RCE cluster saturation, RCE powered jobs, idle for
-three or more days, can be pre-empted in order to satisfy resource
-requirements of newly submitted RCE powered jobs. If your RCE powered
-job is pre-empted, you will lose all currently unsaved work within that
-job. If you don't plan on actively utilizing {1} {2} within the next
-day, please make sure to save your work or terminate your job if you've
-successfully accomplished your tasks. Otherwise, using {1} within the
-next 24 hours will stave off pre-emptability for another two days.
+If your RCE powered job is terminated, you will lose all currently
+unsaved work within that job. If you don't plan on actively utilizing
+{1} {2} within the next day, please make sure to save your work or
+terminate your job if you've successfully accomplished your tasks.
+Otherwise, using {1} within the next 24 hours will stave off termination
+for another two days.
 
 If you are unable to see your running job in the RCE desktop,
 click the Applications menu and select RCE Utilities -> Attach all jobs.
