@@ -38,8 +38,9 @@ try:
 except:
   _debug = False
 
-clusterid = job_classad['ClusterId']
+clusterid = job_classad['GlobalJobId']
 timestamp = job_classad['LastMatchTime']
+
 host = job_classad['RemoteHost'].split('@')[-1]
 
 DEBUG_LOG = None
