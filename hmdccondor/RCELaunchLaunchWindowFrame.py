@@ -43,7 +43,7 @@ class RCELaunchLaunchWindowFrame(wx.Frame):
                 self.memory is None or self.rceapps.supports_memory_adjustable(self.application) is False else self.memory) // 1024
 
     self._wrapper = self.rceapps.wrapper(self.application,
-      self_.version)
+      self._version)
 
     _app_name = "{0} {1}".format(self.application, self._version)
 
