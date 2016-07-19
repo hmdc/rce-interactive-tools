@@ -109,6 +109,7 @@ matlab:
     supports_cli_mode: true
     args:
       - -singleCompThread
+      - -desktop
   R2010b:
     command: /nfs/tools/apps/matlab/R2010b/bin/matlab
   R2012a:
