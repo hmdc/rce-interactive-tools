@@ -122,6 +122,7 @@ class HMDCWrapper:
         self.__BASENAME__,
         '--no-daemon',
         '--exit-with-children',
+        '--log-dir={0}'.format(os.environ['TEMP']),
         'start',
         '--start-child={0}'.format(xpra_child_command),
         '--socket-dir={0}'.format(os.environ['TEMP']))
