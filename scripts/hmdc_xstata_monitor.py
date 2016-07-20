@@ -7,7 +7,7 @@ import psutil
 import time
 import logging
 import logging.handlers
-from procfs import Proc
+from proc.core import find_processes
 
 # Setup logging
 log = logging.getLogger(__name__)
@@ -44,8 +44,9 @@ xstata_pgid = os.getpgid(xstata.pid)
 xstata.wait()
 
 # Get the actual xstata pid
-xstata_process = filter(lambda p: p.stat['pgrp'] == xstata_pgid,
-  Proc().processes.user(pwd.getpwuid( os.getuid() ).pw_name))
+
+xstata_process = filter(lambda p: p.pgrp == xstata_pgid,
+    find_processes())
 
 # There should only be one in this pgroup
 
@@ -64,7 +65,7 @@ except Exception as e:
   sys.exit(1)
 
 # Get the pid
-real_xstata_pid = xstata_process[0].stat['pid']
+real_xstata_pid = xstata_process[0].pid
 
 # Sleep until application exits
 while psutil.pid_exists(real_xstata_pid):
