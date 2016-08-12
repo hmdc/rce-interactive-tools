@@ -145,9 +145,9 @@ and add the following stanza::
 Then, I could run firefox by running the following command, which would
 create a firefox job that consumes 1 CPU and 2048 MiB of memory::
 
-  rce_submit.py -f $HOME/rceapp.yml -r -a firefox
+  rce_submit.py -c $HOME/rceapp.yml -r -a firefox
 
-The ``-f`` switch designates that you're using a custom ``rceapp.yml``
+The ``-c`` switch designates that you're using a custom ``rceapp.yml``
 rather than the system-wide ``rceapp.yml`` in ``/etc``
 
 Getting help

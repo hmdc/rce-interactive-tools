@@ -90,7 +90,7 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../developer_documentation.html">Operations/Development Documentation</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="modules.html">Modules and Classes Reference</a></li>
 <li class="toctree-l2"><a class="reference internal" href="logs.html">Epylog messages</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="">Architecture</a><ul>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Architecture</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#basic-overview">Basic overview</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#server-side-operations">Server-side operations</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#starting-a-job">Starting a job</a></li>
@@ -130,7 +130,7 @@
         <div class="rst-content">
           
 
-
+ 
 
 
 
@@ -160,7 +160,7 @@
 <h2>Basic overview<a class="headerlink" href="#basic-overview" title="Permalink to this headline">¶</a></h2>
 <p>Submitting an interactive job to the RCE by issuing the following
 command:</p>
-<div class="highlight-python"><div class="highlight"><pre>rce_submit.py -r -a shell
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">rce_submit</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">r</span> <span class="o">-</span><span class="n">a</span> <span class="n">shell</span>
 </pre></div>
 </div>
 <p>performs the following tasks:</p>
@@ -169,114 +169,114 @@ command:</p>
 manager. A truncated version of a such a generated classad is
 reproduced below.</li>
 </ul>
-<div class="highlight-python"><div class="highlight"><pre>HMDCUseXpra = true
-Email = &quot;evansarm@gmail.com&quot;
-AccountingGroup = &quot;group_interactive.esarmien&quot;
-User = &quot;esarmien@hmdc.harvard.edu&quot;
-OnExitHold = false
-MyType = &quot;Job&quot;
-PeriodicHold = false
-PeriodicRemove = false
-Err =
-strcat(&quot;/nfs/home/E/esarmien/.HMDC/jobs/interactive&quot;,&quot;/&quot;,&quot;shell_2.31.3&quot;,&quot;_&quot;,ClusterId,&quot;_&quot;,&quot;201510271445984022&quot;,&quot;/err.txt&quot;)
-ProcId = 0
-HMDCApplicationName = &quot;shell&quot;
-AcctGroupUser = &quot;esarmien&quot;
-JobUniverse = 5
-In = &quot;/dev/null&quot;
-HMDCApplicationVersion = &quot;2.31.3&quot;
-Requirements = true &amp;&amp; TARGET.OPSYS == &quot;LINUX&quot; &amp;&amp; TARGET.ARCH ==
-&quot;X86_64&quot; &amp;&amp; TARGET.FileSystemDomain == MY.FileSystemDomain &amp;&amp;
-TARGET.Disk &gt;= RequestDisk &amp;&amp; TARGET.Memory &gt;= RequestMemory
-LocalJobDir =
-strcat(&quot;/nfs/home/E/esarmien/.HMDC/jobs/interactive&quot;,&quot;/&quot;,&quot;shell_2.31.3&quot;,&quot;_&quot;,ClusterId,&quot;_&quot;,&quot;201510271445984022&quot;)
-PublicClaimId = &quot;&lt;10.0.0.34:9619&gt;#1442840844#313#...&quot;
-WhenToTransferOutput = &quot;ON_EXIT&quot;
-Environment = &quot;_=&#39;/usr/bin/rce_submit.py&#39;
-XAUTHORITY=&#39;/nfs/home/E/esarmien/.Xauthority&#39;
-MY_INTERACTIVE_JOB_DIR=&#39;/nfs/home/E/esarmien/.HMDC/jobs/interactive&#39;
-LOCATE_PATH=&#39;:/nfs/tools/lib/locate/locate.db::/nfs/tools/lib/locate/locate.db::/nfs/tools/lib/locate/locate.db&#39;
-KDE_IS_PRELINKED=&#39;1&#39;
-HMDC_PROD_KEYS_PATH=&#39;/nfs/home/E/esarmien/.hmdc_prod_keys&#39;
-rvm_version=&#39;1.26.11 (latest)&#39; NX_ROOT=&#39;/nfs/home/E/esarmien/.nx&#39;
-COLORTERM=&#39;gnome-terminal&#39; LINES=&#39;43&#39;
-rvm_path=&#39;/nfs/home/E/esarmien/.rvm&#39; LESSOPEN=&#39;||/usr/bin/lesspipe.sh
-%s&#39; RUBY_VERSION=&#39;ruby-2.2.1&#39;
-_CONDOR_ENTITLEMENTS=&#39;\&quot;admin,mail_manager_root,hmdcOpsview,rt,cvs,jabber,desktopadmin,jenkins,login_manager_rce,bomgar\&quot;&#39;
-LOGNAME=&#39;esarmien&#39; USER=&#39;esarmien&#39; HOME=&#39;/nfs/home/E/esarmien&#39;
-PATH=&#39;/opt/bin:/usr/local/bin:/opt/bin:/usr/local/bin:/nfs/home/E/esarmien/.rvm/gems/ruby-2.2.1/bin:/nfs/home/E/esarmien/.rvm/gems/ruby-2.2.1@global/bin:/nfs/home/E/esarmien/.rvm/rubies/ruby-2.2.1/bin:/opt/bin:/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/bin:/usr/bin:/usr/X11R6/bin:/usr/local/HMDC/sbin:/usr/local/HMDC/bin:/nfs/home/E/esarmien/bin:/nfs/home/E/esarmien/.rvm/bin:/nfs/home/E/esarmien/.rvm/bin:/nfs/home/E/esarmien/.rvm/bin:/nfs/home/E/esarmien/bin:/usr/local/HMDC/sbin:/usr/local/HMDC/bin:/nfs/home/E/esarmien/bin:/usr/local/HMDC/sbin:/usr/local/HMDC/bin:/nfs/home/E/esarmien/bin:/nfs/home/E/esarmien/.rvm/bin:/nfs/home/E/esarmien/.rvm/bin:/nfs/home/E/esarmien/.rvm/bin&#39;
-MFINPUTS=&#39;:/usr/share/texlive/texmf-dist/fonts/source/public/mathabx::/usr/share/texlive/texmf-dist/fonts/source/public/mathabx::/usr/share/texlive/texmf-dist/fonts/source/public/mathabx:&#39;
-HMDC_DEV_KEYS_PATH=&#39;/nfs/home/E/esarmien/.hmdc_dev_keys&#39;
-_CONDOR_EMAIL=&#39;\&quot;esarmien@g.harvard.edu\&quot;&#39;
-LD_LIBRARY_PATH=&#39;/opt/lib64:/opt/lib:/nfs/home/E/esarmien/lib&#39;
-SSH_AGENT_PID=&#39;17080&#39; LANG=&#39;en_US.UTF-8&#39; TERM=&#39;xterm&#39; SHELL=&#39;/bin/bash&#39;
-CVS_RSH=&#39;ssh&#39;
-XDG_SESSION_COOKIE=&#39;eb5986295c70101fb32f63f90000001a-1445872821.791472-194473865&#39;
-SESSION_MANAGER=&#39;local/unix:@/tmp/.ICE-unix/17079,unix/unix:/tmp/.ICE-unix/17079&#39;
-SHLVL=&#39;2&#39; _system_arch=&#39;x86_64&#39; NXDIR=&#39;/usr/NX&#39; G_BROKEN_FILENAMES=&#39;1&#39;
-NX_CLIENT=&#39;/usr/NX/bin/nxclient&#39; HISTSIZE=&#39;1000&#39; WINDOWID=&#39;41943043&#39;
-ORBIT_SOCKETDIR=&#39;/scratch/orbit-esarmien&#39; XMODIFIERS=&#39;@im=none&#39;
-IMSETTINGS_INTEGRATE_DESKTOP=&#39;yes&#39; GIO_LAUNCHED_DESKTOP_FILE_PID=&#39;3453&#39;
-NX_SYSTEM=&#39;/usr/NX&#39;
-MY_BATCH_JOB_DIR=&#39;/nfs/home/E/esarmien/.HMDC/jobs/batch&#39;
-GEM_PATH=&#39;/nfs/home/E/esarmien/.rvm/gems/ruby-2.2.1:/nfs/home/E/esarmien/.rvm/gems/ruby-2.2.1@global&#39;
-rvm_bin_path=&#39;/nfs/home/E/esarmien/.rvm/bin&#39; USERNAME=&#39;esarmien&#39;
-IMSETTINGS_MODULE=&#39;none&#39; GTK_IM_MODULE=&#39;gtk-im-context-simple&#39;
-GIO_LAUNCHED_DESKTOP_FILE=&#39;/usr/share/applications/gnome-terminal.desktop&#39;
-_system_version=&#39;6&#39; rvm_prefix=&#39;/nfs/home/E/esarmien&#39;
-HMDC_ADMIN_PATH=&#39;/nfs/home/E/esarmien/git/hmdc-admin&#39; NX_TEMP=&#39;/tmp&#39;
-T1FONTS=&#39;:/usr/share/texlive/texmf-dist/fonts/type1/public/mathabx-type1::/usr/share/texlive/texmf-dist/fonts/type1/public/mathabx-type1::/usr/share/texlive/texmf-dist/fonts/type1/public/mathabx-type1:&#39;
-SSH_AUTH_SOCK=&#39;/scratch/keyring-11bgaB/socket.ssh&#39;
-IRBRC=&#39;/nfs/home/E/esarmien/.rvm/rubies/ruby-2.2.1/.irbrc&#39;
-_system_type=&#39;Linux&#39;
-MY_RUBY_HOME=&#39;/nfs/home/E/esarmien/.rvm/rubies/ruby-2.2.1&#39;
-ACRO_ENABLE_FONT_CONFIG=&#39;1&#39; COLUMNS=&#39;166&#39; SPSSTMPDIR=&#39;/scratch&#39;
-_system_name=&#39;CentOS&#39; NX_SESSION_ID=&#39;2FB0CB7AC10E341D8605AEC17D60E014&#39;
-TMPDIR=&#39;/scratch&#39;
-TEXINPUTS=&#39;:/usr/local/share/texlive/texmf:/usr/share/texlive/texmf-dist:/usr/share/texmf:/usr/local/share/texmf/hmdc/misc:/usr/share/texlive/texmf-dist/tex/latex/powerdot:/usr/local/share/texmf/hmdc/imsart:/usr/share/texlive/texmf-dist/tex/generic/mathabx::/usr/local/share/texlive/texmf:/usr/share/texlive/texmf-dist:/usr/share/texmf:/usr/local/share/texmf/hmdc/misc:/usr/share/texlive/texmf-dist/tex/latex/powerdot:/usr/local/share/texmf/hmdc/imsart:/usr/share/texlive/texmf-dist/tex/generic/mathabx::/usr/local/share/texlive/texmf:/usr/share/texlive/texmf-dist:/usr/share/texmf:/usr/local/share/texmf/hmdc/misc:/usr/share/texlive/texmf-dist/tex/latex/powerdot:/usr/local/share/texmf/hmdc/imsart:/usr/share/texlive/texmf-dist/tex/generic/mathabx::/usr/share/texmf/tex/latex/ppower4:/usr/lib/R/share/texmf:/usr/share/latex2html/texinputs::/usr/share/texmf/tex/latex/ppower4:/usr/lib/R/share/texmf:/usr/share/latex2html/texinputs::/usr/share/texmf/tex/latex/ppower4:/usr/lib/R/share/texmf:/usr/share/latex2html/texinputs:&#39;
-CVSEDITOR=&#39;vi&#39; KDEDIRS=&#39;/usr&#39; JAVA_HOME=&#39;/usr/lib/jvm/java-1.8.0/jre&#39;
-DISPLAY=&#39;:1004.0&#39; NX_CUPS_BIN=&#39;/usr/bin&#39;
-BIBINPUTS=&#39;.:/nfs/home/E/esarmien/gkbibtex:.:/nfs/home/E/esarmien/gkbibtex:.:/nfs/home/E/esarmien/gkbibtex::&#39;
-OLDPWD=&#39;/nfs/home/E/esarmien/projects/rce-interactive-tools&#39;
-HOSTNAME=&#39;dev-rce6-2.hmdc.harvard.edu&#39;
-BSTINPUTS=&#39;.:/nfs/home/E/esarmien/gkbibtex:.:/nfs/home/E/esarmien/gkbibtex:.:/nfs/home/E/esarmien/gkbibtex::&#39;
-TEXMFLOCAL=&#39;:/usr/share/texlive/texmf:/usr/share/texlive/texmf-dist:/usr/share/texmf:/usr/local/share/texmf::/usr/share/texlive/texmf:/usr/share/texlive/texmf-dist:/usr/share/texmf:/usr/local/share/texmf::/usr/share/texlive/texmf:/usr/share/texlive/texmf-dist:/usr/share/texmf:/usr/local/share/texmf:&#39;
-HISTCONTROL=&#39;ignoredups&#39; PWD=&#39;/nfs/home/E/esarmien&#39; QT_IM_MODULE=&#39;xim&#39;
-GTK_RC_FILES=&#39;/etc/gtk/gtkrc:/nfs/home/E/esarmien/.gtkrc-1.2-gnome2&#39;
-MAIL=&#39;/var/spool/mail/esarmien&#39;
-LS_COLORS=&#39;rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=01;05;37;41:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arj=01;31:*.taz=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.dz=01;31:*.gz=01;31:*.lz=01;31:*.xz=01;31:*.bz2=01;31:*.tbz=01;31:*.tbz2=01;31:*.bz=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.rar=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.axv=01;35:*.anx=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=01;36:*.au=01;36:*.flac=01;36:*.mid=01;36:*.midi=01;36:*.mka=01;36:*.mp3=01;36:*.mpc=01;36:*.ogg=01;36:*.ra=01;36:*.wav=01;36:*.axa=01;36:*.oga=01;36:*.spx=01;36:*.xspf=01;36:&#39;
-GEM_HOME=&#39;/nfs/home/E/esarmien/.rvm/gems/ruby-2.2.1&#39;
-TFMFONTS=&#39;:/usr/share/texlive/texmf-dist/fonts/tfm/public/mathabx::/usr/share/texlive/texmf-dist/fonts/tfm/public/mathabx::/usr/share/texlive/texmf-dist/fonts/tfm/public/mathabx:&#39;&quot;
-TargetType = &quot;Machine&quot;
-LeaveJobInQueue = false
-JobNotification = 1
-Owner = &quot;esarmien&quot;
-CondorPlatform = &quot;$CondorPlatform: x86_64_RedHat6 $&quot;
-JobLeaseDuration = 1200
-RecentBlockWriteKbytes = 0
-TransferIn = false
-ExitStatus = 0
-RootDir = &quot;/&quot;
-NumJobMatches = 1
-JobCurrentStartDate = 1445969625
-HMDCInteractive = true
-Args = false
-CondorVersion = &quot;$CondorVersion: 8.2.9 Aug 13 2015 BuildID: 335839 $&quot;
-Out =
-strcat(&quot;/nfs/home/E/esarmien/.HMDC/jobs/interactive&quot;,&quot;/&quot;,&quot;shell_2.31.3&quot;,&quot;_&quot;,ClusterId,&quot;_&quot;,&quot;201510271445984022&quot;,&quot;/out.txt&quot;)
-ShouldTransferFiles = &quot;NO&quot;
-FileSystemDomain = &quot;hmdc.harvard.edu&quot;
-JobPrio = 0
-NumCkpts = 0
-DebugPrepareJobHook = true
-BufferBlockSize = 32768
-ImageSize = 325000
-StatsLifetimeStarter = 3286729
-Cmd = &quot;/usr/bin/gnome-terminal&quot;
-Iwd = &quot;/nfs/home/E/esarmien&quot;
-AcctGroup = &quot;group_interactive&quot;
-Entitlements = &quot;admin mail_manager_root hmdcOpsview rt cvs jabber
-desktopadmin jenkins login_manager_rce bomgar&quot;
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">HMDCUseXpra</span> <span class="o">=</span> <span class="n">true</span>
+<span class="n">Email</span> <span class="o">=</span> <span class="s2">&quot;evansarm@gmail.com&quot;</span>
+<span class="n">AccountingGroup</span> <span class="o">=</span> <span class="s2">&quot;group_interactive.esarmien&quot;</span>
+<span class="n">User</span> <span class="o">=</span> <span class="s2">&quot;esarmien@hmdc.harvard.edu&quot;</span>
+<span class="n">OnExitHold</span> <span class="o">=</span> <span class="n">false</span>
+<span class="n">MyType</span> <span class="o">=</span> <span class="s2">&quot;Job&quot;</span>
+<span class="n">PeriodicHold</span> <span class="o">=</span> <span class="n">false</span>
+<span class="n">PeriodicRemove</span> <span class="o">=</span> <span class="n">false</span>
+<span class="n">Err</span> <span class="o">=</span>
+<span class="n">strcat</span><span class="p">(</span><span class="s2">&quot;/nfs/home/E/esarmien/.HMDC/jobs/interactive&quot;</span><span class="p">,</span><span class="s2">&quot;/&quot;</span><span class="p">,</span><span class="s2">&quot;shell_2.31.3&quot;</span><span class="p">,</span><span class="s2">&quot;_&quot;</span><span class="p">,</span><span class="n">ClusterId</span><span class="p">,</span><span class="s2">&quot;_&quot;</span><span class="p">,</span><span class="s2">&quot;201510271445984022&quot;</span><span class="p">,</span><span class="s2">&quot;/err.txt&quot;</span><span class="p">)</span>
+<span class="n">ProcId</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">HMDCApplicationName</span> <span class="o">=</span> <span class="s2">&quot;shell&quot;</span>
+<span class="n">AcctGroupUser</span> <span class="o">=</span> <span class="s2">&quot;esarmien&quot;</span>
+<span class="n">JobUniverse</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">In</span> <span class="o">=</span> <span class="s2">&quot;/dev/null&quot;</span>
+<span class="n">HMDCApplicationVersion</span> <span class="o">=</span> <span class="s2">&quot;2.31.3&quot;</span>
+<span class="n">Requirements</span> <span class="o">=</span> <span class="n">true</span> <span class="o">&amp;&amp;</span> <span class="n">TARGET</span><span class="o">.</span><span class="n">OPSYS</span> <span class="o">==</span> <span class="s2">&quot;LINUX&quot;</span> <span class="o">&amp;&amp;</span> <span class="n">TARGET</span><span class="o">.</span><span class="n">ARCH</span> <span class="o">==</span>
+<span class="s2">&quot;X86_64&quot;</span> <span class="o">&amp;&amp;</span> <span class="n">TARGET</span><span class="o">.</span><span class="n">FileSystemDomain</span> <span class="o">==</span> <span class="n">MY</span><span class="o">.</span><span class="n">FileSystemDomain</span> <span class="o">&amp;&amp;</span>
+<span class="n">TARGET</span><span class="o">.</span><span class="n">Disk</span> <span class="o">&gt;=</span> <span class="n">RequestDisk</span> <span class="o">&amp;&amp;</span> <span class="n">TARGET</span><span class="o">.</span><span class="n">Memory</span> <span class="o">&gt;=</span> <span class="n">RequestMemory</span>
+<span class="n">LocalJobDir</span> <span class="o">=</span>
+<span class="n">strcat</span><span class="p">(</span><span class="s2">&quot;/nfs/home/E/esarmien/.HMDC/jobs/interactive&quot;</span><span class="p">,</span><span class="s2">&quot;/&quot;</span><span class="p">,</span><span class="s2">&quot;shell_2.31.3&quot;</span><span class="p">,</span><span class="s2">&quot;_&quot;</span><span class="p">,</span><span class="n">ClusterId</span><span class="p">,</span><span class="s2">&quot;_&quot;</span><span class="p">,</span><span class="s2">&quot;201510271445984022&quot;</span><span class="p">)</span>
+<span class="n">PublicClaimId</span> <span class="o">=</span> <span class="s2">&quot;&lt;10.0.0.34:9619&gt;#1442840844#313#...&quot;</span>
+<span class="n">WhenToTransferOutput</span> <span class="o">=</span> <span class="s2">&quot;ON_EXIT&quot;</span>
+<span class="n">Environment</span> <span class="o">=</span> <span class="s2">&quot;_=&#39;/usr/bin/rce_submit.py&#39;</span>
+<span class="n">XAUTHORITY</span><span class="o">=</span><span class="s1">&#39;/nfs/home/E/esarmien/.Xauthority&#39;</span>
+<span class="n">MY_INTERACTIVE_JOB_DIR</span><span class="o">=</span><span class="s1">&#39;/nfs/home/E/esarmien/.HMDC/jobs/interactive&#39;</span>
+<span class="n">LOCATE_PATH</span><span class="o">=</span><span class="s1">&#39;:/nfs/tools/lib/locate/locate.db::/nfs/tools/lib/locate/locate.db::/nfs/tools/lib/locate/locate.db&#39;</span>
+<span class="n">KDE_IS_PRELINKED</span><span class="o">=</span><span class="s1">&#39;1&#39;</span>
+<span class="n">HMDC_PROD_KEYS_PATH</span><span class="o">=</span><span class="s1">&#39;/nfs/home/E/esarmien/.hmdc_prod_keys&#39;</span>
+<span class="n">rvm_version</span><span class="o">=</span><span class="s1">&#39;1.26.11 (latest)&#39;</span> <span class="n">NX_ROOT</span><span class="o">=</span><span class="s1">&#39;/nfs/home/E/esarmien/.nx&#39;</span>
+<span class="n">COLORTERM</span><span class="o">=</span><span class="s1">&#39;gnome-terminal&#39;</span> <span class="n">LINES</span><span class="o">=</span><span class="s1">&#39;43&#39;</span>
+<span class="n">rvm_path</span><span class="o">=</span><span class="s1">&#39;/nfs/home/E/esarmien/.rvm&#39;</span> <span class="n">LESSOPEN</span><span class="o">=</span><span class="s1">&#39;||/usr/bin/lesspipe.sh</span>
+<span class="o">%</span><span class="n">s</span><span class="s1">&#39; RUBY_VERSION=&#39;</span><span class="n">ruby</span><span class="o">-</span><span class="mf">2.2</span><span class="o">.</span><span class="mi">1</span><span class="s1">&#39;</span>
+<span class="n">_CONDOR_ENTITLEMENTS</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\&quot;</span><span class="s1">admin,mail_manager_root,hmdcOpsview,rt,cvs,jabber,desktopadmin,jenkins,login_manager_rce,bomgar</span><span class="se">\&quot;</span><span class="s1">&#39;</span>
+<span class="n">LOGNAME</span><span class="o">=</span><span class="s1">&#39;esarmien&#39;</span> <span class="n">USER</span><span class="o">=</span><span class="s1">&#39;esarmien&#39;</span> <span class="n">HOME</span><span class="o">=</span><span class="s1">&#39;/nfs/home/E/esarmien&#39;</span>
+<span class="n">PATH</span><span class="o">=</span><span class="s1">&#39;/opt/bin:/usr/local/bin:/opt/bin:/usr/local/bin:/nfs/home/E/esarmien/.rvm/gems/ruby-2.2.1/bin:/nfs/home/E/esarmien/.rvm/gems/ruby-2.2.1@global/bin:/nfs/home/E/esarmien/.rvm/rubies/ruby-2.2.1/bin:/opt/bin:/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/bin:/usr/bin:/usr/X11R6/bin:/usr/local/HMDC/sbin:/usr/local/HMDC/bin:/nfs/home/E/esarmien/bin:/nfs/home/E/esarmien/.rvm/bin:/nfs/home/E/esarmien/.rvm/bin:/nfs/home/E/esarmien/.rvm/bin:/nfs/home/E/esarmien/bin:/usr/local/HMDC/sbin:/usr/local/HMDC/bin:/nfs/home/E/esarmien/bin:/usr/local/HMDC/sbin:/usr/local/HMDC/bin:/nfs/home/E/esarmien/bin:/nfs/home/E/esarmien/.rvm/bin:/nfs/home/E/esarmien/.rvm/bin:/nfs/home/E/esarmien/.rvm/bin&#39;</span>
+<span class="n">MFINPUTS</span><span class="o">=</span><span class="s1">&#39;:/usr/share/texlive/texmf-dist/fonts/source/public/mathabx::/usr/share/texlive/texmf-dist/fonts/source/public/mathabx::/usr/share/texlive/texmf-dist/fonts/source/public/mathabx:&#39;</span>
+<span class="n">HMDC_DEV_KEYS_PATH</span><span class="o">=</span><span class="s1">&#39;/nfs/home/E/esarmien/.hmdc_dev_keys&#39;</span>
+<span class="n">_CONDOR_EMAIL</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\&quot;</span><span class="s1">esarmien@g.harvard.edu</span><span class="se">\&quot;</span><span class="s1">&#39;</span>
+<span class="n">LD_LIBRARY_PATH</span><span class="o">=</span><span class="s1">&#39;/opt/lib64:/opt/lib:/nfs/home/E/esarmien/lib&#39;</span>
+<span class="n">SSH_AGENT_PID</span><span class="o">=</span><span class="s1">&#39;17080&#39;</span> <span class="n">LANG</span><span class="o">=</span><span class="s1">&#39;en_US.UTF-8&#39;</span> <span class="n">TERM</span><span class="o">=</span><span class="s1">&#39;xterm&#39;</span> <span class="n">SHELL</span><span class="o">=</span><span class="s1">&#39;/bin/bash&#39;</span>
+<span class="n">CVS_RSH</span><span class="o">=</span><span class="s1">&#39;ssh&#39;</span>
+<span class="n">XDG_SESSION_COOKIE</span><span class="o">=</span><span class="s1">&#39;eb5986295c70101fb32f63f90000001a-1445872821.791472-194473865&#39;</span>
+<span class="n">SESSION_MANAGER</span><span class="o">=</span><span class="s1">&#39;local/unix:@/tmp/.ICE-unix/17079,unix/unix:/tmp/.ICE-unix/17079&#39;</span>
+<span class="n">SHLVL</span><span class="o">=</span><span class="s1">&#39;2&#39;</span> <span class="n">_system_arch</span><span class="o">=</span><span class="s1">&#39;x86_64&#39;</span> <span class="n">NXDIR</span><span class="o">=</span><span class="s1">&#39;/usr/NX&#39;</span> <span class="n">G_BROKEN_FILENAMES</span><span class="o">=</span><span class="s1">&#39;1&#39;</span>
+<span class="n">NX_CLIENT</span><span class="o">=</span><span class="s1">&#39;/usr/NX/bin/nxclient&#39;</span> <span class="n">HISTSIZE</span><span class="o">=</span><span class="s1">&#39;1000&#39;</span> <span class="n">WINDOWID</span><span class="o">=</span><span class="s1">&#39;41943043&#39;</span>
+<span class="n">ORBIT_SOCKETDIR</span><span class="o">=</span><span class="s1">&#39;/scratch/orbit-esarmien&#39;</span> <span class="n">XMODIFIERS</span><span class="o">=</span><span class="s1">&#39;@im=none&#39;</span>
+<span class="n">IMSETTINGS_INTEGRATE_DESKTOP</span><span class="o">=</span><span class="s1">&#39;yes&#39;</span> <span class="n">GIO_LAUNCHED_DESKTOP_FILE_PID</span><span class="o">=</span><span class="s1">&#39;3453&#39;</span>
+<span class="n">NX_SYSTEM</span><span class="o">=</span><span class="s1">&#39;/usr/NX&#39;</span>
+<span class="n">MY_BATCH_JOB_DIR</span><span class="o">=</span><span class="s1">&#39;/nfs/home/E/esarmien/.HMDC/jobs/batch&#39;</span>
+<span class="n">GEM_PATH</span><span class="o">=</span><span class="s1">&#39;/nfs/home/E/esarmien/.rvm/gems/ruby-2.2.1:/nfs/home/E/esarmien/.rvm/gems/ruby-2.2.1@global&#39;</span>
+<span class="n">rvm_bin_path</span><span class="o">=</span><span class="s1">&#39;/nfs/home/E/esarmien/.rvm/bin&#39;</span> <span class="n">USERNAME</span><span class="o">=</span><span class="s1">&#39;esarmien&#39;</span>
+<span class="n">IMSETTINGS_MODULE</span><span class="o">=</span><span class="s1">&#39;none&#39;</span> <span class="n">GTK_IM_MODULE</span><span class="o">=</span><span class="s1">&#39;gtk-im-context-simple&#39;</span>
+<span class="n">GIO_LAUNCHED_DESKTOP_FILE</span><span class="o">=</span><span class="s1">&#39;/usr/share/applications/gnome-terminal.desktop&#39;</span>
+<span class="n">_system_version</span><span class="o">=</span><span class="s1">&#39;6&#39;</span> <span class="n">rvm_prefix</span><span class="o">=</span><span class="s1">&#39;/nfs/home/E/esarmien&#39;</span>
+<span class="n">HMDC_ADMIN_PATH</span><span class="o">=</span><span class="s1">&#39;/nfs/home/E/esarmien/git/hmdc-admin&#39;</span> <span class="n">NX_TEMP</span><span class="o">=</span><span class="s1">&#39;/tmp&#39;</span>
+<span class="n">T1FONTS</span><span class="o">=</span><span class="s1">&#39;:/usr/share/texlive/texmf-dist/fonts/type1/public/mathabx-type1::/usr/share/texlive/texmf-dist/fonts/type1/public/mathabx-type1::/usr/share/texlive/texmf-dist/fonts/type1/public/mathabx-type1:&#39;</span>
+<span class="n">SSH_AUTH_SOCK</span><span class="o">=</span><span class="s1">&#39;/scratch/keyring-11bgaB/socket.ssh&#39;</span>
+<span class="n">IRBRC</span><span class="o">=</span><span class="s1">&#39;/nfs/home/E/esarmien/.rvm/rubies/ruby-2.2.1/.irbrc&#39;</span>
+<span class="n">_system_type</span><span class="o">=</span><span class="s1">&#39;Linux&#39;</span>
+<span class="n">MY_RUBY_HOME</span><span class="o">=</span><span class="s1">&#39;/nfs/home/E/esarmien/.rvm/rubies/ruby-2.2.1&#39;</span>
+<span class="n">ACRO_ENABLE_FONT_CONFIG</span><span class="o">=</span><span class="s1">&#39;1&#39;</span> <span class="n">COLUMNS</span><span class="o">=</span><span class="s1">&#39;166&#39;</span> <span class="n">SPSSTMPDIR</span><span class="o">=</span><span class="s1">&#39;/scratch&#39;</span>
+<span class="n">_system_name</span><span class="o">=</span><span class="s1">&#39;CentOS&#39;</span> <span class="n">NX_SESSION_ID</span><span class="o">=</span><span class="s1">&#39;2FB0CB7AC10E341D8605AEC17D60E014&#39;</span>
+<span class="n">TMPDIR</span><span class="o">=</span><span class="s1">&#39;/scratch&#39;</span>
+<span class="n">TEXINPUTS</span><span class="o">=</span><span class="s1">&#39;:/usr/local/share/texlive/texmf:/usr/share/texlive/texmf-dist:/usr/share/texmf:/usr/local/share/texmf/hmdc/misc:/usr/share/texlive/texmf-dist/tex/latex/powerdot:/usr/local/share/texmf/hmdc/imsart:/usr/share/texlive/texmf-dist/tex/generic/mathabx::/usr/local/share/texlive/texmf:/usr/share/texlive/texmf-dist:/usr/share/texmf:/usr/local/share/texmf/hmdc/misc:/usr/share/texlive/texmf-dist/tex/latex/powerdot:/usr/local/share/texmf/hmdc/imsart:/usr/share/texlive/texmf-dist/tex/generic/mathabx::/usr/local/share/texlive/texmf:/usr/share/texlive/texmf-dist:/usr/share/texmf:/usr/local/share/texmf/hmdc/misc:/usr/share/texlive/texmf-dist/tex/latex/powerdot:/usr/local/share/texmf/hmdc/imsart:/usr/share/texlive/texmf-dist/tex/generic/mathabx::/usr/share/texmf/tex/latex/ppower4:/usr/lib/R/share/texmf:/usr/share/latex2html/texinputs::/usr/share/texmf/tex/latex/ppower4:/usr/lib/R/share/texmf:/usr/share/latex2html/texinputs::/usr/share/texmf/tex/latex/ppower4:/usr/lib/R/share/texmf:/usr/share/latex2html/texinputs:&#39;</span>
+<span class="n">CVSEDITOR</span><span class="o">=</span><span class="s1">&#39;vi&#39;</span> <span class="n">KDEDIRS</span><span class="o">=</span><span class="s1">&#39;/usr&#39;</span> <span class="n">JAVA_HOME</span><span class="o">=</span><span class="s1">&#39;/usr/lib/jvm/java-1.8.0/jre&#39;</span>
+<span class="n">DISPLAY</span><span class="o">=</span><span class="s1">&#39;:1004.0&#39;</span> <span class="n">NX_CUPS_BIN</span><span class="o">=</span><span class="s1">&#39;/usr/bin&#39;</span>
+<span class="n">BIBINPUTS</span><span class="o">=</span><span class="s1">&#39;.:/nfs/home/E/esarmien/gkbibtex:.:/nfs/home/E/esarmien/gkbibtex:.:/nfs/home/E/esarmien/gkbibtex::&#39;</span>
+<span class="n">OLDPWD</span><span class="o">=</span><span class="s1">&#39;/nfs/home/E/esarmien/projects/rce-interactive-tools&#39;</span>
+<span class="n">HOSTNAME</span><span class="o">=</span><span class="s1">&#39;dev-rce6-2.hmdc.harvard.edu&#39;</span>
+<span class="n">BSTINPUTS</span><span class="o">=</span><span class="s1">&#39;.:/nfs/home/E/esarmien/gkbibtex:.:/nfs/home/E/esarmien/gkbibtex:.:/nfs/home/E/esarmien/gkbibtex::&#39;</span>
+<span class="n">TEXMFLOCAL</span><span class="o">=</span><span class="s1">&#39;:/usr/share/texlive/texmf:/usr/share/texlive/texmf-dist:/usr/share/texmf:/usr/local/share/texmf::/usr/share/texlive/texmf:/usr/share/texlive/texmf-dist:/usr/share/texmf:/usr/local/share/texmf::/usr/share/texlive/texmf:/usr/share/texlive/texmf-dist:/usr/share/texmf:/usr/local/share/texmf:&#39;</span>
+<span class="n">HISTCONTROL</span><span class="o">=</span><span class="s1">&#39;ignoredups&#39;</span> <span class="n">PWD</span><span class="o">=</span><span class="s1">&#39;/nfs/home/E/esarmien&#39;</span> <span class="n">QT_IM_MODULE</span><span class="o">=</span><span class="s1">&#39;xim&#39;</span>
+<span class="n">GTK_RC_FILES</span><span class="o">=</span><span class="s1">&#39;/etc/gtk/gtkrc:/nfs/home/E/esarmien/.gtkrc-1.2-gnome2&#39;</span>
+<span class="n">MAIL</span><span class="o">=</span><span class="s1">&#39;/var/spool/mail/esarmien&#39;</span>
+<span class="n">LS_COLORS</span><span class="o">=</span><span class="s1">&#39;rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=01;05;37;41:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arj=01;31:*.taz=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.dz=01;31:*.gz=01;31:*.lz=01;31:*.xz=01;31:*.bz2=01;31:*.tbz=01;31:*.tbz2=01;31:*.bz=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.rar=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.axv=01;35:*.anx=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=01;36:*.au=01;36:*.flac=01;36:*.mid=01;36:*.midi=01;36:*.mka=01;36:*.mp3=01;36:*.mpc=01;36:*.ogg=01;36:*.ra=01;36:*.wav=01;36:*.axa=01;36:*.oga=01;36:*.spx=01;36:*.xspf=01;36:&#39;</span>
+<span class="n">GEM_HOME</span><span class="o">=</span><span class="s1">&#39;/nfs/home/E/esarmien/.rvm/gems/ruby-2.2.1&#39;</span>
+<span class="n">TFMFONTS</span><span class="o">=</span><span class="s1">&#39;:/usr/share/texlive/texmf-dist/fonts/tfm/public/mathabx::/usr/share/texlive/texmf-dist/fonts/tfm/public/mathabx::/usr/share/texlive/texmf-dist/fonts/tfm/public/mathabx:&#39;</span><span class="s2">&quot;</span>
+<span class="n">TargetType</span> <span class="o">=</span> <span class="s2">&quot;Machine&quot;</span>
+<span class="n">LeaveJobInQueue</span> <span class="o">=</span> <span class="n">false</span>
+<span class="n">JobNotification</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">Owner</span> <span class="o">=</span> <span class="s2">&quot;esarmien&quot;</span>
+<span class="n">CondorPlatform</span> <span class="o">=</span> <span class="s2">&quot;$CondorPlatform: x86_64_RedHat6 $&quot;</span>
+<span class="n">JobLeaseDuration</span> <span class="o">=</span> <span class="mi">1200</span>
+<span class="n">RecentBlockWriteKbytes</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">TransferIn</span> <span class="o">=</span> <span class="n">false</span>
+<span class="n">ExitStatus</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">RootDir</span> <span class="o">=</span> <span class="s2">&quot;/&quot;</span>
+<span class="n">NumJobMatches</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">JobCurrentStartDate</span> <span class="o">=</span> <span class="mi">1445969625</span>
+<span class="n">HMDCInteractive</span> <span class="o">=</span> <span class="n">true</span>
+<span class="n">Args</span> <span class="o">=</span> <span class="n">false</span>
+<span class="n">CondorVersion</span> <span class="o">=</span> <span class="s2">&quot;$CondorVersion: 8.2.9 Aug 13 2015 BuildID: 335839 $&quot;</span>
+<span class="n">Out</span> <span class="o">=</span>
+<span class="n">strcat</span><span class="p">(</span><span class="s2">&quot;/nfs/home/E/esarmien/.HMDC/jobs/interactive&quot;</span><span class="p">,</span><span class="s2">&quot;/&quot;</span><span class="p">,</span><span class="s2">&quot;shell_2.31.3&quot;</span><span class="p">,</span><span class="s2">&quot;_&quot;</span><span class="p">,</span><span class="n">ClusterId</span><span class="p">,</span><span class="s2">&quot;_&quot;</span><span class="p">,</span><span class="s2">&quot;201510271445984022&quot;</span><span class="p">,</span><span class="s2">&quot;/out.txt&quot;</span><span class="p">)</span>
+<span class="n">ShouldTransferFiles</span> <span class="o">=</span> <span class="s2">&quot;NO&quot;</span>
+<span class="n">FileSystemDomain</span> <span class="o">=</span> <span class="s2">&quot;hmdc.harvard.edu&quot;</span>
+<span class="n">JobPrio</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">NumCkpts</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">DebugPrepareJobHook</span> <span class="o">=</span> <span class="n">true</span>
+<span class="n">BufferBlockSize</span> <span class="o">=</span> <span class="mi">32768</span>
+<span class="n">ImageSize</span> <span class="o">=</span> <span class="mi">325000</span>
+<span class="n">StatsLifetimeStarter</span> <span class="o">=</span> <span class="mi">3286729</span>
+<span class="n">Cmd</span> <span class="o">=</span> <span class="s2">&quot;/usr/bin/gnome-terminal&quot;</span>
+<span class="n">Iwd</span> <span class="o">=</span> <span class="s2">&quot;/nfs/home/E/esarmien&quot;</span>
+<span class="n">AcctGroup</span> <span class="o">=</span> <span class="s2">&quot;group_interactive&quot;</span>
+<span class="n">Entitlements</span> <span class="o">=</span> <span class="s2">&quot;admin mail_manager_root hmdcOpsview rt cvs jabber</span>
+<span class="n">desktopadmin</span> <span class="n">jenkins</span> <span class="n">login_manager_rce</span> <span class="n">bomgar</span><span class="s2">&quot;</span>
 </pre></div>
 </div>
 <ul class="simple">
@@ -300,7 +300,7 @@ job&#8217;s xpra server.</li>
 <li><p class="first">When a job submitted using rce_submit.py starts running, the execute
 node runs <code class="docutils literal"><span class="pre">HMDC_interactive_prepare_job</span></code>, as configured in
 <code class="docutils literal"><span class="pre">hmdc-admin/templates/etc-condor-config.d/compute.config.erb</span></code>:</p>
-<div class="highlight-python"><div class="highlight"><pre>HMDC_HOOK_UPDATE_JOB_INFO = $(PIP_BINDIR)/HMDC_periodic_job_is_idle.py
+<div class="highlight-default"><div class="highlight"><pre><span></span>HMDC_HOOK_UPDATE_JOB_INFO = $(PIP_BINDIR)/HMDC_periodic_job_is_idle.py
 HMDC_HOOK_PREPARE_JOB = $(PIP_BINDIR)/HMDC_interactive_prepare_job.py
 HMDC_HOOK_JOB_EXIT = $(PIP_BINDIR)/HMDC_clean_up.py
 STARTER_JOB_HOOK_KEYWORD = HMDC
@@ -366,9 +366,9 @@ tasks:</p>
 <li><p class="first">If idletime is greater than zero, generates a string composed of all
 Job IDs and idle times and writes this as a script to
 <code class="docutils literal"><span class="pre">/usr/bin/HMDC_startd_cron_idle.sh</span></code>, for example:</p>
-<div class="highlight-python"><div class="highlight"><pre>[root@dev-cod6-1 bin]# /usr/bin/HMDC_startd_cron_idle.sh
-HMDCIdleJobs = &quot;110.0,3702664 113.0,3637730 114.0,0 187.0,105483
-192.0,105480 198.0,105484&quot;
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@dev</span><span class="o">-</span><span class="n">cod6</span><span class="o">-</span><span class="mi">1</span> <span class="nb">bin</span><span class="p">]</span><span class="c1"># /usr/bin/HMDC_startd_cron_idle.sh</span>
+<span class="n">HMDCIdleJobs</span> <span class="o">=</span> <span class="s2">&quot;110.0,3702664 113.0,3637730 114.0,0 187.0,105483</span>
+<span class="mf">192.0</span><span class="p">,</span><span class="mi">105480</span> <span class="mf">198.0</span><span class="p">,</span><span class="mi">105484</span><span class="s2">&quot;</span>
 </pre></div>
 </div>
 </li>
@@ -377,11 +377,11 @@ HMDCIdleJobs = &quot;110.0,3702664 113.0,3637730 114.0,0 187.0,105483
 <li><p class="first">Every ten seconds, HTCondor executes
 <code class="docutils literal"><span class="pre">/usr/bin/HMDC_startd_cron_idle.sh</span></code>, which publishes the
 <code class="docutils literal"><span class="pre">HMDCIdleJobs</span></code> machine classad to the collector, as configured in:</p>
-<div class="highlight-python"><div class="highlight"><pre>STARTD_CRON_IDLEJOBS_AUTOPUBLISH = If_Changed
-STARTD_CRON_IDLEJOBS_EXECUTABLE = /usr/bin/HMDC_startd_cron_idle.sh
-STARTD_CRON_IDLEJOBS_MODE = Periodic
-STARTD_CRON_IDLEJOBS_PERIOD = 10s
-STARTD_CRON_JOBLIST =  idlejobs
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">STARTD_CRON_IDLEJOBS_AUTOPUBLISH</span> <span class="o">=</span> <span class="n">If_Changed</span>
+<span class="n">STARTD_CRON_IDLEJOBS_EXECUTABLE</span> <span class="o">=</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">HMDC_startd_cron_idle</span><span class="o">.</span><span class="n">sh</span>
+<span class="n">STARTD_CRON_IDLEJOBS_MODE</span> <span class="o">=</span> <span class="n">Periodic</span>
+<span class="n">STARTD_CRON_IDLEJOBS_PERIOD</span> <span class="o">=</span> <span class="mi">10</span><span class="n">s</span>
+<span class="n">STARTD_CRON_JOBLIST</span> <span class="o">=</span>  <span class="n">idlejobs</span>
 </pre></div>
 </div>
 </li>

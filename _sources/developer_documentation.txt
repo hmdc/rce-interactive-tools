@@ -32,13 +32,13 @@ From the RCE, run::
   pip install sphinx --user --force-reinstall --upgrade
   pip install sphinx_rtd_theme --user --force-reinstall --upgrade
   cd rce-interactive-tools/doc
-  PATH=~/.local/bin PYTHONPATH=../:$PYTHONPATH make html
+  PATH=~/.local/bin:$PATH PYTHONPATH=../:$PYTHONPATH make html
 
 Once you've installed the  ``sphinx`` and ``sphinx_rtd_theme``
 pre-requisites, you can rebuild documentation by running::
 
   cd rce-interactive-tools/doc
-  PATH=~/.local/bin PYTHONPATH=../:$PYTHONPATH make html
+  PATH=~/.local/bin:$PATH PYTHONPATH=../:$PYTHONPATH make html
 
 HTML output is placed in ``rce-interactive-tools/doc/build/html`` which
 you can view via any web browser.
@@ -72,4 +72,4 @@ Publishing documentation to GitHub pages
 From the RCE, run::
 
   cd rce-interactive-tools/doc
-  PATH=~/.local/bin PYTHONPATH=../:$PYTHONPATH make html ghpages
+  PATH=~/.local/bin:$PATH PYTHONPATH=../:$PYTHONPATH make html ghpages

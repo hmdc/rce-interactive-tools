@@ -86,7 +86,7 @@
 <li class="toctree-l1"><a class="reference internal" href="cmd/using_the_rce_cmd_client.html">Using the RCE submit command line client (for advanced users)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="job_lifetime.html">Job lifetime limits in the RCE</a></li>
 <li class="toctree-l1"><a class="reference internal" href="errors.html">Diagnosing errors and warnings</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="">Operations/Development Documentation</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Operations/Development Documentation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="development/modules.html">Modules and Classes Reference</a></li>
 <li class="toctree-l2"><a class="reference internal" href="development/logs.html">Epylog messages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="development/architecture.html">Architecture</a></li>
@@ -120,7 +120,7 @@
         <div class="rst-content">
           
 
-
+ 
 
 
 
@@ -153,28 +153,28 @@
 <div class="section" id="upgrading-application-to-latest-master">
 <h2>Upgrading application to latest master<a class="headerlink" href="#upgrading-application-to-latest-master" title="Permalink to this headline">¶</a></h2>
 <p>For development environment, run from <code class="docutils literal"><span class="pre">hmdc-admin</span></code> checkout:</p>
-<div class="highlight-python"><div class="highlight"><pre>cap condor:upgrade_hmdc_cluster_tools
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">cap</span> <span class="n">condor</span><span class="p">:</span><span class="n">upgrade_hmdc_cluster_tools</span>
 </pre></div>
 </div>
 <p>For production environment, run from <code class="docutils literal"><span class="pre">hmdc-admin</span></code> checkout:</p>
-<div class="highlight-python"><div class="highlight"><pre>cap production condor:upgrade_hmdc_cluster_tools
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">cap</span> <span class="n">production</span> <span class="n">condor</span><span class="p">:</span><span class="n">upgrade_hmdc_cluster_tools</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="building-the-documentation">
 <h2>Building the documentation<a class="headerlink" href="#building-the-documentation" title="Permalink to this headline">¶</a></h2>
 <p>From the RCE, run:</p>
-<div class="highlight-python"><div class="highlight"><pre>git clone git@github.com:hmdc/rce-interactive-tools.git
+<div class="highlight-default"><div class="highlight"><pre><span></span>git clone git@github.com:hmdc/rce-interactive-tools.git
 pip install sphinx --user --force-reinstall --upgrade
 pip install sphinx_rtd_theme --user --force-reinstall --upgrade
 cd rce-interactive-tools/doc
-PATH=~/.local/bin PYTHONPATH=../:$PYTHONPATH make html
+PATH=~/.local/bin:$PATH PYTHONPATH=../:$PYTHONPATH make html
 </pre></div>
 </div>
 <p>Once you&#8217;ve installed the  <code class="docutils literal"><span class="pre">sphinx</span></code> and <code class="docutils literal"><span class="pre">sphinx_rtd_theme</span></code>
 pre-requisites, you can rebuild documentation by running:</p>
-<div class="highlight-python"><div class="highlight"><pre>cd rce-interactive-tools/doc
-PATH=~/.local/bin PYTHONPATH=../:$PYTHONPATH make html
+<div class="highlight-default"><div class="highlight"><pre><span></span>cd rce-interactive-tools/doc
+PATH=~/.local/bin:$PATH PYTHONPATH=../:$PYTHONPATH make html
 </pre></div>
 </div>
 <p>HTML output is placed in <code class="docutils literal"><span class="pre">rce-interactive-tools/doc/build/html</span></code> which
@@ -206,8 +206,8 @@ resources:</p>
 <div class="section" id="publishing-documentation-to-github-pages">
 <h2>Publishing documentation to GitHub pages<a class="headerlink" href="#publishing-documentation-to-github-pages" title="Permalink to this headline">¶</a></h2>
 <p>From the RCE, run:</p>
-<div class="highlight-python"><div class="highlight"><pre>cd rce-interactive-tools/doc
-PATH=~/.local/bin PYTHONPATH=../:$PYTHONPATH make html ghpages
+<div class="highlight-default"><div class="highlight"><pre><span></span>cd rce-interactive-tools/doc
+PATH=~/.local/bin:$PATH PYTHONPATH=../:$PYTHONPATH make html ghpages
 </pre></div>
 </div>
 </div>

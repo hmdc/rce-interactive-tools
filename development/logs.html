@@ -89,7 +89,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../errors.html">Diagnosing errors and warnings</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../developer_documentation.html">Operations/Development Documentation</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="modules.html">Modules and Classes Reference</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="">Epylog messages</a><ul>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Epylog messages</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#idletime">.idletime</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#unable-to-find-email-in-either-gecos-or-mail-field">Unable to find email in either gecos or mail field</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#unable-to-open-job-classad-or-machinead">Unable to open job classad or machinead</a></li>
@@ -133,7 +133,7 @@
         <div class="rst-content">
           
 
-
+ 
 
 
 
@@ -161,14 +161,14 @@
 <h1>Epylog messages<a class="headerlink" href="#epylog-messages" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="idletime">
 <h2>.idletime<a class="headerlink" href="#idletime" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python"><div class="highlight"><pre>Nov 30 11:09:03 exec6-3 HMDC_periodic_job_is_idle.get_current_idle_time:
-Job 33727.0: Unable to read .idletime file: [Errno 2] No such file or
-directory: &#39;/tmp/condor/execute/dir_85231/.idletime&#39;
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Nov</span> <span class="mi">30</span> <span class="mi">11</span><span class="p">:</span><span class="mi">09</span><span class="p">:</span><span class="mi">03</span> <span class="n">exec6</span><span class="o">-</span><span class="mi">3</span> <span class="n">HMDC_periodic_job_is_idle</span><span class="o">.</span><span class="n">get_current_idle_time</span><span class="p">:</span>
+<span class="n">Job</span> <span class="mf">33727.0</span><span class="p">:</span> <span class="n">Unable</span> <span class="n">to</span> <span class="n">read</span> <span class="o">.</span><span class="n">idletime</span> <span class="n">file</span><span class="p">:</span> <span class="p">[</span><span class="n">Errno</span> <span class="mi">2</span><span class="p">]</span> <span class="n">No</span> <span class="n">such</span> <span class="n">file</span> <span class="ow">or</span>
+<span class="n">directory</span><span class="p">:</span> <span class="s1">&#39;/tmp/condor/execute/dir_85231/.idletime&#39;</span>
 
-Nov 30 11:09:03 exec6-3 HMDC_periodic_job_is_idle.get_last_check_time:
-Job 33727.0: Failure reading last_check_time from#012.idletime file,
-exception: [Errno 2] No such file or directory:
-&#39;/tmp/condor/execute/dir_85231/.idletime&#39;
+<span class="n">Nov</span> <span class="mi">30</span> <span class="mi">11</span><span class="p">:</span><span class="mi">09</span><span class="p">:</span><span class="mi">03</span> <span class="n">exec6</span><span class="o">-</span><span class="mi">3</span> <span class="n">HMDC_periodic_job_is_idle</span><span class="o">.</span><span class="n">get_last_check_time</span><span class="p">:</span>
+<span class="n">Job</span> <span class="mf">33727.0</span><span class="p">:</span> <span class="n">Failure</span> <span class="n">reading</span> <span class="n">last_check_time</span> <span class="n">from</span><span class="c1">#012.idletime file,</span>
+<span class="n">exception</span><span class="p">:</span> <span class="p">[</span><span class="n">Errno</span> <span class="mi">2</span><span class="p">]</span> <span class="n">No</span> <span class="n">such</span> <span class="n">file</span> <span class="ow">or</span> <span class="n">directory</span><span class="p">:</span>
+<span class="s1">&#39;/tmp/condor/execute/dir_85231/.idletime&#39;</span>
 </pre></div>
 </div>
 <p><code class="docutils literal"><span class="pre">HMDC_periodic_job_is_idle.py</span></code> is run periodically for every job
@@ -191,8 +191,8 @@ job execution such that these errors aren&#8217;t logged unnecessarily.</p>
 </div>
 <div class="section" id="unable-to-find-email-in-either-gecos-or-mail-field">
 <h2>Unable to find email in either gecos or mail field<a class="headerlink" href="#unable-to-find-email-in-either-gecos-or-mail-field" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python"><div class="highlight"><pre>RceSubmit.esarmien.31662.HMDCLog.__rcelog_str__: _get_email(): Unable
-to find email in either gecos or mail field. Investigate
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">RceSubmit</span><span class="o">.</span><span class="n">esarmien</span><span class="o">.</span><span class="mf">31662.</span><span class="n">HMDCLog</span><span class="o">.</span><span class="n">__rcelog_str__</span><span class="p">:</span> <span class="n">_get_email</span><span class="p">():</span> <span class="n">Unable</span>
+<span class="n">to</span> <span class="n">find</span> <span class="n">email</span> <span class="ow">in</span> <span class="n">either</span> <span class="n">gecos</span> <span class="ow">or</span> <span class="n">mail</span> <span class="n">field</span><span class="o">.</span> <span class="n">Investigate</span>
 </pre></div>
 </div>
 <p><code class="docutils literal"><span class="pre">rce_submit.py</span></code> sets the <code class="docutils literal"><span class="pre">Email</span></code> field of the submitted ClassAd by
@@ -204,10 +204,10 @@ RCE Development Team.</p>
 </div>
 <div class="section" id="unable-to-open-job-classad-or-machinead">
 <h2>Unable to open job classad or machinead<a class="headerlink" href="#unable-to-open-job-classad-or-machinead" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python"><div class="highlight"><pre>Unable to open machinead from environment variable _CONDOR_MACHINE_AD:
-{Exception}
-Unable to open machinead from environment variable _CONDOR_JOB_AD:
-{Exception}
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Unable</span> <span class="n">to</span> <span class="nb">open</span> <span class="n">machinead</span> <span class="kn">from</span> <span class="nn">environment</span> <span class="n">variable</span> <span class="n">_CONDOR_MACHINE_AD</span><span class="p">:</span>
+<span class="p">{</span><span class="ne">Exception</span><span class="p">}</span>
+<span class="n">Unable</span> <span class="n">to</span> <span class="nb">open</span> <span class="n">machinead</span> <span class="kn">from</span> <span class="nn">environment</span> <span class="n">variable</span> <span class="n">_CONDOR_JOB_AD</span><span class="p">:</span>
+<span class="p">{</span><span class="ne">Exception</span><span class="p">}</span>
 </pre></div>
 </div>
 <p><code class="docutils literal"><span class="pre">HMDCWrapper.py</span></code> opens the job classad and machine classads referenced
@@ -232,7 +232,7 @@ for more information regarding HTCondor set environment variables.</p>
 </div>
 <div class="section" id="encountered-exception-setting-memory-limits">
 <h2>Encountered exception setting memory limits<a class="headerlink" href="#encountered-exception-setting-memory-limits" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python"><div class="highlight"><pre>Encountered exception setting memory limits: {Exception}
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Encountered</span> <span class="n">exception</span> <span class="n">setting</span> <span class="n">memory</span> <span class="n">limits</span><span class="p">:</span> <span class="p">{</span><span class="ne">Exception</span><span class="p">}</span>
 </pre></div>
 </div>
 <p>This is a critical error. Before a job executes, <code class="docutils literal"><span class="pre">HMDCWrapper.py</span></code> sets
@@ -249,7 +249,7 @@ For now, this is a critical error.</p>
 </div>
 <div class="section" id="found-job-in-history-terminated-in-error">
 <h2>Found job in history, terminated in error<a class="headerlink" href="#found-job-in-history-terminated-in-error" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python"><div class="highlight"><pre>find_job_and_status(): Found job {JobId} in history. Terminated in error.
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">find_job_and_status</span><span class="p">():</span> <span class="n">Found</span> <span class="n">job</span> <span class="p">{</span><span class="n">JobId</span><span class="p">}</span> <span class="ow">in</span> <span class="n">history</span><span class="o">.</span> <span class="n">Terminated</span> <span class="ow">in</span> <span class="n">error</span><span class="o">.</span>
 </pre></div>
 </div>
 <p>This is usually not a critical error. This means that a user submitted a
@@ -264,10 +264,10 @@ one reason or another, this log message will be produced.</li>
 </div>
 <div class="section" id="job-took-too-long-to-start">
 <h2>Job took too long to start<a class="headerlink" href="#job-took-too-long-to-start" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python"><div class="highlight"><pre>Oct 21 13:55:35 dev-rce6-1
-RceSubmit.esarmien.18147.HMDCLog.__rcelog_str__: run_app(): Job 148 took
-too long to start:
-Application=shell,Version=2.31.3,RequestMemory=9999,RequestCpu=9999
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Oct</span> <span class="mi">21</span> <span class="mi">13</span><span class="p">:</span><span class="mi">55</span><span class="p">:</span><span class="mi">35</span> <span class="n">dev</span><span class="o">-</span><span class="n">rce6</span><span class="o">-</span><span class="mi">1</span>
+<span class="n">RceSubmit</span><span class="o">.</span><span class="n">esarmien</span><span class="o">.</span><span class="mf">18147.</span><span class="n">HMDCLog</span><span class="o">.</span><span class="n">__rcelog_str__</span><span class="p">:</span> <span class="n">run_app</span><span class="p">():</span> <span class="n">Job</span> <span class="mi">148</span> <span class="n">took</span>
+<span class="n">too</span> <span class="n">long</span> <span class="n">to</span> <span class="n">start</span><span class="p">:</span>
+<span class="n">Application</span><span class="o">=</span><span class="n">shell</span><span class="p">,</span><span class="n">Version</span><span class="o">=</span><span class="mf">2.31</span><span class="o">.</span><span class="mi">3</span><span class="p">,</span><span class="n">RequestMemory</span><span class="o">=</span><span class="mi">9999</span><span class="p">,</span><span class="n">RequestCpu</span><span class="o">=</span><span class="mi">9999</span>
 </pre></div>
 </div>
 <p>This is typically not a critical error and can be ignored, unless you
@@ -288,7 +288,7 @@ cluster) or all execute machines have <code class="docutils literal"><span class
 </div>
 <div class="section" id="xpra-took-too-long-to-start">
 <h2>Xpra took too long to start<a class="headerlink" href="#xpra-took-too-long-to-start" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python"><div class="highlight"><pre>run_app(): Job {jobid}, xpra took too long to start. Printing classad.
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">run_app</span><span class="p">():</span> <span class="n">Job</span> <span class="p">{</span><span class="n">jobid</span><span class="p">},</span> <span class="n">xpra</span> <span class="n">took</span> <span class="n">too</span> <span class="n">long</span> <span class="n">to</span> <span class="n">start</span><span class="o">.</span> <span class="n">Printing</span> <span class="n">classad</span><span class="o">.</span>
 </pre></div>
 </div>
 <p>This is a critical error. When <code class="docutils literal"><span class="pre">rce_submit.py</span></code> submits a job, it polls
@@ -320,7 +320,7 @@ investigate, but also open a ticket for the RCE Development team.</p>
 </div>
 <div class="section" id="encountered-exception-while-removing-localjobdir">
 <h2>Encountered exception while removing LocalJobDir<a class="headerlink" href="#encountered-exception-while-removing-localjobdir" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python"><div class="highlight"><pre>Encountered exception while removing LocalJobDir: {dir}
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Encountered</span> <span class="n">exception</span> <span class="k">while</span> <span class="n">removing</span> <span class="n">LocalJobDir</span><span class="p">:</span> <span class="p">{</span><span class="nb">dir</span><span class="p">}</span>
 </pre></div>
 </div>
 <p>All jobs submitted using <code class="docutils literal"><span class="pre">rce_submit.py</span></code> have an extra ClassAd element
@@ -340,7 +340,7 @@ time permits. Most likely, this means that a user has corrupted their
 </div>
 <div class="section" id="error-sending-email-notification">
 <h2>Error sending email notification<a class="headerlink" href="#error-sending-email-notification" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python"><div class="highlight"><pre>Error sending email notification: {notification}
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Error</span> <span class="n">sending</span> <span class="n">email</span> <span class="n">notification</span><span class="p">:</span> <span class="p">{</span><span class="n">notification</span><span class="p">}</span>
 </pre></div>
 </div>
 <p>This error is produced when <code class="docutils literal"><span class="pre">HMDC_periodic_job_is_idle.py</span></code> is unable

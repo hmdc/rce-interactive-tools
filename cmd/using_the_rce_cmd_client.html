@@ -83,7 +83,7 @@
             
                 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../gui/using_the_rce_gui_client.html">Using the RCE submit client</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="">Using the RCE submit command line client (for advanced users)</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Using the RCE submit command line client (for advanced users)</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#accessing-the-terminal">Accessing the terminal</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#listing-available-applications">Listing available applications</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#running-an-application">Running an application</a></li>
@@ -118,7 +118,7 @@
         <div class="rst-content">
           
 
-
+ 
 
 
 
@@ -169,37 +169,37 @@ server, feel free to give it a whirl!</p>
 calendar year, the RCE submit tools command line client supports all
 applications in the RCE. You can list which applications are supported
 by running the following command:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">rce_submit</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="nb">list</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">rce_submit</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="nb">list</span>
 </pre></div>
 </div>
 <p>which will output a list of supported applications and versions:</p>
-<div class="highlight-python"><div class="highlight"><pre>** denotes default
-Application    Version(s)
--------------  ------------
-gauss          14 **
-               8
-mathematica    10.2.0
-               10.1.0
-               10.3.0 **
-matlab         R2015a **
-               R2012a
-               R2013a
-               R2014b
-               R2014a
-               R2010b
-octave         3.4.3 **
-python         3.3
-               2.7 **
-R              3.2 **
-rstudio        0.98 **
-SAS            9.3
-               9.4 **
-shell          2.31.3 **
-StatTransfer   12 **
-xstata-mp      13.1
-               14.0 **
-xstata-se      13.1
-               14.0 **
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">**</span> <span class="n">denotes</span> <span class="n">default</span>
+<span class="n">Application</span>    <span class="n">Version</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+<span class="o">-------------</span>  <span class="o">------------</span>
+<span class="n">gauss</span>          <span class="mi">14</span> <span class="o">**</span>
+               <span class="mi">8</span>
+<span class="n">mathematica</span>    <span class="mf">10.2</span><span class="o">.</span><span class="mi">0</span>
+               <span class="mf">10.1</span><span class="o">.</span><span class="mi">0</span>
+               <span class="mf">10.3</span><span class="o">.</span><span class="mi">0</span> <span class="o">**</span>
+<span class="n">matlab</span>         <span class="n">R2015a</span> <span class="o">**</span>
+               <span class="n">R2012a</span>
+               <span class="n">R2013a</span>
+               <span class="n">R2014b</span>
+               <span class="n">R2014a</span>
+               <span class="n">R2010b</span>
+<span class="n">octave</span>         <span class="mf">3.4</span><span class="o">.</span><span class="mi">3</span> <span class="o">**</span>
+<span class="n">python</span>         <span class="mf">3.3</span>
+               <span class="mf">2.7</span> <span class="o">**</span>
+<span class="n">R</span>              <span class="mf">3.2</span> <span class="o">**</span>
+<span class="n">rstudio</span>        <span class="mf">0.98</span> <span class="o">**</span>
+<span class="n">SAS</span>            <span class="mf">9.3</span>
+               <span class="mf">9.4</span> <span class="o">**</span>
+<span class="n">shell</span>          <span class="mf">2.31</span><span class="o">.</span><span class="mi">3</span> <span class="o">**</span>
+<span class="n">StatTransfer</span>   <span class="mi">12</span> <span class="o">**</span>
+<span class="n">xstata</span><span class="o">-</span><span class="n">mp</span>      <span class="mf">13.1</span>
+               <span class="mf">14.0</span> <span class="o">**</span>
+<span class="n">xstata</span><span class="o">-</span><span class="n">se</span>      <span class="mf">13.1</span>
+               <span class="mf">14.0</span> <span class="o">**</span>
 </pre></div>
 </div>
 </div>
@@ -207,11 +207,11 @@ xstata-se      13.1
 <h2>Running an application<a class="headerlink" href="#running-an-application" title="Permalink to this headline">¶</a></h2>
 <p>You can run the default version of the application <code class="docutils literal"><span class="pre">python</span></code>, by
 executing:</p>
-<div class="highlight-python"><div class="highlight"><pre>rce_submit.py -r -a python
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">rce_submit</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">r</span> <span class="o">-</span><span class="n">a</span> <span class="n">python</span>
 </pre></div>
 </div>
 <p>You can run <code class="docutils literal"><span class="pre">python</span> <span class="pre">3.3</span></code> by executing:</p>
-<div class="highlight-python"><div class="highlight"><pre>rce_submit.py -r -a python -v 3.3
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">rce_submit</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">r</span> <span class="o">-</span><span class="n">a</span> <span class="n">python</span> <span class="o">-</span><span class="n">v</span> <span class="mf">3.3</span>
 </pre></div>
 </div>
 </div>
@@ -219,16 +219,16 @@ executing:</p>
 <h2>Listing running applications<a class="headerlink" href="#listing-running-applications" title="Permalink to this headline">¶</a></h2>
 <p>You can list which RCE interactive applications you are currently
 running, whether attached or detached, by executing:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">rce_submit</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">jobs</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">rce_submit</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">jobs</span>
 </pre></div>
 </div>
 <p>which produces the following output:</p>
-<div class="highlight-python"><div class="highlight"><pre>  Job Id  Application    Version    Requested Cpus    Requested Memory
---------  -------------  ---------  ----------------  ------------------
-     174  xstata-mp      14.0       4                 6144
-     183  matlab         R2015a     1                 12288
-     113  shell          2.31.3     1                 2048
-     110  shell          2.31.3     1                 2048
+<div class="highlight-default"><div class="highlight"><pre><span></span>  <span class="n">Job</span> <span class="n">Id</span>  <span class="n">Application</span>    <span class="n">Version</span>    <span class="n">Requested</span> <span class="n">Cpus</span>    <span class="n">Requested</span> <span class="n">Memory</span>
+<span class="o">--------</span>  <span class="o">-------------</span>  <span class="o">---------</span>  <span class="o">----------------</span>  <span class="o">------------------</span>
+     <span class="mi">174</span>  <span class="n">xstata</span><span class="o">-</span><span class="n">mp</span>      <span class="mf">14.0</span>       <span class="mi">4</span>                 <span class="mi">6144</span>
+     <span class="mi">183</span>  <span class="n">matlab</span>         <span class="n">R2015a</span>     <span class="mi">1</span>                 <span class="mi">12288</span>
+     <span class="mi">113</span>  <span class="n">shell</span>          <span class="mf">2.31</span><span class="o">.</span><span class="mi">3</span>     <span class="mi">1</span>                 <span class="mi">2048</span>
+     <span class="mi">110</span>  <span class="n">shell</span>          <span class="mf">2.31</span><span class="o">.</span><span class="mi">3</span>     <span class="mi">1</span>                 <span class="mi">2048</span>
 </pre></div>
 </div>
 </div>
@@ -238,7 +238,7 @@ running, whether attached or detached, by executing:</p>
 re-attach it using the command line tools by first running
 <code class="docutils literal"><span class="pre">rce_submit.py</span> <span class="pre">--jobs</span></code>, noting the Job Id of the job you want to
 re-attach and then executing:</p>
-<div class="highlight-python"><div class="highlight"><pre>rce_submit.py -attach 174
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">rce_submit</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">attach</span> <span class="mi">174</span>
 </pre></div>
 </div>
 <p>In the above example, I reattached xstata-mp.</p>
@@ -251,11 +251,11 @@ HTCondor cluster. RCE cluster tools uses a configuration file format
 called <code class="docutils literal"><span class="pre">rceapp.yml</span></code> to manage application settings.</p>
 <p>First, you should copy the existing <code class="docutils literal"><span class="pre">rceapp.yml</span></code> into your home
 directory to get an idea of how this file is structured:</p>
-<div class="highlight-python"><div class="highlight"><pre>cp /etc/rceapp.yml $HOME
+<div class="highlight-default"><div class="highlight"><pre><span></span>cp /etc/rceapp.yml $HOME
 </pre></div>
 </div>
 <p>Here is a simple stanza from rceapp.yml describing the gnome-terminal:</p>
-<div class="highlight-python"><div class="highlight"><pre>shell:
+<div class="highlight-default"><div class="highlight"><pre><span></span>shell:
   global:
     memory: 2048
     cpu: 1
@@ -272,32 +272,32 @@ directory to get an idea of how this file is structured:</p>
 <p>Presume that I want to run firefox as an interactive job in the RCE
 cluster. I would first edit my local rceapp.yml at <code class="docutils literal"><span class="pre">$HOME/rceapp.yml</span></code>
 and add the following stanza:</p>
-<div class="highlight-python"><div class="highlight"><pre>firefox:
-  global:
-    memory: 2048
-    cpu: 1
-    icon: /usr/share/icons/gnome/32x32/apps/gnome-terminal.png
-    supports_memory_adjustable: true
-    supports_cpu_adjustable: true
-    supports_cli_mode: true
-  &#39;10.0&#39;:
-    default: true
-    command: /usr/bin/firefox
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">firefox</span><span class="p">:</span>
+  <span class="k">global</span><span class="p">:</span>
+    <span class="n">memory</span><span class="p">:</span> <span class="mi">2048</span>
+    <span class="n">cpu</span><span class="p">:</span> <span class="mi">1</span>
+    <span class="n">icon</span><span class="p">:</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">share</span><span class="o">/</span><span class="n">icons</span><span class="o">/</span><span class="n">gnome</span><span class="o">/</span><span class="mi">32</span><span class="n">x32</span><span class="o">/</span><span class="n">apps</span><span class="o">/</span><span class="n">gnome</span><span class="o">-</span><span class="n">terminal</span><span class="o">.</span><span class="n">png</span>
+    <span class="n">supports_memory_adjustable</span><span class="p">:</span> <span class="n">true</span>
+    <span class="n">supports_cpu_adjustable</span><span class="p">:</span> <span class="n">true</span>
+    <span class="n">supports_cli_mode</span><span class="p">:</span> <span class="n">true</span>
+  <span class="s1">&#39;10.0&#39;</span><span class="p">:</span>
+    <span class="n">default</span><span class="p">:</span> <span class="n">true</span>
+    <span class="n">command</span><span class="p">:</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">firefox</span>
 </pre></div>
 </div>
 <p>Then, I could run firefox by running the following command, which would
 create a firefox job that consumes 1 CPU and 2048 MiB of memory:</p>
-<div class="highlight-python"><div class="highlight"><pre>rce_submit.py -f $HOME/rceapp.yml -r -a firefox
+<div class="highlight-default"><div class="highlight"><pre><span></span>rce_submit.py -c $HOME/rceapp.yml -r -a firefox
 </pre></div>
 </div>
-<p>The <code class="docutils literal"><span class="pre">-f</span></code> switch designates that you&#8217;re using a custom <code class="docutils literal"><span class="pre">rceapp.yml</span></code>
+<p>The <code class="docutils literal"><span class="pre">-c</span></code> switch designates that you&#8217;re using a custom <code class="docutils literal"><span class="pre">rceapp.yml</span></code>
 rather than the system-wide <code class="docutils literal"><span class="pre">rceapp.yml</span></code> in <code class="docutils literal"><span class="pre">/etc</span></code></p>
 </div>
 <div class="section" id="getting-help">
 <h2>Getting help<a class="headerlink" href="#getting-help" title="Permalink to this headline">¶</a></h2>
 <p>Running the following command will print out inline help for
 rce_submit.py:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">rce_submit</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">help</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">rce_submit</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">help</span>
 </pre></div>
 </div>
 </div>

@@ -90,12 +90,7 @@
 <li class="toctree-l2"><a class="reference internal" href="modules.html">Modules and Classes Reference</a></li>
 <li class="toctree-l2"><a class="reference internal" href="logs.html">Epylog messages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="architecture.html">Architecture</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="">Adding an RCE Powered Application to the menu</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#changes">Changes</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#adding-an-application-with-a-pre-installed-icon">Adding an application with a pre-installed icon</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#adding-an-application-without-a-pre-installed-icon">Adding an application without a pre-installed icon</a></li>
-</ul>
-</li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Adding an RCE Powered Application to the menu</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../developer_documentation.html#getting-the-source-code">Getting the source code</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../developer_documentation.html#upgrading-application-to-latest-master">Upgrading application to latest master</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../developer_documentation.html#building-the-documentation">Building the documentation</a></li>
@@ -125,7 +120,7 @@
         <div class="rst-content">
           
 
-
+ 
 
 
 
@@ -151,73 +146,6 @@
             
   <div class="section" id="adding-an-rce-powered-application-to-the-menu">
 <h1>Adding an RCE Powered Application to the menu<a class="headerlink" href="#adding-an-rce-powered-application-to-the-menu" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="changes">
-<h2>Changes<a class="headerlink" href="#changes" title="Permalink to this headline">¶</a></h2>
-<p>As of 12/15, the following individual application modules were removed:</p>
-<ul class="simple">
-<li>modules/gauss</li>
-<li>modules/matlab</li>
-<li>modules/mathematica</li>
-<li>modules/hmdc_rce_shell</li>
-<li>modules/rstudio</li>
-<li>modules/stata</li>
-<li>modules/stattransfer</li>
-<li>modules/jabref</li>
-<li>modules/gauss</li>
-<li>modules/octave</li>
-<li>modules/gephi</li>
-<li>modules/sas</li>
-</ul>
-<p>Furthermore, modules <code class="docutils literal"><span class="pre">modules/hmdc_emacs</span></code>, <code class="docutils literal"><span class="pre">modules/hmdc_r</span></code> were
-stripped of their icon and desktop creating elements, leaving only our
-HMDC customizations.</p>
-<p>Instead, all RCE Powered Application desktop and icon creation has been
-moved to <code class="docutils literal"><span class="pre">modules/rceapp</span></code> utilizing one single file in
-<code class="docutils literal"><span class="pre">modules/hmdc_cluster_tools/files/rceapp.yml</span></code></p>
-</div>
-<div class="section" id="adding-an-application-with-a-pre-installed-icon">
-<h2>Adding an application with a pre-installed icon<a class="headerlink" href="#adding-an-application-with-a-pre-installed-icon" title="Permalink to this headline">¶</a></h2>
-<p>Presume we want to add Firefox as an RCE Powered Application, adding it
-to the RCE Powered Menu.</p>
-<p>First, edit <code class="docutils literal"><span class="pre">modules/hmdc_cluster_tools/files/rceapp.yml</span></code> and add this
-stanza:</p>
-<div class="highlight-python"><div class="highlight"><pre>  firefox:
-    global:
-      memory: 2048
-      cpu: 1
-      icon: /usr/share/icons/hicolor/48x48/apps/firefox.png
-install_icon: false
-      supports_memory_adjustable: true
-      supports_cpu_adjustable: true
-      supports_cli_mode: false
-      requires_wrapper: false
-    &#39;38.4.0&#39;:
-      default: true
-      command: /usr/bin/firefox
-</pre></div>
-</div>
-<p>Now, run a standard <code class="docutils literal"><span class="pre">cap</span> <span class="pre">ROLES=cluster</span> <span class="pre">deploy</span> <span class="pre">puppet:apply</span></code> in the DEV environment.</p>
-<p>This will create the RCE Powered Application menu for Firefox.</p>
-<p>Please note the following oddities:</p>
-<ul class="simple">
-<li><code class="docutils literal"><span class="pre">icon</span></code> must be the FQDN of the <code class="docutils literal"><span class="pre">48x48</span></code> icon as installed by the
-Firefox package.</li>
-<li>Since the icon is installed by the RPM, <code class="docutils literal"><span class="pre">install_icon</span></code> must be
-false, otherwise rceapp will try to install the icon from
-<code class="docutils literal"><span class="pre">modules/rceapp/files</span></code></li>
-<li>Firefox does not require a wrapper <code class="docutils literal"><span class="pre">/usr/local/bin/firefox</span></code> as we
-allow users to run firefox from the RCE login nodes.</li>
-</ul>
-</div>
-<div class="section" id="adding-an-application-without-a-pre-installed-icon">
-<h2>Adding an application without a pre-installed icon<a class="headerlink" href="#adding-an-application-without-a-pre-installed-icon" title="Permalink to this headline">¶</a></h2>
-<p>Use the same example as above, except:</p>
-<ul class="simple">
-<li>Set <code class="docutils literal"><span class="pre">install_icon</span></code> to true</li>
-<li>Move <code class="docutils literal"><span class="pre">firefox.png</span></code>, or whatever application icon you need, to
-<code class="docutils literal"><span class="pre">modules/rceapp/files</span></code></li>
-</ul>
-</div>
 </div>
 
 

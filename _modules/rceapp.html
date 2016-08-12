@@ -131,10 +131,10 @@
            <div itemprop="articleBody">
             
   <h1>Source code for rceapp</h1><div class="highlight"><pre>
-<span class="c"># This is a simple class which reads the rceapp.yml installed by Puppet</span>
-<span class="c"># or any other configuration management.</span>
+<span></span><span class="c1"># This is a simple class which reads the rceapp.yml installed by Puppet</span>
+<span class="c1"># or any other configuration management.</span>
 
-<span class="kn">from</span> <span class="nn">yaml</span> <span class="kn">import</span> <span class="n">load</span><span class="p">,</span> <span class="n">dump</span>
+<span class="kn">from</span> <span class="nn">yaml</span> <span class="k">import</span> <span class="n">load</span><span class="p">,</span> <span class="n">dump</span>
 
 <div class="viewcode-block" id="RCEAppGlobalError"><a class="viewcode-back" href="../development/modules/rceapp.html#rceapp.RCEAppGlobalError">[docs]</a><span class="k">class</span> <span class="nc">RCEAppGlobalError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
   <span class="sd">&quot;&quot;&quot;</span>
@@ -151,9 +151,9 @@
     <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">value</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span> <span class="o">=</span> <span class="n">cfg</span>
   <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="k">return</span> <span class="nb">repr</span><span class="p">(</span><span class="s">&#39;A stanza in </span><span class="si">%s</span><span class="s"> is missing the global value heading.&#39;</span>
-        <span class="o">%</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="p">))</span>
-</div>
+    <span class="k">return</span> <span class="nb">repr</span><span class="p">(</span><span class="s1">&#39;A stanza in </span><span class="si">%s</span><span class="s1"> is missing the global value heading.&#39;</span>
+        <span class="o">%</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="p">))</span></div>
+
 <div class="viewcode-block" id="RCEAppDefaultError"><a class="viewcode-back" href="../development/modules/rceapp.html#rceapp.RCEAppDefaultError">[docs]</a><span class="k">class</span> <span class="nc">RCEAppDefaultError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
   <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">  This is a self-defined exception such that I can output a useful error</span>
@@ -169,11 +169,11 @@
     <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">value</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span> <span class="o">=</span> <span class="n">cfg</span>
   <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="k">return</span> <span class="nb">repr</span><span class="p">(</span><span class="s">&quot;Either at least one version requires the default</span><span class="se">\</span>
-<span class="s">     boolean in </span><span class="si">%s</span><span class="s">, two versions have the default boolean, or default is</span><span class="se">\</span>
-<span class="s">     not set to true or false.&quot;</span> <span class="o">%</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="p">))</span>
+    <span class="k">return</span> <span class="nb">repr</span><span class="p">(</span><span class="s2">&quot;Either at least one version requires the default</span><span class="se">\</span>
+<span class="s2">     boolean in </span><span class="si">%s</span><span class="s2">, two versions have the default boolean, or default is</span><span class="se">\</span>
+<span class="s2">     not set to true or false.&quot;</span> <span class="o">%</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="p">))</span></div>
 
-</div>
+
 <div class="viewcode-block" id="RCEAppGlobalMemoryError"><a class="viewcode-back" href="../development/modules/rceapp.html#rceapp.RCEAppGlobalMemoryError">[docs]</a><span class="k">class</span> <span class="nc">RCEAppGlobalMemoryError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
   <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">  This is a self-defined exception such that I can output a useful error</span>
@@ -189,9 +189,9 @@
     <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">value</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span> <span class="o">=</span> <span class="n">cfg</span>
   <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="k">return</span> <span class="nb">repr</span><span class="p">(</span><span class="s">&#39;A stanza in </span><span class="si">%s</span><span class="s"> is missing a global memory value.&#39;</span>
-        <span class="o">%</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="p">))</span>
-</div>
+    <span class="k">return</span> <span class="nb">repr</span><span class="p">(</span><span class="s1">&#39;A stanza in </span><span class="si">%s</span><span class="s1"> is missing a global memory value.&#39;</span>
+        <span class="o">%</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="p">))</span></div>
+
 <div class="viewcode-block" id="RCEAppGlobalCpuError"><a class="viewcode-back" href="../development/modules/rceapp.html#rceapp.RCEAppGlobalCpuError">[docs]</a><span class="k">class</span> <span class="nc">RCEAppGlobalCpuError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
   <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">  This is a self-defined exception such that I can output a useful error</span>
@@ -207,10 +207,10 @@
     <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">value</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span> <span class="o">=</span> <span class="n">cfg</span>
   <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="k">return</span> <span class="nb">repr</span><span class="p">(</span><span class="s">&#39;A stanza in </span><span class="si">%s</span><span class="s"> is missing a cpu value.&#39;</span>
-        <span class="o">%</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="p">))</span>
+    <span class="k">return</span> <span class="nb">repr</span><span class="p">(</span><span class="s1">&#39;A stanza in </span><span class="si">%s</span><span class="s1"> is missing a cpu value.&#39;</span>
+        <span class="o">%</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="p">))</span></div>
 
-</div>
+
 <div class="viewcode-block" id="RCEAppIntError"><a class="viewcode-back" href="../development/modules/rceapp.html#rceapp.RCEAppIntError">[docs]</a><span class="k">class</span> <span class="nc">RCEAppIntError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
   <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">  This is a self-defined exception such that I can output a useful error</span>
@@ -226,10 +226,10 @@
     <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">value</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span> <span class="o">=</span> <span class="n">cfg</span>
   <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="k">return</span> <span class="nb">repr</span><span class="p">(</span><span class="s">&#39;Default memory/cpu values in </span><span class="si">%s</span><span class="s"> must be integers.&#39;</span>
-        <span class="o">%</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="p">))</span>
+    <span class="k">return</span> <span class="nb">repr</span><span class="p">(</span><span class="s1">&#39;Default memory/cpu values in </span><span class="si">%s</span><span class="s1"> must be integers.&#39;</span>
+        <span class="o">%</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="p">))</span></div>
 
-</div>
+
 <div class="viewcode-block" id="rceapp"><a class="viewcode-back" href="../development/modules/rceapp.html#rceapp.rceapp">[docs]</a><span class="k">class</span> <span class="nc">rceapp</span><span class="p">:</span>
   <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">  This is the rceapp class which manipulates an RCEApp YAML</span>
@@ -242,7 +242,7 @@
     <span class="bp">self</span><span class="o">.</span><span class="n">cfg</span> <span class="o">=</span> <span class="n">cfg</span>
     
     <span class="k">try</span><span class="p">:</span>
-      <span class="k">with</span> <span class="nb">file</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="s">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">_data_stream</span><span class="p">:</span>
+      <span class="k">with</span> <span class="n">file</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">_data_stream</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="n">_data_stream</span><span class="p">)</span>
     <span class="k">except</span><span class="p">:</span>
       <span class="k">raise</span>
@@ -266,58 +266,58 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
-      <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">app</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">app</span><span class="p">][</span><span class="s">&#39;global&#39;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">apps</span><span class="p">())</span>
+      <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">app</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">app</span><span class="p">][</span><span class="s1">&#39;global&#39;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">apps</span><span class="p">())</span>
     <span class="k">except</span> <span class="ne">KeyError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
       <span class="k">raise</span> <span class="n">RCEAppGlobalError</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
 
-    <span class="c"># Checks whether default stanzas contain default memory</span>
+    <span class="c1"># Checks whether default stanzas contain default memory</span>
     <span class="k">try</span><span class="p">:</span>
-      <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">app</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">app</span><span class="p">][</span><span class="s">&#39;global&#39;</span><span class="p">][</span><span class="s">&#39;memory&#39;</span><span class="p">],</span>
+      <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">app</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">app</span><span class="p">][</span><span class="s1">&#39;global&#39;</span><span class="p">][</span><span class="s1">&#39;memory&#39;</span><span class="p">],</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">apps</span><span class="p">())</span>
     <span class="k">except</span> <span class="ne">KeyError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
       <span class="k">raise</span> <span class="n">RCEAppGlobalMemoryError</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
 
-    <span class="c"># Checks whether default stanzas contain default cpu count</span>
+    <span class="c1"># Checks whether default stanzas contain default cpu count</span>
     <span class="k">try</span><span class="p">:</span>
-      <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">app</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">app</span><span class="p">][</span><span class="s">&#39;global&#39;</span><span class="p">][</span><span class="s">&#39;cpu&#39;</span><span class="p">],</span>
+      <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">app</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">app</span><span class="p">][</span><span class="s1">&#39;global&#39;</span><span class="p">][</span><span class="s1">&#39;cpu&#39;</span><span class="p">],</span>
           <span class="bp">self</span><span class="o">.</span><span class="n">apps</span><span class="p">())</span>
     <span class="k">except</span> <span class="ne">KeyError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
       <span class="k">raise</span> <span class="n">RCEAppGlobalCpuError</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
 
-    <span class="c"># Checks whether default memory is an integer, which it should be.</span>
+    <span class="c1"># Checks whether default memory is an integer, which it should be.</span>
     <span class="k">try</span><span class="p">:</span>
-      <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">app</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">app</span><span class="p">][</span><span class="s">&#39;global&#39;</span><span class="p">][</span><span class="s">&#39;memory&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+      <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">app</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">app</span><span class="p">][</span><span class="s1">&#39;global&#39;</span><span class="p">][</span><span class="s1">&#39;memory&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
           <span class="bp">self</span><span class="o">.</span><span class="n">apps</span><span class="p">())</span>
     <span class="k">except</span> <span class="ne">TypeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
       <span class="k">raise</span> <span class="n">RCEAppIntError</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
 
-    <span class="c"># Checks whether default cpu is an integer, which it should be.</span>
+    <span class="c1"># Checks whether default cpu is an integer, which it should be.</span>
     <span class="k">try</span><span class="p">:</span>
-      <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">app</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">app</span><span class="p">][</span><span class="s">&#39;global&#39;</span><span class="p">][</span><span class="s">&#39;cpu&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+      <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">app</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">app</span><span class="p">][</span><span class="s1">&#39;global&#39;</span><span class="p">][</span><span class="s1">&#39;cpu&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
           <span class="bp">self</span><span class="o">.</span><span class="n">apps</span><span class="p">())</span>
     <span class="k">except</span> <span class="ne">TypeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
       <span class="k">raise</span> <span class="n">RCEAppIntError</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
 
 
 
-    <span class="c"># Checks whether at least one version is default, no more than one</span>
-    <span class="c"># default key per entry, and that value is a boolean.</span>
+    <span class="c1"># Checks whether at least one version is default, no more than one</span>
+    <span class="c1"># default key per entry, and that value is a boolean.</span>
     <span class="n">default_map</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">app</span><span class="p">:</span> <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">version</span><span class="p">:</span>
-      <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">app</span><span class="p">][</span><span class="n">version</span><span class="p">][</span><span class="s">&#39;default&#39;</span><span class="p">]</span> <span class="k">if</span>
-      <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">app</span><span class="p">][</span><span class="n">version</span><span class="p">]</span><span class="o">.</span><span class="n">has_key</span><span class="p">(</span><span class="s">&#39;default&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="bp">None</span><span class="p">,</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">app</span><span class="p">][</span><span class="n">version</span><span class="p">][</span><span class="s1">&#39;default&#39;</span><span class="p">]</span> <span class="k">if</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">app</span><span class="p">][</span><span class="n">version</span><span class="p">]</span><span class="o">.</span><span class="n">has_key</span><span class="p">(</span><span class="s1">&#39;default&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
       <span class="bp">self</span><span class="o">.</span><span class="n">versions</span><span class="p">(</span><span class="n">app</span><span class="p">)),</span>
       <span class="bp">self</span><span class="o">.</span><span class="n">apps</span><span class="p">())</span>
 
-    <span class="n">sorted_count</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="bp">True</span><span class="p">),</span> <span class="n">default_map</span><span class="p">))</span>
+    <span class="n">sorted_count</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="kc">True</span><span class="p">),</span> <span class="n">default_map</span><span class="p">))</span>
     <span class="k">if</span> <span class="n">sorted_count</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-      <span class="k">raise</span> <span class="n">RCEAppDefaultError</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="p">,</span> <span class="s">&quot;No default.&quot;</span><span class="p">)</span>
+      <span class="k">raise</span> <span class="n">RCEAppDefaultError</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="p">,</span> <span class="s2">&quot;No default.&quot;</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">sorted_count</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-      <span class="k">raise</span> <span class="n">RCEAppDefaultError</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="p">,</span> <span class="s">&quot;Too many defaults.&quot;</span><span class="p">)</span>
+      <span class="k">raise</span> <span class="n">RCEAppDefaultError</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cfg</span><span class="p">,</span> <span class="s2">&quot;Too many defaults.&quot;</span><span class="p">)</span>
 
 <div class="viewcode-block" id="rceapp.apps"><a class="viewcode-back" href="../development/modules/rceapp.html#rceapp.rceapp.apps">[docs]</a>  <span class="k">def</span> <span class="nf">apps</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;apps() returns the keys of the data loaded from the yaml&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
-</div>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span></div>
+
 <div class="viewcode-block" id="rceapp.versions"><a class="viewcode-back" href="../development/modules/rceapp.html#rceapp.rceapp.versions">[docs]</a>  <span class="k">def</span> <span class="nf">versions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">app</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    versions() returns all the versions listed for an app, specified</span>
@@ -325,41 +325,41 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">return</span> <span class="nb">filter</span><span class="p">(</span>
-        <span class="k">lambda</span> <span class="n">key</span><span class="p">:</span> <span class="n">key</span> <span class="o">!=</span> <span class="s">&#39;global&#39;</span><span class="p">,</span>
+        <span class="k">lambda</span> <span class="n">key</span><span class="p">:</span> <span class="n">key</span> <span class="o">!=</span> <span class="s1">&#39;global&#39;</span><span class="p">,</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">app</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
-        <span class="p">)</span>
-</div>
-<div class="viewcode-block" id="rceapp.app_version_exists"><a class="viewcode-back" href="../development/modules/rceapp.html#rceapp.rceapp.app_version_exists">[docs]</a>  <span class="k">def</span> <span class="nf">app_version_exists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">app</span><span class="p">,</span><span class="n">version</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="rceapp.app_version_exists"><a class="viewcode-back" href="../development/modules/rceapp.html#rceapp.rceapp.app_version_exists">[docs]</a>  <span class="k">def</span> <span class="nf">app_version_exists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">app</span><span class="p">,</span><span class="n">version</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">version</span><span class="p">:</span>
-      <span class="k">return</span> <span class="p">(</span><span class="bp">True</span> <span class="k">if</span> <span class="n">app</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">apps</span><span class="p">()</span> <span class="ow">and</span> <span class="n">version</span> <span class="ow">in</span>
-      <span class="bp">self</span><span class="o">.</span><span class="n">versions</span><span class="p">(</span><span class="n">app</span><span class="p">)</span> <span class="k">else</span> <span class="bp">False</span><span class="p">)</span>
+      <span class="k">return</span> <span class="p">(</span><span class="kc">True</span> <span class="k">if</span> <span class="n">app</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">apps</span><span class="p">()</span> <span class="ow">and</span> <span class="n">version</span> <span class="ow">in</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">versions</span><span class="p">(</span><span class="n">app</span><span class="p">)</span> <span class="k">else</span> <span class="kc">False</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-      <span class="k">return</span> <span class="p">(</span><span class="bp">True</span> <span class="k">if</span> <span class="n">app</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">apps</span><span class="p">()</span> <span class="k">else</span> <span class="bp">False</span><span class="p">)</span>
-</div>
+      <span class="k">return</span> <span class="p">(</span><span class="kc">True</span> <span class="k">if</span> <span class="n">app</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">apps</span><span class="p">()</span> <span class="k">else</span> <span class="kc">False</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="rceapp.supports_cpu_adjustable"><a class="viewcode-back" href="../development/modules/rceapp.html#rceapp.rceapp.supports_cpu_adjustable">[docs]</a>  <span class="k">def</span> <span class="nf">supports_cpu_adjustable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">app</span><span class="p">):</span>
-    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">supports_adjustable</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="s">&#39;cpu&#39;</span><span class="p">)</span>
-</div>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">supports_adjustable</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="s1">&#39;cpu&#39;</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="rceapp.supports_memory_adjustable"><a class="viewcode-back" href="../development/modules/rceapp.html#rceapp.rceapp.supports_memory_adjustable">[docs]</a>  <span class="k">def</span> <span class="nf">supports_memory_adjustable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">app</span><span class="p">):</span>
-    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">supports_adjustable</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="s">&#39;memory&#39;</span><span class="p">)</span>
-</div>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">supports_adjustable</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="s1">&#39;memory&#39;</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="rceapp.supports_adjustable"><a class="viewcode-back" href="../development/modules/rceapp.html#rceapp.rceapp.supports_adjustable">[docs]</a>  <span class="k">def</span> <span class="nf">supports_adjustable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">app</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
-    <span class="k">assert</span> <span class="n">label</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&#39;memory&#39;</span><span class="p">,</span> <span class="s">&#39;cpu&#39;</span><span class="p">]</span>
+    <span class="k">assert</span> <span class="n">label</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;memory&#39;</span><span class="p">,</span> <span class="s1">&#39;cpu&#39;</span><span class="p">]</span>
 
     <span class="k">try</span><span class="p">:</span>
-      <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">app</span><span class="p">][</span><span class="s">&#39;global&#39;</span><span class="p">][</span><span class="s">&quot;supports_{0}_adjustable&quot;</span><span class="o">.</span>
-          <span class="n">format</span><span class="p">(</span><span class="n">label</span><span class="p">)]</span>
+      <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">app</span><span class="p">][</span><span class="s1">&#39;global&#39;</span><span class="p">][</span><span class="s2">&quot;supports_</span><span class="si">{0}</span><span class="s2">_adjustable&quot;</span><span class="o">.</span>
+          <span class="nb">format</span><span class="p">(</span><span class="n">label</span><span class="p">)]</span>
     <span class="k">except</span><span class="p">:</span>
-      <span class="k">return</span> <span class="bp">True</span>
-</div>
-<div class="viewcode-block" id="rceapp.command"><a class="viewcode-back" href="../development/modules/rceapp.html#rceapp.rceapp.command">[docs]</a>  <span class="k">def</span> <span class="nf">command</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">app</span><span class="p">,</span><span class="n">version</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+      <span class="k">return</span> <span class="kc">True</span></div>
+
+<div class="viewcode-block" id="rceapp.command"><a class="viewcode-back" href="../development/modules/rceapp.html#rceapp.rceapp.command">[docs]</a>  <span class="k">def</span> <span class="nf">command</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">app</span><span class="p">,</span><span class="n">version</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    command() returns the full path of an application given its version and</span>
 <span class="sd">    application name as arguments.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">_version</span> <span class="o">=</span> <span class="n">version</span> <span class="k">if</span> <span class="n">version</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_default_version</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
-    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">app</span><span class="p">][</span><span class="n">_version</span><span class="p">][</span><span class="s">&#39;command&#39;</span><span class="p">]</span>
-</div>
-<div class="viewcode-block" id="rceapp.args"><a class="viewcode-back" href="../development/modules/rceapp.html#rceapp.rceapp.args">[docs]</a>  <span class="k">def</span> <span class="nf">args</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">app</span><span class="p">,</span><span class="n">version</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">app</span><span class="p">][</span><span class="n">_version</span><span class="p">][</span><span class="s1">&#39;command&#39;</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="rceapp.args"><a class="viewcode-back" href="../development/modules/rceapp.html#rceapp.rceapp.args">[docs]</a>  <span class="k">def</span> <span class="nf">args</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">app</span><span class="p">,</span><span class="n">version</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    args() returns a string of arguments for an given application&#39;s</span>
 <span class="sd">    version.</span>
@@ -367,30 +367,30 @@
     <span class="n">_version</span> <span class="o">=</span> <span class="n">version</span> <span class="k">if</span> <span class="n">version</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_default_version</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
 
     <span class="k">try</span><span class="p">:</span>
-      <span class="k">return</span> <span class="s">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">app</span><span class="p">][</span><span class="n">_version</span><span class="p">][</span><span class="s">&#39;args&#39;</span><span class="p">])</span>
+      <span class="k">return</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">app</span><span class="p">][</span><span class="n">_version</span><span class="p">][</span><span class="s1">&#39;args&#39;</span><span class="p">])</span>
     <span class="k">except</span><span class="p">:</span>
       <span class="k">try</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">app</span><span class="p">][</span><span class="s">&#39;global&#39;</span><span class="p">][</span><span class="s">&#39;args&#39;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">app</span><span class="p">][</span><span class="s1">&#39;global&#39;</span><span class="p">][</span><span class="s1">&#39;args&#39;</span><span class="p">])</span>
       <span class="k">except</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">None</span>
-</div>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
 <div class="viewcode-block" id="rceapp.get_default_version"><a class="viewcode-back" href="../development/modules/rceapp.html#rceapp.rceapp.get_default_version">[docs]</a>  <span class="k">def</span> <span class="nf">get_default_version</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">app</span><span class="p">):</span>
     <span class="n">_versions</span> <span class="o">=</span> <span class="nb">map</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">version</span><span class="p">:</span> <span class="n">version</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_default</span><span class="p">(</span><span class="n">app</span><span class="p">,</span><span class="n">version</span><span class="p">)</span> <span class="k">else</span>
-        <span class="bp">None</span><span class="p">,</span>
+        <span class="kc">None</span><span class="p">,</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">versions</span><span class="p">(</span><span class="n">app</span><span class="p">))</span>
-    <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">_versions</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-</div>
+    <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">_versions</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span></div>
+
 <div class="viewcode-block" id="rceapp.is_default"><a class="viewcode-back" href="../development/modules/rceapp.html#rceapp.rceapp.is_default">[docs]</a>  <span class="k">def</span> <span class="nf">is_default</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">app</span><span class="p">,</span><span class="n">version</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns True if app,version is the default version for the app.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">try</span><span class="p">:</span>
-      <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">app</span><span class="p">][</span><span class="n">version</span><span class="p">][</span><span class="s">&#39;default&#39;</span><span class="p">]</span>
+      <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">app</span><span class="p">][</span><span class="n">version</span><span class="p">][</span><span class="s1">&#39;default&#39;</span><span class="p">]</span>
     <span class="k">except</span><span class="p">:</span>
-      <span class="k">return</span> <span class="bp">False</span>
-</div>
-<div class="viewcode-block" id="rceapp.memory"><a class="viewcode-back" href="../development/modules/rceapp.html#rceapp.rceapp.memory">[docs]</a>  <span class="k">def</span> <span class="nf">memory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">app</span><span class="p">,</span><span class="n">version</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+      <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="rceapp.memory"><a class="viewcode-back" href="../development/modules/rceapp.html#rceapp.rceapp.memory">[docs]</a>  <span class="k">def</span> <span class="nf">memory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">app</span><span class="p">,</span><span class="n">version</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    memory() returns the default memory requirements of an application&#39;s</span>
 <span class="sd">    specified version. If a memory default is not specified for that</span>
@@ -399,26 +399,26 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">_version</span> <span class="o">=</span> <span class="n">version</span> <span class="k">if</span> <span class="n">version</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_default_version</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
     <span class="k">try</span><span class="p">:</span>
-      <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">app</span><span class="p">][</span><span class="n">_version</span><span class="p">][</span><span class="s">&#39;memory&#39;</span><span class="p">]</span>
+      <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">app</span><span class="p">][</span><span class="n">_version</span><span class="p">][</span><span class="s1">&#39;memory&#39;</span><span class="p">]</span>
     <span class="k">except</span><span class="p">:</span>
-      <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">app</span><span class="p">][</span><span class="s">&#39;global&#39;</span><span class="p">][</span><span class="s">&#39;memory&#39;</span><span class="p">]</span>
-</div>
-<div class="viewcode-block" id="rceapp.icon"><a class="viewcode-back" href="../development/modules/rceapp.html#rceapp.rceapp.icon">[docs]</a>  <span class="k">def</span> <span class="nf">icon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">app</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+      <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">app</span><span class="p">][</span><span class="s1">&#39;global&#39;</span><span class="p">][</span><span class="s1">&#39;memory&#39;</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="rceapp.icon"><a class="viewcode-back" href="../development/modules/rceapp.html#rceapp.rceapp.icon">[docs]</a>  <span class="k">def</span> <span class="nf">icon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">app</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    icon() returns the icon path for an application. If no icon, return</span>
 <span class="sd">    none.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">_version</span> <span class="o">=</span> <span class="n">version</span> <span class="k">if</span> <span class="n">version</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_default_version</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
     <span class="k">try</span><span class="p">:</span>
-      <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">app</span><span class="p">][</span><span class="n">_version</span><span class="p">][</span><span class="s">&#39;icon&#39;</span><span class="p">]</span>
+      <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">app</span><span class="p">][</span><span class="n">_version</span><span class="p">][</span><span class="s1">&#39;icon&#39;</span><span class="p">]</span>
     <span class="k">except</span><span class="p">:</span>
       <span class="k">try</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">app</span><span class="p">][</span><span class="s">&#39;global&#39;</span><span class="p">][</span><span class="s">&#39;icon&#39;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">app</span><span class="p">][</span><span class="s1">&#39;global&#39;</span><span class="p">][</span><span class="s1">&#39;icon&#39;</span><span class="p">]</span>
       <span class="k">except</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">None</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
 
-    </div>
-<div class="viewcode-block" id="rceapp.cpu"><a class="viewcode-back" href="../development/modules/rceapp.html#rceapp.rceapp.cpu">[docs]</a>  <span class="k">def</span> <span class="nf">cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">app</span><span class="p">,</span><span class="n">version</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    
+<div class="viewcode-block" id="rceapp.cpu"><a class="viewcode-back" href="../development/modules/rceapp.html#rceapp.rceapp.cpu">[docs]</a>  <span class="k">def</span> <span class="nf">cpu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">app</span><span class="p">,</span><span class="n">version</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    cpu() returns the default CPU count requirement of an application&#39;s</span>
 <span class="sd">    specified version. If a cpu default is not specified for that</span>
@@ -427,9 +427,9 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">_version</span> <span class="o">=</span> <span class="n">version</span> <span class="k">if</span> <span class="n">version</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_default_version</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
     <span class="k">try</span><span class="p">:</span>
-      <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">app</span><span class="p">][</span><span class="n">_version</span><span class="p">][</span><span class="s">&#39;cpu&#39;</span><span class="p">]</span>
+      <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">app</span><span class="p">][</span><span class="n">_version</span><span class="p">][</span><span class="s1">&#39;cpu&#39;</span><span class="p">]</span>
     <span class="k">except</span><span class="p">:</span>
-      <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">app</span><span class="p">][</span><span class="s">&#39;global&#39;</span><span class="p">][</span><span class="s">&#39;cpu&#39;</span><span class="p">]</span></div></div>
+      <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">app</span><span class="p">][</span><span class="s1">&#39;global&#39;</span><span class="p">][</span><span class="s1">&#39;cpu&#39;</span><span class="p">]</span></div></div>
 </pre></div>
 
            </div>
