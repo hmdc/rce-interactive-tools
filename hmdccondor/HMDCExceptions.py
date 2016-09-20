@@ -57,6 +57,19 @@ class RCEJobDidNotStart(Exception):
       return "Job completed prematurely: {0}".format(self.ad['CompletionDate'])
     except:
       return "Unknown reason"
+  def __get_condor_query_cmd__(self):
+    """__get_condor_query_cmd__() returns the command which can be run to
+    query the status of the job (i.e. condor_q for live jobs and
+    condor_history for completed jobs).
+
+    :returns: condor query command
+    :rtype: str
+
+    """
+    if self.ad['JobStatus'] == 3: # removed
+        return "condor_history -l {0}".format(self.ad['ClusterId'])
+    else:
+        return "condor_q -l {0}".format(self.ad['ClusterId'])
   def message(self):
     """returns explanatory text as to why job did not start.
 
@@ -80,10 +93,10 @@ reason:
 
 For more information, run:
 
-condor_history -l {0}
+{3}
 
 or email support@help.hmdc.harvard.edu\
-""".format(self.ad['ClusterId'], self.ad['HMDCApplicationName'], self.__determine_cause__())
+""".format(self.ad['ClusterId'], self.ad['HMDCApplicationName'], self.__determine_cause__(), self.__get_condor_query_cmd__())
 
 class RCEJobTookTooLongStartError(Exception):
   """RCEJobTookTooLongStartError is thrown when a user submits a job but
