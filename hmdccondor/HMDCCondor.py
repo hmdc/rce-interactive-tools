@@ -364,6 +364,7 @@ class HMDCCondor:
     return subprocess.Popen([xpra,
      "attach",
      "--socket-dir=$TEMP",
+     "--socket-dirs=$TEMP",
      "--tray-icon={0}".format(rceapps.icon(_classad['HMDCApplicationName'])),
      "--ssh={0} -name '{1}' {2}".format(
        condor_ssh,

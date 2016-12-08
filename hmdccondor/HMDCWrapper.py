@@ -125,6 +125,7 @@ class HMDCWrapper:
         '--log-dir={0}'.format(os.environ['TEMP']),
         'start',
         '--start-child={0}'.format(xpra_child_command),
+        '--socket-dirs={0}'.format(os.environ['TEMP']),
         '--socket-dir={0}'.format(os.environ['TEMP']))
 
     return 0
