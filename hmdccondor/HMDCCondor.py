@@ -355,7 +355,7 @@ class HMDCCondor:
 
     """
 
-    condor_ssh = '/usr/bin/condor_ssh_to_job'
+    condor_ssh = '/usr/bin/run_condor_ssh_to_job.sh'
     xpra = '/usr/bin/xpra'
 
     job_id = int(_classad['ClusterId'])
@@ -366,11 +366,10 @@ class HMDCCondor:
      "--socket-dir=$TEMP",
      "--socket-dirs=$TEMP",
      "--tray-icon={0}".format(rceapps.icon(_classad['HMDCApplicationName'])),
-     "--ssh={0} -name '{1}' {2}".format(
+     "--ssh={0} -name '{1}'".format(
        condor_ssh,
        self.get_sched_ad_for_job(job_id)['ScheddIpAddr'],
-       job_id),
-     "ssh:{0}:{1}".format('', display)], env=dict(os.environ, SSH_AUTH_SOCK="")).pid
+     "ssh:{0}:{1}".format(jobid, display)], env=dict(os.environ, SSH_AUTH_SOCK="")).pid
 
   def poll_xpra(self,ad):
     """poll_xpra() creates a thread which polls the xpra server log to

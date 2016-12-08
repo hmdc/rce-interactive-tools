@@ -2,7 +2,7 @@ from os import chmod
 from distutils.core import setup
 
 setup(name='rce-interactive-tools',
-      version='1.9.0',
+      version='1.9.1',
       description='HMDC utilities and scripts to submit condor jobs.',
       url='https://github.com/hmdc/rce-interactive-tools',
       author='Evan Sarmiento',
@@ -21,6 +21,7 @@ setup(name='rce-interactive-tools',
         ],
       scripts=[
         'scripts/rce-info.sh',
+        'scripts/run_condor_ssh_to_job.sh',
         'scripts/HMDC_job_wrapper_switch.sh',
         'scripts/rce_submit.py',
         'scripts/HMDC_interactive_prepare_job.py',
