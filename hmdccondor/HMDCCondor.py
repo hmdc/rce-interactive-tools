@@ -368,8 +368,8 @@ class HMDCCondor:
      "--tray-icon={0}".format(rceapps.icon(_classad['HMDCApplicationName'])),
      "--ssh={0} -name '{1}'".format(
        condor_ssh,
-       self.get_sched_ad_for_job(job_id)['ScheddIpAddr'],
-     "ssh:{0}:{1}".format(jobid, display)], env=dict(os.environ, SSH_AUTH_SOCK="")).pid
+       self.get_sched_ad_for_job(job_id)['ScheddIpAddr']),
+     "ssh:{0}:{1}".format(job_id, display)], env=dict(os.environ, SSH_AUTH_SOCK="")).pid
 
   def poll_xpra(self,ad):
     """poll_xpra() creates a thread which polls the xpra server log to
