@@ -365,7 +365,7 @@ class HMDCCondor:
 
     return subprocess.Popen([xpra,
      "attach",
-     "--title='Job {0} : {1} {2} : {3}'".format(job_id, application,
+     "--title=Job {0} : {1} {2} : {3}".format(job_id, application,
          version, machine),
      "--socket-dir=$TEMP",
      "--socket-dirs=$TEMP",
