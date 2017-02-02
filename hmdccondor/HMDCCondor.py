@@ -358,11 +358,15 @@ class HMDCCondor:
     condor_ssh = '/usr/bin/run_condor_ssh_to_job.sh'
     xpra = '/usr/bin/xpra'
 
+    application = str(_classad['HMDCApplicationName'])
+    version = str(_classad['HMDCApplicationVersion'])
     job_id = int(_classad['ClusterId'])
     machine = str(_classad['RemoteHost']).split('@')[-1]
 
     return subprocess.Popen([xpra,
      "attach",
+     "--title='Job {0} : {1} {2} : {3}'".format(job_id, application,
+         version, machine),
      "--socket-dir=$TEMP",
      "--socket-dirs=$TEMP",
      "--tray-icon={0}".format(rceapps.icon(_classad['HMDCApplicationName'])),
