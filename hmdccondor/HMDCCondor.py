@@ -122,7 +122,7 @@ class HMDCCondor:
     self.POLL_TIMEOUT = 90
     self.__BASENAME__ = os.path.basename(__file__)
 
-    self.ldap_server = 'ldap.hmdc.harvard.edu'
+    self.ldap_server = 'directory.priv.hmdc.harvard.edu'
     self.ldap_base_dn = 'dc=login,dc=hmdc,dc=harvard,dc=edu'
 
   def get_my_jobs(self):
