@@ -59,7 +59,6 @@ _NOKSG=' && ! regexp("ksg", Machine)'
 _NOEDLABS=' && ! regexp ("edlabs", Machine)'
 _NONSAPH=' && ! regexp ("nsaph", Machine)'
 for title in ${CONDOR_ENTITLEMENTS}; do
-    echo "$title"
     case "$title" in
         kennedy)
             _NOKSG=''
