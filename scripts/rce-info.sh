@@ -87,7 +87,7 @@ EOF
     ;;
     used)
       ${FIGLET} -f small 'RCE Cluster' 2> /dev/null|| echo "==== RCE Cluster ===="
-      /usr/bin/condor_q -global -currentrun -constraint '( JobStatus == 2)' -format '%s ' User -format '%d ' RequestCpus -format '%d ' RequestMemory -format '%d \n' MemoryUsage |\
+      /usr/bin/condor_q -global -currentrun -constraint '( JobStatus == 2)' -format '%s ' User -format '%d ' RequestCpus -format '%d ' RequestMemory -format '%d ' MemoryUsage -format '\n' none |\
 	perl -e 'while (<>) { @f = split(/\s+/, $_); 
 	$sum{$f[0]}{cpu} += $f[1]; 
 	$sum{$f[0]}{requestmem} += $f[2]; 
