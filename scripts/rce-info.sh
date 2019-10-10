@@ -95,12 +95,14 @@ EOF
 	}  
 	printf( "%45s\n", "MEMORY (IN GB)" );
 	printf( "%15s   %4s   %s   %s   %s\n", "USER", "CPUS", "REQUESTED", "USED","UNUSED" ); 
+	foreach $u ( keys(%sum) ) {
+	  $sum{$u}{deltamem} = ($sum{$u}{requestmem} - $sum{$u}{usedmem} )
+	}
 	foreach $u ( sort(keys(%sum)) ) 
 	{ 
 	$us = $u; 
 	$us =~ s/\@hmdc\.harvard\.edu//;  
-	$delta = ($sum{$u}{requestmem} - $sum{$u}{usedmem}) / 1024;
-	printf( "%15s %6d %11d %6d %8d\n", $us, $sum{$u}{cpu}, $sum{$u}{requestmem} / 1024, $sum{$u}{usedmem} / 1024 , $delta )
+	printf( "%15s %6d %11d %6d %8d\n", $us, $sum{$u}{cpu}, $sum{$u}{requestmem} / 1024, $sum{$u}{usedmem} / 1024 , $sum{$u}{deltamem} / 1024 )
 	}'
     ;;
     *)
