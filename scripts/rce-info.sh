@@ -87,24 +87,20 @@ EOF
     ;;
     used)
       ${FIGLET} -f small 'RCE Cluster' 2> /dev/null|| echo "==== RCE Cluster ===="
-      /usr/bin/condor_q -global -currentrun -constraint '( JobStatus == 2)' -format '%s ' User -format '%d ' RequestCpus -format '%d ' RequestMemory -format '%d ' ResidentSetSize_RAW -format '\n' none|\
+      /usr/bin/condor_q -global -currentrun -constraint '( JobStatus == 2)' -format '%s ' User -format '%d ' RequestCpus -format '%d ' RequestMemory -format '%d ' ResidentSetSize_RAW -format '\n' none |\
 	perl -e 'while (<>) {
-	  @f = split(/\s+/, $_);
-	  $us = $f[0];
-	  $us =~ s/\@hmdc\.harvard\.edu//;
-	  $sum{$us}{cpu} += $f[1];
-	  $sum{$us}{requestmem} += $f[2];
-	  $sum{$us}{usedmem} += ( $f[3] / 1024 );
-	}
-# Print the header
+	  @f = split(/\s+/, $_); 
+	  $sum{$f[0]}{cpu} += $f[1]; 
+	  $sum{$f[0]}{requestmem} += $f[2]; 
+	  $sum{$f[0]}{usedmem} += $f[3] / 1024
+	}  
 	printf( "%45s\n", "MEMORY (IN GB)" );
-	printf( "%15s   %4s   %s   %s   %s\n", "USER", "CPUS", "REQUESTED", "USED","UNUSED" );
-# Calculate the difference between memory requested and what they're actually using
-	foreach $u ( keys(%sum) ) {
-	  $sum{$u}{deltamem} = ($sum{$u}{requestmem} - $sum{$u}{usedmem} )
-	}
-	foreach $u ( sort(keys(%sum)) ) {
-	  printf( "%15s %6d %11d %6d %8d\n", $u, $sum{$u}{cpu}, $sum{$u}{requestmem} / 1024, $sum{$u}{usedmem} / 1024 , $sum{$u}{deltamem} / 1024 )
+	printf( "%15s   %4s   %s   %s   %s\n", "USER", "CPUS", "REQUESTED", "USED","UNUSED" ); 
+	foreach $u ( sort(keys(%sum)) ) { 
+	  $us = $u; 
+	  $us =~ s/\@hmdc\.harvard\.edu//;  
+	  $delta = ($sum{$u}{requestmem} - $sum{$u}{usedmem}) / 1024;
+	  printf( "%15s %6d %11d %6d %8d\n", $us, $sum{$u}{cpu}, $sum{$u}{requestmem} / 1024, $sum{$u}{usedmem} / 1024 , $delta )
 	}'
     ;;
     *)
