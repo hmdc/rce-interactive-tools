@@ -87,10 +87,27 @@ EOF
     ;;
     used)
       ${FIGLET} -f small 'RCE Cluster' 2> /dev/null|| echo "==== RCE Cluster ===="
-      /usr/bin/condor_q -global -currentrun -constraint '( JobStatus == 2)' -format '%s ' User -format '%d ' RequestCpus -format '%d \n' RequestMemory |perl -e 'while (<>) { @f = split(/\s+/, $_); $sum{$f[0]}{cpu} += $f[1]; $sum{$f[0]}{mem} += $f[2]; } printf( "%15s %4s %s\n", "USER", "CPUS", "MEM_GB" ); foreach $u ( sort(keys(%sum)) ) { $us = $u; $us =~ s/\@hmdc\.harvard\.edu//; printf( "%15s %4d %d\n", $us, $sum{$u}{cpu}, $sum{$u}{mem} / 1024 ); }'
+      /usr/bin/condor_q -global -currentrun -constraint '( JobStatus == 2)' -format '%s ' User -format '%d ' RequestCpus -format '%d ' RequestMemory -format '%d ' ResidentSetSize_RAW -format '\n' none |\
+	perl -e 'while (<>) {
+	  @f = split(/\s+/, $_); 
+          $us = $f[0];
+	  $us =~ s/\@hmdc\.harvard\.edu//;
+	  $sum{$us}{cpu} += $f[1]; 
+	  $sum{$us}{requestmem} += $f[2]; 
+	  $sum{$us}{usedmem} += $f[3] / 1024
+	}  
+
+        foreach $u ( keys(%sum) ) {
+          $sum{$u}{deltamem} = ($sum{$u}{requestmem} - $sum{$u}{usedmem}) / 1024;
+	}
+	printf( "%45s\n", "MEMORY (IN GB)" );
+	printf( "%15s   %4s   %s   %s   %s\n", "USER", "CPUS", "REQUESTED", "USED","UNUSED" ); 
+	#foreach $u ( sort(keys(%sum)) ) { 
+	foreach $u ( sort( { $sum{$b}{deltamem} <=> $sum{$a}{deltamem} } keys(%sum)) ) {
+	  printf( "%15s %6d %11d %6d %8d\n", $u, $sum{$u}{cpu}, $sum{$u}{requestmem} / 1024, $sum{$u}{usedmem} / 1024 , $sum{$u}{deltamem} )
+	}'
     ;;
     *)
         echo "Unrecognized type: $TYPE"
         ;;
 esac
-
